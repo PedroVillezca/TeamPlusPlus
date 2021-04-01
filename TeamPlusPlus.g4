@@ -1,37 +1,37 @@
 grammar TeamPlusPlus;
 
 // Parser Rules
-program     : PROGRAM ID SEMICOLON imports? classes? tpp_vars? functions? main;
+program     : PROGRAM ID SEMICOLON imports? classes? tpp_vars? functions? main EOF;
 
 imports     : (IMPORT ID (AS ID)? SEMICOLON)+;
 
-classes     : CLASS ID (INHERITS ID)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON;
+classes     : (CLASS ID (INHERITS ID)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON)+;
 
 tpp_vars    : VARS (tpp_type init (COMMA init)* SEMICOLON)+;
 
 c_vars      : ATTRIBUTES (level? tpp_type init (COMMA init)* SEMICOLON)+;
 
-var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)?;
+var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
 
-functions   : (FUNC tpp_type ID LEFT_PARENTHESIS tpp_type ID (COMMA tpp_type ID)* RIGHT_PARENTHESIS funblock)+;
+functions   : (FUNC tpp_type ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
 
-c_functions : METHODS (level? FUNC tpp_type ID LEFT_PARENTHESIS tpp_type ID (COMMA tpp_type ID)* RIGHT_PARENTHESIS funblock)+;
+c_functions : METHODS (level? FUNC tpp_type ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
 funblock    : LEFT_BRACE tpp_vars? statement* RIGHT_BRACE;
 
-tpp_type    : (INT | FLOAT | CHAR);
+tpp_type    : (INT | FLOAT | CHAR | ID);
 
 level       : (PUBLIC | PRIVATE);
 
-statement   : (assignment | funcall | tpp_return | read | tpp_print | condition | loop);
+statement   : (assignment | funcall SEMICOLON | tpp_return | read | tpp_print | condition | loop);
 
 assignment  : var ASSIGN expression SEMICOLON;
 
-funcall     : (var DOT)? ID LEFT_PARENTHESIS expression (COMMA expression)* RIGHT_PARENTHESIS SEMICOLON;
+funcall     : (var DOT)? ID LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
 
 tpp_return  : RETURN LEFT_PARENTHESIS exp RIGHT_PARENTHESIS SEMICOLON;
 
@@ -67,7 +67,7 @@ sumop       : (PLUS | MINUS);
 
 mulop       : (MULT | DIV);
 
-value       : (var | CTE_INT | CTE_FLOAT | funcall);
+value       : (var | CTE_INT | CTE_FLOAT | CTE_CHAR | funcall);
 
 // Regular Definition
 PROGRAM     : 'program';
@@ -125,5 +125,5 @@ CTE_FLOAT   : CTE_INT ('.' CTE_INT)?;
 CTE_CHAR    : '\''.'\'';
 CTE_STRING  : '"'.*?'"';
 ID          : [a-zA-Z]+[a-zA-Z0-9_]*;
-COMMENT     : '#'.*?'\n';
+COMMENT     : '#'.*?'\n' -> skip;
 WHITESPACE: [ \r\n\t]+ -> skip;
