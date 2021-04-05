@@ -7,23 +7,23 @@ imports     : (IMPORT ID (AS ID)? SEMICOLON)+;
 
 classes     : (CLASS ID (INHERITS ID)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON)+;
 
-tpp_vars    : VARS (tpp_type init (COMMA init)* SEMICOLON)+;
+tpp_vars    : VARS ((ID | tpp_type) init (COMMA init)* SEMICOLON)+;
 
-c_vars      : ATTRIBUTES (level? tpp_type init (COMMA init)* SEMICOLON)+;
+c_vars      : ATTRIBUTES (level? (ID | tpp_type) init (COMMA init)* SEMICOLON)+;
 
 var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
 
-functions   : (FUNC tpp_type ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
+functions   : (FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
 
-c_functions : METHODS (level? FUNC tpp_type ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
+c_functions : METHODS (level? FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
 funblock    : LEFT_BRACE tpp_vars? statement* RIGHT_BRACE;
 
-tpp_type    : (INT | FLOAT | CHAR | ID);
+tpp_type    : (INT | FLOAT | CHAR);
 
 level       : (PUBLIC | PRIVATE);
 
@@ -97,6 +97,7 @@ PRIVATE     : 'private';
 AND         : 'and';
 OR          : 'or';
 NOT         : 'not';
+VOID        : 'void';
 
 COLON               : ':';
 COMMA               : ',';
