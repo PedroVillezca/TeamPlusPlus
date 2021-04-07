@@ -11,210 +11,233 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3:")
-        buf.write("\u01b6\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3>")
+        buf.write("\u01e3\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
         buf.write("\t\31\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36")
-        buf.write("\4\37\t\37\4 \t \4!\t!\4\"\t\"\4#\t#\3\2\3\2\3\2\3\2\5")
-        buf.write("\2K\n\2\3\2\5\2N\n\2\3\2\5\2Q\n\2\3\2\5\2T\n\2\3\2\3\2")
-        buf.write("\3\2\3\3\3\3\3\3\3\3\5\3]\n\3\3\3\6\3`\n\3\r\3\16\3a\3")
-        buf.write("\4\3\4\3\4\3\4\5\4h\n\4\3\4\3\4\5\4l\n\4\3\4\5\4o\n\4")
-        buf.write("\3\4\3\4\6\4s\n\4\r\4\16\4t\3\5\3\5\3\5\5\5z\n\5\3\5\3")
-        buf.write("\5\3\5\7\5\177\n\5\f\5\16\5\u0082\13\5\3\5\3\5\6\5\u0086")
-        buf.write("\n\5\r\5\16\5\u0087\3\6\3\6\5\6\u008c\n\6\3\6\3\6\5\6")
-        buf.write("\u0090\n\6\3\6\3\6\3\6\7\6\u0095\n\6\f\6\16\6\u0098\13")
-        buf.write("\6\3\6\3\6\6\6\u009c\n\6\r\6\16\6\u009d\3\7\3\7\3\7\3")
-        buf.write("\7\3\7\5\7\u00a5\n\7\3\7\3\7\5\7\u00a9\n\7\3\7\3\7\5\7")
-        buf.write("\u00ad\n\7\3\b\3\b\3\b\3\b\3\b\5\b\u00b4\n\b\3\b\5\b\u00b7")
-        buf.write("\n\b\3\b\3\b\5\b\u00bb\n\b\3\t\3\t\3\t\5\t\u00c0\n\t\3")
-        buf.write("\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\7\t\u00ca\n\t\f\t\16\t")
-        buf.write("\u00cd\13\t\5\t\u00cf\n\t\3\t\3\t\6\t\u00d3\n\t\r\t\16")
-        buf.write("\t\u00d4\3\n\3\n\5\n\u00d9\n\n\3\n\3\n\3\n\5\n\u00de\n")
-        buf.write("\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\7\n\u00e8\n\n\f\n\16")
-        buf.write("\n\u00eb\13\n\5\n\u00ed\n\n\3\n\3\n\6\n\u00f1\n\n\r\n")
-        buf.write("\16\n\u00f2\3\13\3\13\3\13\3\13\3\13\3\f\3\f\5\f\u00fc")
-        buf.write("\n\f\3\f\7\f\u00ff\n\f\f\f\16\f\u0102\13\f\3\f\3\f\3\r")
+        buf.write("\4\37\t\37\4 \t \4!\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\3\2\3")
+        buf.write("\2\3\2\3\2\5\2O\n\2\3\2\5\2R\n\2\3\2\5\2U\n\2\3\2\5\2")
+        buf.write("X\n\2\3\2\3\2\3\2\3\3\3\3\3\3\6\3`\n\3\r\3\16\3a\3\4\3")
+        buf.write("\4\3\4\3\4\5\4h\n\4\3\4\3\4\5\4l\n\4\3\4\5\4o\n\4\3\4")
+        buf.write("\3\4\6\4s\n\4\r\4\16\4t\3\5\3\5\3\5\5\5z\n\5\3\5\3\5\3")
+        buf.write("\5\7\5\177\n\5\f\5\16\5\u0082\13\5\3\5\3\5\6\5\u0086\n")
+        buf.write("\5\r\5\16\5\u0087\3\6\3\6\5\6\u008c\n\6\3\6\3\6\5\6\u0090")
+        buf.write("\n\6\3\6\3\6\3\6\7\6\u0095\n\6\f\6\16\6\u0098\13\6\3\6")
+        buf.write("\3\6\6\6\u009c\n\6\r\6\16\6\u009d\3\7\3\7\3\7\3\7\3\7")
+        buf.write("\5\7\u00a5\n\7\3\7\3\7\5\7\u00a9\n\7\3\7\3\7\5\7\u00ad")
+        buf.write("\n\7\3\b\3\b\3\b\3\b\3\b\5\b\u00b4\n\b\3\b\5\b\u00b7\n")
+        buf.write("\b\3\b\3\b\5\b\u00bb\n\b\3\t\3\t\3\t\5\t\u00c0\n\t\3\t")
+        buf.write("\3\t\3\t\3\t\5\t\u00c6\n\t\3\t\3\t\3\t\3\t\5\t\u00cc\n")
+        buf.write("\t\3\t\7\t\u00cf\n\t\f\t\16\t\u00d2\13\t\5\t\u00d4\n\t")
+        buf.write("\3\t\3\t\6\t\u00d8\n\t\r\t\16\t\u00d9\3\n\3\n\5\n\u00de")
+        buf.write("\n\n\3\n\3\n\3\n\5\n\u00e3\n\n\3\n\3\n\3\n\3\n\5\n\u00e9")
+        buf.write("\n\n\3\n\3\n\3\n\3\n\5\n\u00ef\n\n\3\n\7\n\u00f2\n\n\f")
+        buf.write("\n\16\n\u00f5\13\n\5\n\u00f7\n\n\3\n\3\n\6\n\u00fb\n\n")
+        buf.write("\r\n\16\n\u00fc\3\13\3\13\3\13\3\13\3\13\3\f\3\f\5\f\u0106")
+        buf.write("\n\f\3\f\7\f\u0109\n\f\f\f\16\f\u010c\13\f\3\f\3\f\3\r")
         buf.write("\3\r\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17")
-        buf.write("\3\17\5\17\u0113\n\17\3\20\3\20\3\20\3\20\3\20\3\21\3")
-        buf.write("\21\3\21\5\21\u011d\n\21\3\21\3\21\3\21\3\21\3\21\7\21")
-        buf.write("\u0124\n\21\f\21\16\21\u0127\13\21\5\21\u0129\n\21\3\21")
+        buf.write("\3\17\5\17\u011d\n\17\3\20\3\20\3\20\3\20\3\20\3\21\3")
+        buf.write("\21\3\21\5\21\u0127\n\21\3\21\3\21\3\21\3\21\3\21\7\21")
+        buf.write("\u012e\n\21\f\21\16\21\u0131\13\21\5\21\u0133\n\21\3\21")
         buf.write("\3\21\3\22\3\22\3\22\3\22\3\22\3\22\3\23\3\23\3\23\3\23")
-        buf.write("\3\23\7\23\u0138\n\23\f\23\16\23\u013b\13\23\3\23\3\23")
-        buf.write("\3\23\3\24\3\24\3\24\3\24\5\24\u0144\n\24\3\24\3\24\3")
-        buf.write("\24\5\24\u0149\n\24\7\24\u014b\n\24\f\24\16\24\u014e\13")
-        buf.write("\24\3\24\3\24\3\24\3\25\3\25\7\25\u0155\n\25\f\25\16\25")
-        buf.write("\u0158\13\25\3\25\3\25\3\26\3\26\3\26\3\26\3\26\3\26\3")
-        buf.write("\26\3\26\5\26\u0164\n\26\3\27\3\27\5\27\u0168\n\27\3\30")
-        buf.write("\3\30\3\30\3\30\3\30\3\30\3\31\3\31\3\31\3\31\3\31\3\31")
-        buf.write("\3\31\3\31\3\32\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u017f")
-        buf.write("\n\32\3\33\3\33\3\33\3\33\5\33\u0185\n\33\3\34\3\34\3")
-        buf.write("\34\3\34\5\34\u018b\n\34\3\35\3\35\3\35\3\35\7\35\u0191")
-        buf.write("\n\35\f\35\16\35\u0194\13\35\3\36\3\36\3\36\3\36\7\36")
-        buf.write("\u019a\n\36\f\36\16\36\u019d\13\36\3\37\3\37\3\37\3\37")
-        buf.write("\3\37\5\37\u01a4\n\37\3\37\5\37\u01a7\n\37\3 \3 \3!\3")
-        buf.write("!\3\"\3\"\3#\3#\3#\3#\3#\5#\u01b4\n#\3#\2\2$\2\4\6\b\n")
-        buf.write("\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<")
-        buf.write(">@BD\2\b\3\2\4\6\3\2\31\32\3\2\33\34\3\2.\63\3\2*+\3\2")
-        buf.write(",-\2\u01d0\2F\3\2\2\2\4_\3\2\2\2\6r\3\2\2\2\bv\3\2\2\2")
-        buf.write("\n\u0089\3\2\2\2\f\u009f\3\2\2\2\16\u00ae\3\2\2\2\20\u00d2")
-        buf.write("\3\2\2\2\22\u00d6\3\2\2\2\24\u00f4\3\2\2\2\26\u00f9\3")
-        buf.write("\2\2\2\30\u0105\3\2\2\2\32\u0107\3\2\2\2\34\u0112\3\2")
-        buf.write("\2\2\36\u0114\3\2\2\2 \u011c\3\2\2\2\"\u012c\3\2\2\2$")
-        buf.write("\u0132\3\2\2\2&\u013f\3\2\2\2(\u0152\3\2\2\2*\u015b\3")
-        buf.write("\2\2\2,\u0167\3\2\2\2.\u0169\3\2\2\2\60\u016f\3\2\2\2")
-        buf.write("\62\u017e\3\2\2\2\64\u0184\3\2\2\2\66\u0186\3\2\2\28\u018c")
-        buf.write("\3\2\2\2:\u0195\3\2\2\2<\u01a6\3\2\2\2>\u01a8\3\2\2\2")
-        buf.write("@\u01aa\3\2\2\2B\u01ac\3\2\2\2D\u01b3\3\2\2\2FG\7\3\2")
-        buf.write("\2GH\78\2\2HJ\7)\2\2IK\5\4\3\2JI\3\2\2\2JK\3\2\2\2KM\3")
-        buf.write("\2\2\2LN\5\6\4\2ML\3\2\2\2MN\3\2\2\2NP\3\2\2\2OQ\5\b\5")
-        buf.write("\2PO\3\2\2\2PQ\3\2\2\2QS\3\2\2\2RT\5\20\t\2SR\3\2\2\2")
-        buf.write("ST\3\2\2\2TU\3\2\2\2UV\5\24\13\2VW\7\2\2\3W\3\3\2\2\2")
-        buf.write("XY\7\27\2\2Y\\\78\2\2Z[\7\30\2\2[]\78\2\2\\Z\3\2\2\2\\")
-        buf.write("]\3\2\2\2]^\3\2\2\2^`\7)\2\2_X\3\2\2\2`a\3\2\2\2a_\3\2")
-        buf.write("\2\2ab\3\2\2\2b\5\3\2\2\2cd\7\b\2\2dg\78\2\2ef\7\t\2\2")
-        buf.write("fh\78\2\2ge\3\2\2\2gh\3\2\2\2hi\3\2\2\2ik\7#\2\2jl\5\n")
-        buf.write("\6\2kj\3\2\2\2kl\3\2\2\2ln\3\2\2\2mo\5\22\n\2nm\3\2\2")
-        buf.write("\2no\3\2\2\2op\3\2\2\2pq\7$\2\2qs\7)\2\2rc\3\2\2\2st\3")
-        buf.write("\2\2\2tr\3\2\2\2tu\3\2\2\2u\7\3\2\2\2v\u0085\7\7\2\2w")
-        buf.write("z\78\2\2xz\5\30\r\2yw\3\2\2\2yx\3\2\2\2z{\3\2\2\2{\u0080")
-        buf.write("\5\16\b\2|}\7 \2\2}\177\5\16\b\2~|\3\2\2\2\177\u0082\3")
-        buf.write("\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0083")
-        buf.write("\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7)\2\2\u0084")
-        buf.write("\u0086\3\2\2\2\u0085y\3\2\2\2\u0086\u0087\3\2\2\2\u0087")
-        buf.write("\u0085\3\2\2\2\u0087\u0088\3\2\2\2\u0088\t\3\2\2\2\u0089")
-        buf.write("\u009b\7\25\2\2\u008a\u008c\5\32\16\2\u008b\u008a\3\2")
-        buf.write("\2\2\u008b\u008c\3\2\2\2\u008c\u008f\3\2\2\2\u008d\u0090")
-        buf.write("\78\2\2\u008e\u0090\5\30\r\2\u008f\u008d\3\2\2\2\u008f")
-        buf.write("\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0096\5\16\b")
-        buf.write("\2\u0092\u0093\7 \2\2\u0093\u0095\5\16\b\2\u0094\u0092")
-        buf.write("\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3\2\2\2\u0096")
-        buf.write("\u0097\3\2\2\2\u0097\u0099\3\2\2\2\u0098\u0096\3\2\2\2")
-        buf.write("\u0099\u009a\7)\2\2\u009a\u009c\3\2\2\2\u009b\u008b\3")
-        buf.write("\2\2\2\u009c\u009d\3\2\2\2\u009d\u009b\3\2\2\2\u009d\u009e")
-        buf.write("\3\2\2\2\u009e\13\3\2\2\2\u009f\u00a8\78\2\2\u00a0\u00a1")
-        buf.write("\7\'\2\2\u00a1\u00a4\58\35\2\u00a2\u00a3\7 \2\2\u00a3")
-        buf.write("\u00a5\58\35\2\u00a4\u00a2\3\2\2\2\u00a4\u00a5\3\2\2\2")
-        buf.write("\u00a5\u00a6\3\2\2\2\u00a6\u00a7\7(\2\2\u00a7\u00a9\3")
+        buf.write("\3\23\7\23\u0142\n\23\f\23\16\23\u0145\13\23\3\23\3\23")
+        buf.write("\3\23\3\24\3\24\3\24\3\24\5\24\u014e\n\24\3\24\3\24\3")
+        buf.write("\24\5\24\u0153\n\24\7\24\u0155\n\24\f\24\16\24\u0158\13")
+        buf.write("\24\3\24\3\24\3\24\3\25\3\25\7\25\u015f\n\25\f\25\16\25")
+        buf.write("\u0162\13\25\3\25\3\25\3\26\3\26\5\26\u0168\n\26\3\27")
+        buf.write("\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27")
+        buf.write("\3\27\7\27\u0177\n\27\f\27\16\27\u017a\13\27\3\27\3\27")
+        buf.write("\5\27\u017e\n\27\3\30\3\30\3\30\3\30\3\30\3\30\3\30\3")
+        buf.write("\30\7\30\u0188\n\30\f\30\16\30\u018b\13\30\3\30\3\30\5")
+        buf.write("\30\u018f\n\30\3\30\3\30\3\31\3\31\5\31\u0195\n\31\3\32")
+        buf.write("\3\32\3\32\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3\33\3\33")
+        buf.write("\3\33\3\33\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u01ac")
+        buf.write("\n\34\3\35\3\35\3\35\3\35\5\35\u01b2\n\35\3\36\3\36\3")
+        buf.write("\36\3\36\5\36\u01b8\n\36\3\37\3\37\3\37\3\37\7\37\u01be")
+        buf.write("\n\37\f\37\16\37\u01c1\13\37\3 \3 \3 \3 \7 \u01c7\n \f")
+        buf.write(" \16 \u01ca\13 \3!\3!\3!\3!\3!\5!\u01d1\n!\3!\5!\u01d4")
+        buf.write("\n!\3\"\3\"\3#\3#\3$\3$\3%\3%\3%\3%\3%\5%\u01e1\n%\3%")
+        buf.write("\2\2&\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.")
+        buf.write("\60\62\64\668:<>@BDFH\2\t\3\2\4\6\3\2\35\36\4\288::\3")
+        buf.write("\2\37 \3\2\62\67\3\2./\3\2\60\61\2\u0202\2J\3\2\2\2\4")
+        buf.write("_\3\2\2\2\6r\3\2\2\2\bv\3\2\2\2\n\u0089\3\2\2\2\f\u009f")
+        buf.write("\3\2\2\2\16\u00ae\3\2\2\2\20\u00d7\3\2\2\2\22\u00db\3")
+        buf.write("\2\2\2\24\u00fe\3\2\2\2\26\u0103\3\2\2\2\30\u010f\3\2")
+        buf.write("\2\2\32\u0111\3\2\2\2\34\u011c\3\2\2\2\36\u011e\3\2\2")
+        buf.write("\2 \u0126\3\2\2\2\"\u0136\3\2\2\2$\u013c\3\2\2\2&\u0149")
+        buf.write("\3\2\2\2(\u015c\3\2\2\2*\u0167\3\2\2\2,\u0169\3\2\2\2")
+        buf.write(".\u017f\3\2\2\2\60\u0194\3\2\2\2\62\u0196\3\2\2\2\64\u019c")
+        buf.write("\3\2\2\2\66\u01ab\3\2\2\28\u01b1\3\2\2\2:\u01b3\3\2\2")
+        buf.write("\2<\u01b9\3\2\2\2>\u01c2\3\2\2\2@\u01d3\3\2\2\2B\u01d5")
+        buf.write("\3\2\2\2D\u01d7\3\2\2\2F\u01d9\3\2\2\2H\u01e0\3\2\2\2")
+        buf.write("JK\7\3\2\2KL\7<\2\2LN\7-\2\2MO\5\4\3\2NM\3\2\2\2NO\3\2")
+        buf.write("\2\2OQ\3\2\2\2PR\5\6\4\2QP\3\2\2\2QR\3\2\2\2RT\3\2\2\2")
+        buf.write("SU\5\b\5\2TS\3\2\2\2TU\3\2\2\2UW\3\2\2\2VX\5\20\t\2WV")
+        buf.write("\3\2\2\2WX\3\2\2\2XY\3\2\2\2YZ\5\24\13\2Z[\7\2\2\3[\3")
+        buf.write("\3\2\2\2\\]\7\33\2\2]^\7<\2\2^`\7-\2\2_\\\3\2\2\2`a\3")
+        buf.write("\2\2\2a_\3\2\2\2ab\3\2\2\2b\5\3\2\2\2cd\7\b\2\2dg\7<\2")
+        buf.write("\2ef\7\t\2\2fh\7<\2\2ge\3\2\2\2gh\3\2\2\2hi\3\2\2\2ik")
+        buf.write("\7\'\2\2jl\5\n\6\2kj\3\2\2\2kl\3\2\2\2ln\3\2\2\2mo\5\22")
+        buf.write("\n\2nm\3\2\2\2no\3\2\2\2op\3\2\2\2pq\7(\2\2qs\7-\2\2r")
+        buf.write("c\3\2\2\2st\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\7\3\2\2\2v\u0085")
+        buf.write("\7\7\2\2wz\7<\2\2xz\5\30\r\2yw\3\2\2\2yx\3\2\2\2z{\3\2")
+        buf.write("\2\2{\u0080\5\16\b\2|}\7$\2\2}\177\5\16\b\2~|\3\2\2\2")
+        buf.write("\177\u0082\3\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2")
+        buf.write("\u0081\u0083\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7")
+        buf.write("-\2\2\u0084\u0086\3\2\2\2\u0085y\3\2\2\2\u0086\u0087\3")
+        buf.write("\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2\2\2\u0088\t")
+        buf.write("\3\2\2\2\u0089\u009b\7\31\2\2\u008a\u008c\5\32\16\2\u008b")
+        buf.write("\u008a\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008f\3\2\2\2")
+        buf.write("\u008d\u0090\7<\2\2\u008e\u0090\5\30\r\2\u008f\u008d\3")
+        buf.write("\2\2\2\u008f\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0096")
+        buf.write("\5\16\b\2\u0092\u0093\7$\2\2\u0093\u0095\5\16\b\2\u0094")
+        buf.write("\u0092\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3\2\2\2")
+        buf.write("\u0096\u0097\3\2\2\2\u0097\u0099\3\2\2\2\u0098\u0096\3")
+        buf.write("\2\2\2\u0099\u009a\7-\2\2\u009a\u009c\3\2\2\2\u009b\u008b")
+        buf.write("\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u009b\3\2\2\2\u009d")
+        buf.write("\u009e\3\2\2\2\u009e\13\3\2\2\2\u009f\u00a8\7<\2\2\u00a0")
+        buf.write("\u00a1\7+\2\2\u00a1\u00a4\5<\37\2\u00a2\u00a3\7$\2\2\u00a3")
+        buf.write("\u00a5\5<\37\2\u00a4\u00a2\3\2\2\2\u00a4\u00a5\3\2\2\2")
+        buf.write("\u00a5\u00a6\3\2\2\2\u00a6\u00a7\7,\2\2\u00a7\u00a9\3")
         buf.write("\2\2\2\u00a8\u00a0\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00ac")
-        buf.write("\3\2\2\2\u00aa\u00ab\7!\2\2\u00ab\u00ad\5\f\7\2\u00ac")
+        buf.write("\3\2\2\2\u00aa\u00ab\7%\2\2\u00ab\u00ad\5\f\7\2\u00ac")
         buf.write("\u00aa\3\2\2\2\u00ac\u00ad\3\2\2\2\u00ad\r\3\2\2\2\u00ae")
-        buf.write("\u00b6\78\2\2\u00af\u00b0\7\'\2\2\u00b0\u00b3\7\64\2\2")
-        buf.write("\u00b1\u00b2\7 \2\2\u00b2\u00b4\7\64\2\2\u00b3\u00b1\3")
-        buf.write("\2\2\2\u00b3\u00b4\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00b7")
-        buf.write("\7(\2\2\u00b6\u00af\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7")
-        buf.write("\u00ba\3\2\2\2\u00b8\u00b9\7\"\2\2\u00b9\u00bb\5\62\32")
-        buf.write("\2\u00ba\u00b8\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb\17\3")
-        buf.write("\2\2\2\u00bc\u00bf\7\16\2\2\u00bd\u00c0\7\36\2\2\u00be")
-        buf.write("\u00c0\5\30\r\2\u00bf\u00bd\3\2\2\2\u00bf\u00be\3\2\2")
-        buf.write("\2\u00c0\u00c1\3\2\2\2\u00c1\u00c2\78\2\2\u00c2\u00ce")
-        buf.write("\7%\2\2\u00c3\u00c4\5\30\r\2\u00c4\u00cb\78\2\2\u00c5")
-        buf.write("\u00c6\7 \2\2\u00c6\u00c7\5\30\r\2\u00c7\u00c8\78\2\2")
-        buf.write("\u00c8\u00ca\3\2\2\2\u00c9\u00c5\3\2\2\2\u00ca\u00cd\3")
-        buf.write("\2\2\2\u00cb\u00c9\3\2\2\2\u00cb\u00cc\3\2\2\2\u00cc\u00cf")
-        buf.write("\3\2\2\2\u00cd\u00cb\3\2\2\2\u00ce\u00c3\3\2\2\2\u00ce")
-        buf.write("\u00cf\3\2\2\2\u00cf\u00d0\3\2\2\2\u00d0\u00d1\7&\2\2")
-        buf.write("\u00d1\u00d3\5\26\f\2\u00d2\u00bc\3\2\2\2\u00d3\u00d4")
-        buf.write("\3\2\2\2\u00d4\u00d2\3\2\2\2\u00d4\u00d5\3\2\2\2\u00d5")
-        buf.write("\21\3\2\2\2\u00d6\u00f0\7\26\2\2\u00d7\u00d9\5\32\16\2")
-        buf.write("\u00d8\u00d7\3\2\2\2\u00d8\u00d9\3\2\2\2\u00d9\u00da\3")
-        buf.write("\2\2\2\u00da\u00dd\7\16\2\2\u00db\u00de\7\36\2\2\u00dc")
-        buf.write("\u00de\5\30\r\2\u00dd\u00db\3\2\2\2\u00dd\u00dc\3\2\2")
-        buf.write("\2\u00de\u00df\3\2\2\2\u00df\u00e0\78\2\2\u00e0\u00ec")
-        buf.write("\7%\2\2\u00e1\u00e2\5\30\r\2\u00e2\u00e9\78\2\2\u00e3")
-        buf.write("\u00e4\7 \2\2\u00e4\u00e5\5\30\r\2\u00e5\u00e6\78\2\2")
-        buf.write("\u00e6\u00e8\3\2\2\2\u00e7\u00e3\3\2\2\2\u00e8\u00eb\3")
-        buf.write("\2\2\2\u00e9\u00e7\3\2\2\2\u00e9\u00ea\3\2\2\2\u00ea\u00ed")
-        buf.write("\3\2\2\2\u00eb\u00e9\3\2\2\2\u00ec\u00e1\3\2\2\2\u00ec")
-        buf.write("\u00ed\3\2\2\2\u00ed\u00ee\3\2\2\2\u00ee\u00ef\7&\2\2")
-        buf.write("\u00ef\u00f1\5\26\f\2\u00f0\u00d8\3\2\2\2\u00f1\u00f2")
-        buf.write("\3\2\2\2\u00f2\u00f0\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3")
-        buf.write("\23\3\2\2\2\u00f4\u00f5\7\n\2\2\u00f5\u00f6\7%\2\2\u00f6")
-        buf.write("\u00f7\7&\2\2\u00f7\u00f8\5\26\f\2\u00f8\25\3\2\2\2\u00f9")
-        buf.write("\u00fb\7#\2\2\u00fa\u00fc\5\b\5\2\u00fb\u00fa\3\2\2\2")
-        buf.write("\u00fb\u00fc\3\2\2\2\u00fc\u0100\3\2\2\2\u00fd\u00ff\5")
-        buf.write("\34\17\2\u00fe\u00fd\3\2\2\2\u00ff\u0102\3\2\2\2\u0100")
-        buf.write("\u00fe\3\2\2\2\u0100\u0101\3\2\2\2\u0101\u0103\3\2\2\2")
-        buf.write("\u0102\u0100\3\2\2\2\u0103\u0104\7$\2\2\u0104\27\3\2\2")
-        buf.write("\2\u0105\u0106\t\2\2\2\u0106\31\3\2\2\2\u0107\u0108\t")
-        buf.write("\3\2\2\u0108\33\3\2\2\2\u0109\u0113\5\36\20\2\u010a\u010b")
-        buf.write("\5 \21\2\u010b\u010c\7)\2\2\u010c\u0113\3\2\2\2\u010d")
-        buf.write("\u0113\5\"\22\2\u010e\u0113\5$\23\2\u010f\u0113\5&\24")
-        buf.write("\2\u0110\u0113\5*\26\2\u0111\u0113\5,\27\2\u0112\u0109")
-        buf.write("\3\2\2\2\u0112\u010a\3\2\2\2\u0112\u010d\3\2\2\2\u0112")
-        buf.write("\u010e\3\2\2\2\u0112\u010f\3\2\2\2\u0112\u0110\3\2\2\2")
-        buf.write("\u0112\u0111\3\2\2\2\u0113\35\3\2\2\2\u0114\u0115\5\f")
-        buf.write("\7\2\u0115\u0116\7\"\2\2\u0116\u0117\5\62\32\2\u0117\u0118")
-        buf.write("\7)\2\2\u0118\37\3\2\2\2\u0119\u011a\5\f\7\2\u011a\u011b")
-        buf.write("\7!\2\2\u011b\u011d\3\2\2\2\u011c\u0119\3\2\2\2\u011c")
-        buf.write("\u011d\3\2\2\2\u011d\u011e\3\2\2\2\u011e\u011f\78\2\2")
-        buf.write("\u011f\u0128\7%\2\2\u0120\u0125\5\62\32\2\u0121\u0122")
-        buf.write("\7 \2\2\u0122\u0124\5\62\32\2\u0123\u0121\3\2\2\2\u0124")
-        buf.write("\u0127\3\2\2\2\u0125\u0123\3\2\2\2\u0125\u0126\3\2\2\2")
-        buf.write("\u0126\u0129\3\2\2\2\u0127\u0125\3\2\2\2\u0128\u0120\3")
-        buf.write("\2\2\2\u0128\u0129\3\2\2\2\u0129\u012a\3\2\2\2\u012a\u012b")
-        buf.write("\7&\2\2\u012b!\3\2\2\2\u012c\u012d\7\17\2\2\u012d\u012e")
-        buf.write("\7%\2\2\u012e\u012f\58\35\2\u012f\u0130\7&\2\2\u0130\u0131")
-        buf.write("\7)\2\2\u0131#\3\2\2\2\u0132\u0133\7\20\2\2\u0133\u0134")
-        buf.write("\7%\2\2\u0134\u0139\5\f\7\2\u0135\u0136\7 \2\2\u0136\u0138")
-        buf.write("\5\f\7\2\u0137\u0135\3\2\2\2\u0138\u013b\3\2\2\2\u0139")
-        buf.write("\u0137\3\2\2\2\u0139\u013a\3\2\2\2\u013a\u013c\3\2\2\2")
-        buf.write("\u013b\u0139\3\2\2\2\u013c\u013d\7&\2\2\u013d\u013e\7")
-        buf.write(")\2\2\u013e%\3\2\2\2\u013f\u0140\7\21\2\2\u0140\u0143")
-        buf.write("\7%\2\2\u0141\u0144\5\62\32\2\u0142\u0144\7\67\2\2\u0143")
-        buf.write("\u0141\3\2\2\2\u0143\u0142\3\2\2\2\u0144\u014c\3\2\2\2")
-        buf.write("\u0145\u0148\7 \2\2\u0146\u0149\5\62\32\2\u0147\u0149")
-        buf.write("\7\67\2\2\u0148\u0146\3\2\2\2\u0148\u0147\3\2\2\2\u0149")
-        buf.write("\u014b\3\2\2\2\u014a\u0145\3\2\2\2\u014b\u014e\3\2\2\2")
-        buf.write("\u014c\u014a\3\2\2\2\u014c\u014d\3\2\2\2\u014d\u014f\3")
-        buf.write("\2\2\2\u014e\u014c\3\2\2\2\u014f\u0150\7&\2\2\u0150\u0151")
-        buf.write("\7)\2\2\u0151\'\3\2\2\2\u0152\u0156\7#\2\2\u0153\u0155")
-        buf.write("\5\34\17\2\u0154\u0153\3\2\2\2\u0155\u0158\3\2\2\2\u0156")
-        buf.write("\u0154\3\2\2\2\u0156\u0157\3\2\2\2\u0157\u0159\3\2\2\2")
-        buf.write("\u0158\u0156\3\2\2\2\u0159\u015a\7$\2\2\u015a)\3\2\2\2")
-        buf.write("\u015b\u015c\7\13\2\2\u015c\u015d\7%\2\2\u015d\u015e\5")
-        buf.write("\62\32\2\u015e\u015f\7&\2\2\u015f\u0160\7\r\2\2\u0160")
-        buf.write("\u0163\5(\25\2\u0161\u0162\7\f\2\2\u0162\u0164\5(\25\2")
-        buf.write("\u0163\u0161\3\2\2\2\u0163\u0164\3\2\2\2\u0164+\3\2\2")
-        buf.write("\2\u0165\u0168\5.\30\2\u0166\u0168\5\60\31\2\u0167\u0165")
-        buf.write("\3\2\2\2\u0167\u0166\3\2\2\2\u0168-\3\2\2\2\u0169\u016a")
-        buf.write("\7\22\2\2\u016a\u016b\7%\2\2\u016b\u016c\5\62\32\2\u016c")
-        buf.write("\u016d\7&\2\2\u016d\u016e\5(\25\2\u016e/\3\2\2\2\u016f")
-        buf.write("\u0170\7\23\2\2\u0170\u0171\5\f\7\2\u0171\u0172\7\"\2")
-        buf.write("\2\u0172\u0173\58\35\2\u0173\u0174\7\24\2\2\u0174\u0175")
-        buf.write("\58\35\2\u0175\u0176\5(\25\2\u0176\61\3\2\2\2\u0177\u0178")
-        buf.write("\5\66\34\2\u0178\u0179\5\64\33\2\u0179\u017f\3\2\2\2\u017a")
-        buf.write("\u017b\7\35\2\2\u017b\u017c\5\62\32\2\u017c\u017d\5\64")
-        buf.write("\33\2\u017d\u017f\3\2\2\2\u017e\u0177\3\2\2\2\u017e\u017a")
-        buf.write("\3\2\2\2\u017f\63\3\2\2\2\u0180\u0181\t\4\2\2\u0181\u0182")
-        buf.write("\5\62\32\2\u0182\u0183\5\64\33\2\u0183\u0185\3\2\2\2\u0184")
-        buf.write("\u0180\3\2\2\2\u0184\u0185\3\2\2\2\u0185\65\3\2\2\2\u0186")
-        buf.write("\u018a\58\35\2\u0187\u0188\5> \2\u0188\u0189\58\35\2\u0189")
-        buf.write("\u018b\3\2\2\2\u018a\u0187\3\2\2\2\u018a\u018b\3\2\2\2")
-        buf.write("\u018b\67\3\2\2\2\u018c\u0192\5:\36\2\u018d\u018e\5@!")
-        buf.write("\2\u018e\u018f\5:\36\2\u018f\u0191\3\2\2\2\u0190\u018d")
-        buf.write("\3\2\2\2\u0191\u0194\3\2\2\2\u0192\u0190\3\2\2\2\u0192")
-        buf.write("\u0193\3\2\2\2\u01939\3\2\2\2\u0194\u0192\3\2\2\2\u0195")
-        buf.write("\u019b\5<\37\2\u0196\u0197\5B\"\2\u0197\u0198\5<\37\2")
-        buf.write("\u0198\u019a\3\2\2\2\u0199\u0196\3\2\2\2\u019a\u019d\3")
-        buf.write("\2\2\2\u019b\u0199\3\2\2\2\u019b\u019c\3\2\2\2\u019c;")
-        buf.write("\3\2\2\2\u019d\u019b\3\2\2\2\u019e\u019f\7%\2\2\u019f")
-        buf.write("\u01a0\5\62\32\2\u01a0\u01a1\7&\2\2\u01a1\u01a7\3\2\2")
-        buf.write("\2\u01a2\u01a4\5@!\2\u01a3\u01a2\3\2\2\2\u01a3\u01a4\3")
-        buf.write("\2\2\2\u01a4\u01a5\3\2\2\2\u01a5\u01a7\5D#\2\u01a6\u019e")
-        buf.write("\3\2\2\2\u01a6\u01a3\3\2\2\2\u01a7=\3\2\2\2\u01a8\u01a9")
-        buf.write("\t\5\2\2\u01a9?\3\2\2\2\u01aa\u01ab\t\6\2\2\u01abA\3\2")
-        buf.write("\2\2\u01ac\u01ad\t\7\2\2\u01adC\3\2\2\2\u01ae\u01b4\5")
-        buf.write("\f\7\2\u01af\u01b4\7\64\2\2\u01b0\u01b4\7\65\2\2\u01b1")
-        buf.write("\u01b4\7\66\2\2\u01b2\u01b4\5 \21\2\u01b3\u01ae\3\2\2")
-        buf.write("\2\u01b3\u01af\3\2\2\2\u01b3\u01b0\3\2\2\2\u01b3\u01b1")
-        buf.write("\3\2\2\2\u01b3\u01b2\3\2\2\2\u01b4E\3\2\2\2\67JMPS\\a")
-        buf.write("gknty\u0080\u0087\u008b\u008f\u0096\u009d\u00a4\u00a8")
-        buf.write("\u00ac\u00b3\u00b6\u00ba\u00bf\u00cb\u00ce\u00d4\u00d8")
-        buf.write("\u00dd\u00e9\u00ec\u00f2\u00fb\u0100\u0112\u011c\u0125")
-        buf.write("\u0128\u0139\u0143\u0148\u014c\u0156\u0163\u0167\u017e")
-        buf.write("\u0184\u018a\u0192\u019b\u01a3\u01a6\u01b3")
+        buf.write("\u00b6\7<\2\2\u00af\u00b0\7+\2\2\u00b0\u00b3\78\2\2\u00b1")
+        buf.write("\u00b2\7$\2\2\u00b2\u00b4\78\2\2\u00b3\u00b1\3\2\2\2\u00b3")
+        buf.write("\u00b4\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00b7\7,\2\2")
+        buf.write("\u00b6\u00af\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7\u00ba\3")
+        buf.write("\2\2\2\u00b8\u00b9\7&\2\2\u00b9\u00bb\5\66\34\2\u00ba")
+        buf.write("\u00b8\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb\17\3\2\2\2\u00bc")
+        buf.write("\u00bf\7\22\2\2\u00bd\u00c0\7\"\2\2\u00be\u00c0\5\30\r")
+        buf.write("\2\u00bf\u00bd\3\2\2\2\u00bf\u00be\3\2\2\2\u00c0\u00c1")
+        buf.write("\3\2\2\2\u00c1\u00c2\7<\2\2\u00c2\u00d3\7)\2\2\u00c3\u00c6")
+        buf.write("\5\30\r\2\u00c4\u00c6\7<\2\2\u00c5\u00c3\3\2\2\2\u00c5")
+        buf.write("\u00c4\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\u00d0\7<\2\2")
+        buf.write("\u00c8\u00cb\7$\2\2\u00c9\u00cc\5\30\r\2\u00ca\u00cc\7")
+        buf.write("<\2\2\u00cb\u00c9\3\2\2\2\u00cb\u00ca\3\2\2\2\u00cc\u00cd")
+        buf.write("\3\2\2\2\u00cd\u00cf\7<\2\2\u00ce\u00c8\3\2\2\2\u00cf")
+        buf.write("\u00d2\3\2\2\2\u00d0\u00ce\3\2\2\2\u00d0\u00d1\3\2\2\2")
+        buf.write("\u00d1\u00d4\3\2\2\2\u00d2\u00d0\3\2\2\2\u00d3\u00c5\3")
+        buf.write("\2\2\2\u00d3\u00d4\3\2\2\2\u00d4\u00d5\3\2\2\2\u00d5\u00d6")
+        buf.write("\7*\2\2\u00d6\u00d8\5\26\f\2\u00d7\u00bc\3\2\2\2\u00d8")
+        buf.write("\u00d9\3\2\2\2\u00d9\u00d7\3\2\2\2\u00d9\u00da\3\2\2\2")
+        buf.write("\u00da\21\3\2\2\2\u00db\u00fa\7\32\2\2\u00dc\u00de\5\32")
+        buf.write("\16\2\u00dd\u00dc\3\2\2\2\u00dd\u00de\3\2\2\2\u00de\u00df")
+        buf.write("\3\2\2\2\u00df\u00e2\7\22\2\2\u00e0\u00e3\7\"\2\2\u00e1")
+        buf.write("\u00e3\5\30\r\2\u00e2\u00e0\3\2\2\2\u00e2\u00e1\3\2\2")
+        buf.write("\2\u00e3\u00e4\3\2\2\2\u00e4\u00e5\7<\2\2\u00e5\u00f6")
+        buf.write("\7)\2\2\u00e6\u00e9\5\30\r\2\u00e7\u00e9\7<\2\2\u00e8")
+        buf.write("\u00e6\3\2\2\2\u00e8\u00e7\3\2\2\2\u00e9\u00ea\3\2\2\2")
+        buf.write("\u00ea\u00f3\7<\2\2\u00eb\u00ee\7$\2\2\u00ec\u00ef\5\30")
+        buf.write("\r\2\u00ed\u00ef\7<\2\2\u00ee\u00ec\3\2\2\2\u00ee\u00ed")
+        buf.write("\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0\u00f2\7<\2\2\u00f1")
+        buf.write("\u00eb\3\2\2\2\u00f2\u00f5\3\2\2\2\u00f3\u00f1\3\2\2\2")
+        buf.write("\u00f3\u00f4\3\2\2\2\u00f4\u00f7\3\2\2\2\u00f5\u00f3\3")
+        buf.write("\2\2\2\u00f6\u00e8\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7\u00f8")
+        buf.write("\3\2\2\2\u00f8\u00f9\7*\2\2\u00f9\u00fb\5\26\f\2\u00fa")
+        buf.write("\u00dd\3\2\2\2\u00fb\u00fc\3\2\2\2\u00fc\u00fa\3\2\2\2")
+        buf.write("\u00fc\u00fd\3\2\2\2\u00fd\23\3\2\2\2\u00fe\u00ff\7\n")
+        buf.write("\2\2\u00ff\u0100\7)\2\2\u0100\u0101\7*\2\2\u0101\u0102")
+        buf.write("\5\26\f\2\u0102\25\3\2\2\2\u0103\u0105\7\'\2\2\u0104\u0106")
+        buf.write("\5\b\5\2\u0105\u0104\3\2\2\2\u0105\u0106\3\2\2\2\u0106")
+        buf.write("\u010a\3\2\2\2\u0107\u0109\5\34\17\2\u0108\u0107\3\2\2")
+        buf.write("\2\u0109\u010c\3\2\2\2\u010a\u0108\3\2\2\2\u010a\u010b")
+        buf.write("\3\2\2\2\u010b\u010d\3\2\2\2\u010c\u010a\3\2\2\2\u010d")
+        buf.write("\u010e\7(\2\2\u010e\27\3\2\2\2\u010f\u0110\t\2\2\2\u0110")
+        buf.write("\31\3\2\2\2\u0111\u0112\t\3\2\2\u0112\33\3\2\2\2\u0113")
+        buf.write("\u011d\5\36\20\2\u0114\u0115\5 \21\2\u0115\u0116\7-\2")
+        buf.write("\2\u0116\u011d\3\2\2\2\u0117\u011d\5\"\22\2\u0118\u011d")
+        buf.write("\5$\23\2\u0119\u011d\5&\24\2\u011a\u011d\5*\26\2\u011b")
+        buf.write("\u011d\5\60\31\2\u011c\u0113\3\2\2\2\u011c\u0114\3\2\2")
+        buf.write("\2\u011c\u0117\3\2\2\2\u011c\u0118\3\2\2\2\u011c\u0119")
+        buf.write("\3\2\2\2\u011c\u011a\3\2\2\2\u011c\u011b\3\2\2\2\u011d")
+        buf.write("\35\3\2\2\2\u011e\u011f\5\f\7\2\u011f\u0120\7&\2\2\u0120")
+        buf.write("\u0121\5\66\34\2\u0121\u0122\7-\2\2\u0122\37\3\2\2\2\u0123")
+        buf.write("\u0124\5\f\7\2\u0124\u0125\7%\2\2\u0125\u0127\3\2\2\2")
+        buf.write("\u0126\u0123\3\2\2\2\u0126\u0127\3\2\2\2\u0127\u0128\3")
+        buf.write("\2\2\2\u0128\u0129\7<\2\2\u0129\u0132\7)\2\2\u012a\u012f")
+        buf.write("\5\66\34\2\u012b\u012c\7$\2\2\u012c\u012e\5\66\34\2\u012d")
+        buf.write("\u012b\3\2\2\2\u012e\u0131\3\2\2\2\u012f\u012d\3\2\2\2")
+        buf.write("\u012f\u0130\3\2\2\2\u0130\u0133\3\2\2\2\u0131\u012f\3")
+        buf.write("\2\2\2\u0132\u012a\3\2\2\2\u0132\u0133\3\2\2\2\u0133\u0134")
+        buf.write("\3\2\2\2\u0134\u0135\7*\2\2\u0135!\3\2\2\2\u0136\u0137")
+        buf.write("\7\23\2\2\u0137\u0138\7)\2\2\u0138\u0139\5<\37\2\u0139")
+        buf.write("\u013a\7*\2\2\u013a\u013b\7-\2\2\u013b#\3\2\2\2\u013c")
+        buf.write("\u013d\7\24\2\2\u013d\u013e\7)\2\2\u013e\u0143\5\f\7\2")
+        buf.write("\u013f\u0140\7$\2\2\u0140\u0142\5\f\7\2\u0141\u013f\3")
+        buf.write("\2\2\2\u0142\u0145\3\2\2\2\u0143\u0141\3\2\2\2\u0143\u0144")
+        buf.write("\3\2\2\2\u0144\u0146\3\2\2\2\u0145\u0143\3\2\2\2\u0146")
+        buf.write("\u0147\7*\2\2\u0147\u0148\7-\2\2\u0148%\3\2\2\2\u0149")
+        buf.write("\u014a\7\25\2\2\u014a\u014d\7)\2\2\u014b\u014e\5\66\34")
+        buf.write("\2\u014c\u014e\7;\2\2\u014d\u014b\3\2\2\2\u014d\u014c")
+        buf.write("\3\2\2\2\u014e\u0156\3\2\2\2\u014f\u0152\7$\2\2\u0150")
+        buf.write("\u0153\5\66\34\2\u0151\u0153\7;\2\2\u0152\u0150\3\2\2")
+        buf.write("\2\u0152\u0151\3\2\2\2\u0153\u0155\3\2\2\2\u0154\u014f")
+        buf.write("\3\2\2\2\u0155\u0158\3\2\2\2\u0156\u0154\3\2\2\2\u0156")
+        buf.write("\u0157\3\2\2\2\u0157\u0159\3\2\2\2\u0158\u0156\3\2\2\2")
+        buf.write("\u0159\u015a\7*\2\2\u015a\u015b\7-\2\2\u015b\'\3\2\2\2")
+        buf.write("\u015c\u0160\7\'\2\2\u015d\u015f\5\34\17\2\u015e\u015d")
+        buf.write("\3\2\2\2\u015f\u0162\3\2\2\2\u0160\u015e\3\2\2\2\u0160")
+        buf.write("\u0161\3\2\2\2\u0161\u0163\3\2\2\2\u0162\u0160\3\2\2\2")
+        buf.write("\u0163\u0164\7(\2\2\u0164)\3\2\2\2\u0165\u0168\5,\27\2")
+        buf.write("\u0166\u0168\5.\30\2\u0167\u0165\3\2\2\2\u0167\u0166\3")
+        buf.write("\2\2\2\u0168+\3\2\2\2\u0169\u016a\7\13\2\2\u016a\u016b")
+        buf.write("\7)\2\2\u016b\u016c\5\66\34\2\u016c\u016d\7*\2\2\u016d")
+        buf.write("\u016e\7\16\2\2\u016e\u0178\5(\25\2\u016f\u0170\7\r\2")
+        buf.write("\2\u0170\u0171\7)\2\2\u0171\u0172\5\66\34\2\u0172\u0173")
+        buf.write("\7*\2\2\u0173\u0174\7\16\2\2\u0174\u0175\5(\25\2\u0175")
+        buf.write("\u0177\3\2\2\2\u0176\u016f\3\2\2\2\u0177\u017a\3\2\2\2")
+        buf.write("\u0178\u0176\3\2\2\2\u0178\u0179\3\2\2\2\u0179\u017d\3")
+        buf.write("\2\2\2\u017a\u0178\3\2\2\2\u017b\u017c\7\f\2\2\u017c\u017e")
+        buf.write("\5(\25\2\u017d\u017b\3\2\2\2\u017d\u017e\3\2\2\2\u017e")
+        buf.write("-\3\2\2\2\u017f\u0180\7\17\2\2\u0180\u0181\7)\2\2\u0181")
+        buf.write("\u0182\5\f\7\2\u0182\u0183\7*\2\2\u0183\u0189\7\'\2\2")
+        buf.write("\u0184\u0185\7\20\2\2\u0185\u0186\t\4\2\2\u0186\u0188")
+        buf.write("\5(\25\2\u0187\u0184\3\2\2\2\u0188\u018b\3\2\2\2\u0189")
+        buf.write("\u0187\3\2\2\2\u0189\u018a\3\2\2\2\u018a\u018e\3\2\2\2")
+        buf.write("\u018b\u0189\3\2\2\2\u018c\u018d\7\21\2\2\u018d\u018f")
+        buf.write("\5(\25\2\u018e\u018c\3\2\2\2\u018e\u018f\3\2\2\2\u018f")
+        buf.write("\u0190\3\2\2\2\u0190\u0191\7(\2\2\u0191/\3\2\2\2\u0192")
+        buf.write("\u0195\5\62\32\2\u0193\u0195\5\64\33\2\u0194\u0192\3\2")
+        buf.write("\2\2\u0194\u0193\3\2\2\2\u0195\61\3\2\2\2\u0196\u0197")
+        buf.write("\7\26\2\2\u0197\u0198\7)\2\2\u0198\u0199\5\66\34\2\u0199")
+        buf.write("\u019a\7*\2\2\u019a\u019b\5(\25\2\u019b\63\3\2\2\2\u019c")
+        buf.write("\u019d\7\27\2\2\u019d\u019e\5\f\7\2\u019e\u019f\7&\2\2")
+        buf.write("\u019f\u01a0\5<\37\2\u01a0\u01a1\7\30\2\2\u01a1\u01a2")
+        buf.write("\5<\37\2\u01a2\u01a3\5(\25\2\u01a3\65\3\2\2\2\u01a4\u01a5")
+        buf.write("\5:\36\2\u01a5\u01a6\58\35\2\u01a6\u01ac\3\2\2\2\u01a7")
+        buf.write("\u01a8\7!\2\2\u01a8\u01a9\5\66\34\2\u01a9\u01aa\58\35")
+        buf.write("\2\u01aa\u01ac\3\2\2\2\u01ab\u01a4\3\2\2\2\u01ab\u01a7")
+        buf.write("\3\2\2\2\u01ac\67\3\2\2\2\u01ad\u01ae\t\5\2\2\u01ae\u01af")
+        buf.write("\5\66\34\2\u01af\u01b0\58\35\2\u01b0\u01b2\3\2\2\2\u01b1")
+        buf.write("\u01ad\3\2\2\2\u01b1\u01b2\3\2\2\2\u01b29\3\2\2\2\u01b3")
+        buf.write("\u01b7\5<\37\2\u01b4\u01b5\5B\"\2\u01b5\u01b6\5<\37\2")
+        buf.write("\u01b6\u01b8\3\2\2\2\u01b7\u01b4\3\2\2\2\u01b7\u01b8\3")
+        buf.write("\2\2\2\u01b8;\3\2\2\2\u01b9\u01bf\5> \2\u01ba\u01bb\5")
+        buf.write("D#\2\u01bb\u01bc\5> \2\u01bc\u01be\3\2\2\2\u01bd\u01ba")
+        buf.write("\3\2\2\2\u01be\u01c1\3\2\2\2\u01bf\u01bd\3\2\2\2\u01bf")
+        buf.write("\u01c0\3\2\2\2\u01c0=\3\2\2\2\u01c1\u01bf\3\2\2\2\u01c2")
+        buf.write("\u01c8\5@!\2\u01c3\u01c4\5F$\2\u01c4\u01c5\5@!\2\u01c5")
+        buf.write("\u01c7\3\2\2\2\u01c6\u01c3\3\2\2\2\u01c7\u01ca\3\2\2\2")
+        buf.write("\u01c8\u01c6\3\2\2\2\u01c8\u01c9\3\2\2\2\u01c9?\3\2\2")
+        buf.write("\2\u01ca\u01c8\3\2\2\2\u01cb\u01cc\7)\2\2\u01cc\u01cd")
+        buf.write("\5\66\34\2\u01cd\u01ce\7*\2\2\u01ce\u01d4\3\2\2\2\u01cf")
+        buf.write("\u01d1\5D#\2\u01d0\u01cf\3\2\2\2\u01d0\u01d1\3\2\2\2\u01d1")
+        buf.write("\u01d2\3\2\2\2\u01d2\u01d4\5H%\2\u01d3\u01cb\3\2\2\2\u01d3")
+        buf.write("\u01d0\3\2\2\2\u01d4A\3\2\2\2\u01d5\u01d6\t\6\2\2\u01d6")
+        buf.write("C\3\2\2\2\u01d7\u01d8\t\7\2\2\u01d8E\3\2\2\2\u01d9\u01da")
+        buf.write("\t\b\2\2\u01daG\3\2\2\2\u01db\u01e1\5\f\7\2\u01dc\u01e1")
+        buf.write("\78\2\2\u01dd\u01e1\79\2\2\u01de\u01e1\7:\2\2\u01df\u01e1")
+        buf.write("\5 \21\2\u01e0\u01db\3\2\2\2\u01e0\u01dc\3\2\2\2\u01e0")
+        buf.write("\u01dd\3\2\2\2\u01e0\u01de\3\2\2\2\u01e0\u01df\3\2\2\2")
+        buf.write("\u01e1I\3\2\2\2>NQTWagknty\u0080\u0087\u008b\u008f\u0096")
+        buf.write("\u009d\u00a4\u00a8\u00ac\u00b3\u00b6\u00ba\u00bf\u00c5")
+        buf.write("\u00cb\u00d0\u00d3\u00d9\u00dd\u00e2\u00e8\u00ee\u00f3")
+        buf.write("\u00f6\u00fc\u0105\u010a\u011c\u0126\u012f\u0132\u0143")
+        buf.write("\u014d\u0152\u0156\u0160\u0167\u0178\u017d\u0189\u018e")
+        buf.write("\u0194\u01ab\u01b1\u01b7\u01bf\u01c8\u01d0\u01d3\u01e0")
         return buf.getvalue()
 
 
@@ -230,24 +253,26 @@ class TeamPlusPlusParser ( Parser ):
 
     literalNames = [ "<INVALID>", "'program'", "'int'", "'float'", "'char'", 
                      "'vars'", "'class'", "'inherits'", "'main'", "'if'", 
-                     "'else'", "'then'", "'func'", "'return'", "'read'", 
-                     "'print'", "'while'", "'from'", "'to'", "'attributes'", 
-                     "'methods'", "'import'", "'as'", "'public'", "'private'", 
-                     "'and'", "'or'", "'not'", "'void'", "':'", "','", "'.'", 
-                     "'='", "'{'", "'}'", "'('", "')'", "'['", "']'", "';'", 
-                     "'+'", "'-'", "'*'", "'/'", "'=='", "'>'", "'<'", "'>='", 
+                     "'else'", "'elif'", "'then'", "'switch'", "'case'", 
+                     "'default'", "'func'", "'return'", "'read'", "'print'", 
+                     "'while'", "'from'", "'to'", "'attributes'", "'methods'", 
+                     "'import'", "'as'", "'public'", "'private'", "'and'", 
+                     "'or'", "'not'", "'void'", "':'", "','", "'.'", "'='", 
+                     "'{'", "'}'", "'('", "')'", "'['", "']'", "';'", "'+'", 
+                     "'-'", "'*'", "'/'", "'=='", "'>'", "'<'", "'>='", 
                      "'<='", "'!='" ]
 
     symbolicNames = [ "<INVALID>", "PROGRAM", "INT", "FLOAT", "CHAR", "VARS", 
-                      "CLASS", "INHERITS", "MAIN", "IF", "ELSE", "THEN", 
-                      "FUNC", "RETURN", "READ", "PRINT", "WHILE", "FROM", 
-                      "TO", "ATTRIBUTES", "METHODS", "IMPORT", "AS", "PUBLIC", 
-                      "PRIVATE", "AND", "OR", "NOT", "VOID", "COLON", "COMMA", 
-                      "DOT", "ASSIGN", "LEFT_BRACE", "RIGHT_BRACE", "LEFT_PARENTHESIS", 
-                      "RIGHT_PARENTHESIS", "LEFT_BRACKET", "RIGHT_BRACKET", 
-                      "SEMICOLON", "PLUS", "MINUS", "MULT", "DIV", "EQUALS", 
-                      "GREATER_THAN", "LESS_THAN", "GREATER_EQUALS", "LESS_EQUALS", 
-                      "DIFFERENT", "CTE_INT", "CTE_FLOAT", "CTE_CHAR", "CTE_STRING", 
+                      "CLASS", "INHERITS", "MAIN", "IF", "ELSE", "ELIF", 
+                      "THEN", "SWITCH", "CASE", "DEFAULT", "FUNC", "RETURN", 
+                      "READ", "PRINT", "WHILE", "FROM", "TO", "ATTRIBUTES", 
+                      "METHODS", "IMPORT", "AS", "PUBLIC", "PRIVATE", "AND", 
+                      "OR", "NOT", "VOID", "COLON", "COMMA", "DOT", "ASSIGN", 
+                      "LEFT_BRACE", "RIGHT_BRACE", "LEFT_PARENTHESIS", "RIGHT_PARENTHESIS", 
+                      "LEFT_BRACKET", "RIGHT_BRACKET", "SEMICOLON", "PLUS", 
+                      "MINUS", "MULT", "DIV", "EQUALS", "GREATER_THAN", 
+                      "LESS_THAN", "GREATER_EQUALS", "LESS_EQUALS", "DIFFERENT", 
+                      "CTE_INT", "CTE_FLOAT", "CTE_CHAR", "CTE_STRING", 
                       "ID", "COMMENT", "WHITESPACE" ]
 
     RULE_program = 0
@@ -271,27 +296,29 @@ class TeamPlusPlusParser ( Parser ):
     RULE_tpp_print = 18
     RULE_block = 19
     RULE_condition = 20
-    RULE_loop = 21
-    RULE_wloop = 22
-    RULE_floop = 23
-    RULE_expression = 24
-    RULE_expression_A = 25
-    RULE_express = 26
-    RULE_exp = 27
-    RULE_term = 28
-    RULE_factor = 29
-    RULE_relop = 30
-    RULE_sumop = 31
-    RULE_mulop = 32
-    RULE_value = 33
+    RULE_ifelse = 21
+    RULE_switch_stmt = 22
+    RULE_loop = 23
+    RULE_wloop = 24
+    RULE_floop = 25
+    RULE_expression = 26
+    RULE_expression_A = 27
+    RULE_express = 28
+    RULE_exp = 29
+    RULE_term = 30
+    RULE_factor = 31
+    RULE_relop = 32
+    RULE_sumop = 33
+    RULE_mulop = 34
+    RULE_value = 35
 
     ruleNames =  [ "program", "imports", "classes", "tpp_vars", "c_vars", 
                    "var", "init", "functions", "c_functions", "main", "funblock", 
                    "tpp_type", "level", "statement", "assignment", "funcall", 
                    "tpp_return", "read", "tpp_print", "block", "condition", 
-                   "loop", "wloop", "floop", "expression", "expression_A", 
-                   "express", "exp", "term", "factor", "relop", "sumop", 
-                   "mulop", "value" ]
+                   "ifelse", "switch_stmt", "loop", "wloop", "floop", "expression", 
+                   "expression_A", "express", "exp", "term", "factor", "relop", 
+                   "sumop", "mulop", "value" ]
 
     EOF = Token.EOF
     PROGRAM=1
@@ -304,52 +331,56 @@ class TeamPlusPlusParser ( Parser ):
     MAIN=8
     IF=9
     ELSE=10
-    THEN=11
-    FUNC=12
-    RETURN=13
-    READ=14
-    PRINT=15
-    WHILE=16
-    FROM=17
-    TO=18
-    ATTRIBUTES=19
-    METHODS=20
-    IMPORT=21
-    AS=22
-    PUBLIC=23
-    PRIVATE=24
-    AND=25
-    OR=26
-    NOT=27
-    VOID=28
-    COLON=29
-    COMMA=30
-    DOT=31
-    ASSIGN=32
-    LEFT_BRACE=33
-    RIGHT_BRACE=34
-    LEFT_PARENTHESIS=35
-    RIGHT_PARENTHESIS=36
-    LEFT_BRACKET=37
-    RIGHT_BRACKET=38
-    SEMICOLON=39
-    PLUS=40
-    MINUS=41
-    MULT=42
-    DIV=43
-    EQUALS=44
-    GREATER_THAN=45
-    LESS_THAN=46
-    GREATER_EQUALS=47
-    LESS_EQUALS=48
-    DIFFERENT=49
-    CTE_INT=50
-    CTE_FLOAT=51
-    CTE_CHAR=52
-    CTE_STRING=53
-    ID=54
-    COMMENT=55
-    WHITESPACE=56
+    ELIF=11
+    THEN=12
+    SWITCH=13
+    CASE=14
+    DEFAULT=15
+    FUNC=16
+    RETURN=17
+    READ=18
+    PRINT=19
+    WHILE=20
+    FROM=21
+    TO=22
+    ATTRIBUTES=23
+    METHODS=24
+    IMPORT=25
+    AS=26
+    PUBLIC=27
+    PRIVATE=28
+    AND=29
+    OR=30
+    NOT=31
+    VOID=32
+    COLON=33
+    COMMA=34
+    DOT=35
+    ASSIGN=36
+    LEFT_BRACE=37
+    RIGHT_BRACE=38
+    LEFT_PARENTHESIS=39
+    RIGHT_PARENTHESIS=40
+    LEFT_BRACKET=41
+    RIGHT_BRACKET=42
+    SEMICOLON=43
+    PLUS=44
+    MINUS=45
+    MULT=46
+    DIV=47
+    EQUALS=48
+    GREATER_THAN=49
+    LESS_THAN=50
+    GREATER_EQUALS=51
+    LESS_EQUALS=52
+    DIFFERENT=53
+    CTE_INT=54
+    CTE_FLOAT=55
+    CTE_CHAR=56
+    CTE_STRING=57
+    ID=58
+    COMMENT=59
+    WHITESPACE=60
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -420,47 +451,47 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 68
-            self.match(TeamPlusPlusParser.PROGRAM)
-            self.state = 69
-            self.match(TeamPlusPlusParser.ID)
-            self.state = 70
-            self.match(TeamPlusPlusParser.SEMICOLON)
             self.state = 72
+            self.match(TeamPlusPlusParser.PROGRAM)
+            self.state = 73
+            self.match(TeamPlusPlusParser.ID)
+            self.state = 74
+            self.match(TeamPlusPlusParser.SEMICOLON)
+            self.state = 76
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.IMPORT:
-                self.state = 71
+                self.state = 75
                 self.imports()
 
 
-            self.state = 75
+            self.state = 79
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.CLASS:
-                self.state = 74
+                self.state = 78
                 self.classes()
 
 
-            self.state = 78
+            self.state = 82
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.VARS:
-                self.state = 77
+                self.state = 81
                 self.tpp_vars()
 
 
-            self.state = 81
+            self.state = 85
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.FUNC:
-                self.state = 80
+                self.state = 84
                 self.functions()
 
 
-            self.state = 83
+            self.state = 87
             self.main()
-            self.state = 84
+            self.state = 88
             self.match(TeamPlusPlusParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -496,12 +527,6 @@ class TeamPlusPlusParser ( Parser ):
             else:
                 return self.getToken(TeamPlusPlusParser.SEMICOLON, i)
 
-        def AS(self, i:int=None):
-            if i is None:
-                return self.getTokens(TeamPlusPlusParser.AS)
-            else:
-                return self.getToken(TeamPlusPlusParser.AS, i)
-
         def getRuleIndex(self):
             return TeamPlusPlusParser.RULE_imports
 
@@ -527,20 +552,10 @@ class TeamPlusPlusParser ( Parser ):
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 86
-                self.match(TeamPlusPlusParser.IMPORT)
-                self.state = 87
-                self.match(TeamPlusPlusParser.ID)
                 self.state = 90
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                if _la==TeamPlusPlusParser.AS:
-                    self.state = 88
-                    self.match(TeamPlusPlusParser.AS)
-                    self.state = 89
-                    self.match(TeamPlusPlusParser.ID)
-
-
+                self.match(TeamPlusPlusParser.IMPORT)
+                self.state = 91
+                self.match(TeamPlusPlusParser.ID)
                 self.state = 92
                 self.match(TeamPlusPlusParser.SEMICOLON)
                 self.state = 95 
@@ -796,7 +811,7 @@ class TeamPlusPlusParser ( Parser ):
                     raise NoViableAltException(self)
                 self.state = 133 
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,12,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,11,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1016,7 +1031,7 @@ class TeamPlusPlusParser ( Parser ):
 
             self.state = 170
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,19,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,18,self._ctx)
             if la_ == 1:
                 self.state = 168
                 self.match(TeamPlusPlusParser.DOT)
@@ -1207,7 +1222,7 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 208 
+            self.state = 213 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
@@ -1231,35 +1246,59 @@ class TeamPlusPlusParser ( Parser ):
                 self.match(TeamPlusPlusParser.ID)
                 self.state = 192
                 self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-                self.state = 204
+                self.state = 209
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.INT) | (1 << TeamPlusPlusParser.FLOAT) | (1 << TeamPlusPlusParser.CHAR))) != 0):
-                    self.state = 193
-                    self.tpp_type()
-                    self.state = 194
+                if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.INT) | (1 << TeamPlusPlusParser.FLOAT) | (1 << TeamPlusPlusParser.CHAR) | (1 << TeamPlusPlusParser.ID))) != 0):
+                    self.state = 195
+                    self._errHandler.sync(self)
+                    token = self._input.LA(1)
+                    if token in [TeamPlusPlusParser.INT, TeamPlusPlusParser.FLOAT, TeamPlusPlusParser.CHAR]:
+                        self.state = 193
+                        self.tpp_type()
+                        pass
+                    elif token in [TeamPlusPlusParser.ID]:
+                        self.state = 194
+                        self.match(TeamPlusPlusParser.ID)
+                        pass
+                    else:
+                        raise NoViableAltException(self)
+
+                    self.state = 197
                     self.match(TeamPlusPlusParser.ID)
-                    self.state = 201
+                    self.state = 206
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     while _la==TeamPlusPlusParser.COMMA:
-                        self.state = 195
+                        self.state = 198
                         self.match(TeamPlusPlusParser.COMMA)
-                        self.state = 196
-                        self.tpp_type()
-                        self.state = 197
-                        self.match(TeamPlusPlusParser.ID)
+                        self.state = 201
+                        self._errHandler.sync(self)
+                        token = self._input.LA(1)
+                        if token in [TeamPlusPlusParser.INT, TeamPlusPlusParser.FLOAT, TeamPlusPlusParser.CHAR]:
+                            self.state = 199
+                            self.tpp_type()
+                            pass
+                        elif token in [TeamPlusPlusParser.ID]:
+                            self.state = 200
+                            self.match(TeamPlusPlusParser.ID)
+                            pass
+                        else:
+                            raise NoViableAltException(self)
+
                         self.state = 203
+                        self.match(TeamPlusPlusParser.ID)
+                        self.state = 208
                         self._errHandler.sync(self)
                         _la = self._input.LA(1)
 
 
 
-                self.state = 206
+                self.state = 211
                 self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-                self.state = 207
+                self.state = 212
                 self.funblock()
-                self.state = 210 
+                self.state = 215 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==TeamPlusPlusParser.FUNC):
@@ -1362,69 +1401,93 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 212
+            self.state = 217
             self.match(TeamPlusPlusParser.METHODS)
-            self.state = 238 
+            self.state = 248 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 214
+                self.state = 219
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==TeamPlusPlusParser.PUBLIC or _la==TeamPlusPlusParser.PRIVATE:
-                    self.state = 213
+                    self.state = 218
                     self.level()
 
 
-                self.state = 216
+                self.state = 221
                 self.match(TeamPlusPlusParser.FUNC)
-                self.state = 219
+                self.state = 224
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [TeamPlusPlusParser.VOID]:
-                    self.state = 217
+                    self.state = 222
                     self.match(TeamPlusPlusParser.VOID)
                     pass
                 elif token in [TeamPlusPlusParser.INT, TeamPlusPlusParser.FLOAT, TeamPlusPlusParser.CHAR]:
-                    self.state = 218
+                    self.state = 223
                     self.tpp_type()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 221
+                self.state = 226
                 self.match(TeamPlusPlusParser.ID)
-                self.state = 222
+                self.state = 227
                 self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-                self.state = 234
+                self.state = 244
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.INT) | (1 << TeamPlusPlusParser.FLOAT) | (1 << TeamPlusPlusParser.CHAR))) != 0):
-                    self.state = 223
-                    self.tpp_type()
-                    self.state = 224
+                if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.INT) | (1 << TeamPlusPlusParser.FLOAT) | (1 << TeamPlusPlusParser.CHAR) | (1 << TeamPlusPlusParser.ID))) != 0):
+                    self.state = 230
+                    self._errHandler.sync(self)
+                    token = self._input.LA(1)
+                    if token in [TeamPlusPlusParser.INT, TeamPlusPlusParser.FLOAT, TeamPlusPlusParser.CHAR]:
+                        self.state = 228
+                        self.tpp_type()
+                        pass
+                    elif token in [TeamPlusPlusParser.ID]:
+                        self.state = 229
+                        self.match(TeamPlusPlusParser.ID)
+                        pass
+                    else:
+                        raise NoViableAltException(self)
+
+                    self.state = 232
                     self.match(TeamPlusPlusParser.ID)
-                    self.state = 231
+                    self.state = 241
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     while _la==TeamPlusPlusParser.COMMA:
-                        self.state = 225
-                        self.match(TeamPlusPlusParser.COMMA)
-                        self.state = 226
-                        self.tpp_type()
-                        self.state = 227
-                        self.match(TeamPlusPlusParser.ID)
                         self.state = 233
+                        self.match(TeamPlusPlusParser.COMMA)
+                        self.state = 236
+                        self._errHandler.sync(self)
+                        token = self._input.LA(1)
+                        if token in [TeamPlusPlusParser.INT, TeamPlusPlusParser.FLOAT, TeamPlusPlusParser.CHAR]:
+                            self.state = 234
+                            self.tpp_type()
+                            pass
+                        elif token in [TeamPlusPlusParser.ID]:
+                            self.state = 235
+                            self.match(TeamPlusPlusParser.ID)
+                            pass
+                        else:
+                            raise NoViableAltException(self)
+
+                        self.state = 238
+                        self.match(TeamPlusPlusParser.ID)
+                        self.state = 243
                         self._errHandler.sync(self)
                         _la = self._input.LA(1)
 
 
 
-                self.state = 236
+                self.state = 246
                 self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-                self.state = 237
+                self.state = 247
                 self.funblock()
-                self.state = 240 
+                self.state = 250 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.FUNC) | (1 << TeamPlusPlusParser.PUBLIC) | (1 << TeamPlusPlusParser.PRIVATE))) != 0)):
@@ -1479,13 +1542,13 @@ class TeamPlusPlusParser ( Parser ):
         self.enterRule(localctx, 18, self.RULE_main)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 242
+            self.state = 252
             self.match(TeamPlusPlusParser.MAIN)
-            self.state = 243
+            self.state = 253
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 244
+            self.state = 254
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 245
+            self.state = 255
             self.funblock()
         except RecognitionException as re:
             localctx.exception = re
@@ -1541,27 +1604,27 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 247
+            self.state = 257
             self.match(TeamPlusPlusParser.LEFT_BRACE)
-            self.state = 249
+            self.state = 259
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.VARS:
-                self.state = 248
+                self.state = 258
                 self.tpp_vars()
 
 
-            self.state = 254
+            self.state = 264
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.IF) | (1 << TeamPlusPlusParser.RETURN) | (1 << TeamPlusPlusParser.READ) | (1 << TeamPlusPlusParser.PRINT) | (1 << TeamPlusPlusParser.WHILE) | (1 << TeamPlusPlusParser.FROM) | (1 << TeamPlusPlusParser.ID))) != 0):
-                self.state = 251
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.IF) | (1 << TeamPlusPlusParser.SWITCH) | (1 << TeamPlusPlusParser.RETURN) | (1 << TeamPlusPlusParser.READ) | (1 << TeamPlusPlusParser.PRINT) | (1 << TeamPlusPlusParser.WHILE) | (1 << TeamPlusPlusParser.FROM) | (1 << TeamPlusPlusParser.ID))) != 0):
+                self.state = 261
                 self.statement()
-                self.state = 256
+                self.state = 266
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 257
+            self.state = 267
             self.match(TeamPlusPlusParser.RIGHT_BRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -1609,7 +1672,7 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 259
+            self.state = 269
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.INT) | (1 << TeamPlusPlusParser.FLOAT) | (1 << TeamPlusPlusParser.CHAR))) != 0)):
                 self._errHandler.recoverInline(self)
@@ -1659,7 +1722,7 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 261
+            self.state = 271
             _la = self._input.LA(1)
             if not(_la==TeamPlusPlusParser.PUBLIC or _la==TeamPlusPlusParser.PRIVATE):
                 self._errHandler.recoverInline(self)
@@ -1733,43 +1796,43 @@ class TeamPlusPlusParser ( Parser ):
         self.enterRule(localctx, 26, self.RULE_statement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 272
+            self.state = 282
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,34,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,37,self._ctx)
             if la_ == 1:
-                self.state = 263
+                self.state = 273
                 self.assignment()
                 pass
 
             elif la_ == 2:
-                self.state = 264
+                self.state = 274
                 self.funcall()
-                self.state = 265
+                self.state = 275
                 self.match(TeamPlusPlusParser.SEMICOLON)
                 pass
 
             elif la_ == 3:
-                self.state = 267
+                self.state = 277
                 self.tpp_return()
                 pass
 
             elif la_ == 4:
-                self.state = 268
+                self.state = 278
                 self.read()
                 pass
 
             elif la_ == 5:
-                self.state = 269
+                self.state = 279
                 self.tpp_print()
                 pass
 
             elif la_ == 6:
-                self.state = 270
+                self.state = 280
                 self.condition()
                 pass
 
             elif la_ == 7:
-                self.state = 271
+                self.state = 281
                 self.loop()
                 pass
 
@@ -1824,13 +1887,13 @@ class TeamPlusPlusParser ( Parser ):
         self.enterRule(localctx, 28, self.RULE_assignment)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 274
+            self.state = 284
             self.var()
-            self.state = 275
+            self.state = 285
             self.match(TeamPlusPlusParser.ASSIGN)
-            self.state = 276
+            self.state = 286
             self.expression()
-            self.state = 277
+            self.state = 287
             self.match(TeamPlusPlusParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -1898,41 +1961,41 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 282
+            self.state = 292
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,35,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,38,self._ctx)
             if la_ == 1:
-                self.state = 279
+                self.state = 289
                 self.var()
-                self.state = 280
+                self.state = 290
                 self.match(TeamPlusPlusParser.DOT)
 
 
-            self.state = 284
-            self.match(TeamPlusPlusParser.ID)
-            self.state = 285
-            self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
             self.state = 294
+            self.match(TeamPlusPlusParser.ID)
+            self.state = 295
+            self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
+            self.state = 304
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.NOT) | (1 << TeamPlusPlusParser.LEFT_PARENTHESIS) | (1 << TeamPlusPlusParser.PLUS) | (1 << TeamPlusPlusParser.MINUS) | (1 << TeamPlusPlusParser.CTE_INT) | (1 << TeamPlusPlusParser.CTE_FLOAT) | (1 << TeamPlusPlusParser.CTE_CHAR) | (1 << TeamPlusPlusParser.ID))) != 0):
-                self.state = 286
+                self.state = 296
                 self.expression()
-                self.state = 291
+                self.state = 301
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==TeamPlusPlusParser.COMMA:
-                    self.state = 287
+                    self.state = 297
                     self.match(TeamPlusPlusParser.COMMA)
-                    self.state = 288
+                    self.state = 298
                     self.expression()
-                    self.state = 293
+                    self.state = 303
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
 
 
-            self.state = 296
+            self.state = 306
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
         except RecognitionException as re:
             localctx.exception = re
@@ -1986,15 +2049,15 @@ class TeamPlusPlusParser ( Parser ):
         self.enterRule(localctx, 32, self.RULE_tpp_return)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 298
+            self.state = 308
             self.match(TeamPlusPlusParser.RETURN)
-            self.state = 299
+            self.state = 309
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 300
+            self.state = 310
             self.exp()
-            self.state = 301
+            self.state = 311
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 302
+            self.state = 312
             self.match(TeamPlusPlusParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -2058,27 +2121,27 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 304
+            self.state = 314
             self.match(TeamPlusPlusParser.READ)
-            self.state = 305
+            self.state = 315
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 306
+            self.state = 316
             self.var()
-            self.state = 311
+            self.state = 321
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==TeamPlusPlusParser.COMMA:
-                self.state = 307
+                self.state = 317
                 self.match(TeamPlusPlusParser.COMMA)
-                self.state = 308
+                self.state = 318
                 self.var()
-                self.state = 313
+                self.state = 323
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 314
+            self.state = 324
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 315
+            self.state = 325
             self.match(TeamPlusPlusParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -2148,51 +2211,51 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 317
+            self.state = 327
             self.match(TeamPlusPlusParser.PRINT)
-            self.state = 318
+            self.state = 328
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 321
+            self.state = 331
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TeamPlusPlusParser.NOT, TeamPlusPlusParser.LEFT_PARENTHESIS, TeamPlusPlusParser.PLUS, TeamPlusPlusParser.MINUS, TeamPlusPlusParser.CTE_INT, TeamPlusPlusParser.CTE_FLOAT, TeamPlusPlusParser.CTE_CHAR, TeamPlusPlusParser.ID]:
-                self.state = 319
+                self.state = 329
                 self.expression()
                 pass
             elif token in [TeamPlusPlusParser.CTE_STRING]:
-                self.state = 320
+                self.state = 330
                 self.match(TeamPlusPlusParser.CTE_STRING)
                 pass
             else:
                 raise NoViableAltException(self)
 
-            self.state = 330
+            self.state = 340
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==TeamPlusPlusParser.COMMA:
-                self.state = 323
+                self.state = 333
                 self.match(TeamPlusPlusParser.COMMA)
-                self.state = 326
+                self.state = 336
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [TeamPlusPlusParser.NOT, TeamPlusPlusParser.LEFT_PARENTHESIS, TeamPlusPlusParser.PLUS, TeamPlusPlusParser.MINUS, TeamPlusPlusParser.CTE_INT, TeamPlusPlusParser.CTE_FLOAT, TeamPlusPlusParser.CTE_CHAR, TeamPlusPlusParser.ID]:
-                    self.state = 324
+                    self.state = 334
                     self.expression()
                     pass
                 elif token in [TeamPlusPlusParser.CTE_STRING]:
-                    self.state = 325
+                    self.state = 335
                     self.match(TeamPlusPlusParser.CTE_STRING)
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 332
+                self.state = 342
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 333
+            self.state = 343
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 334
+            self.state = 344
             self.match(TeamPlusPlusParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -2244,19 +2307,19 @@ class TeamPlusPlusParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 336
+            self.state = 346
             self.match(TeamPlusPlusParser.LEFT_BRACE)
-            self.state = 340
+            self.state = 350
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.IF) | (1 << TeamPlusPlusParser.RETURN) | (1 << TeamPlusPlusParser.READ) | (1 << TeamPlusPlusParser.PRINT) | (1 << TeamPlusPlusParser.WHILE) | (1 << TeamPlusPlusParser.FROM) | (1 << TeamPlusPlusParser.ID))) != 0):
-                self.state = 337
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.IF) | (1 << TeamPlusPlusParser.SWITCH) | (1 << TeamPlusPlusParser.RETURN) | (1 << TeamPlusPlusParser.READ) | (1 << TeamPlusPlusParser.PRINT) | (1 << TeamPlusPlusParser.WHILE) | (1 << TeamPlusPlusParser.FROM) | (1 << TeamPlusPlusParser.ID))) != 0):
+                self.state = 347
                 self.statement()
-                self.state = 342
+                self.state = 352
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 343
+            self.state = 353
             self.match(TeamPlusPlusParser.RIGHT_BRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -2274,31 +2337,13 @@ class TeamPlusPlusParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def IF(self):
-            return self.getToken(TeamPlusPlusParser.IF, 0)
-
-        def LEFT_PARENTHESIS(self):
-            return self.getToken(TeamPlusPlusParser.LEFT_PARENTHESIS, 0)
-
-        def expression(self):
-            return self.getTypedRuleContext(TeamPlusPlusParser.ExpressionContext,0)
+        def ifelse(self):
+            return self.getTypedRuleContext(TeamPlusPlusParser.IfelseContext,0)
 
 
-        def RIGHT_PARENTHESIS(self):
-            return self.getToken(TeamPlusPlusParser.RIGHT_PARENTHESIS, 0)
+        def switch_stmt(self):
+            return self.getTypedRuleContext(TeamPlusPlusParser.Switch_stmtContext,0)
 
-        def THEN(self):
-            return self.getToken(TeamPlusPlusParser.THEN, 0)
-
-        def block(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(TeamPlusPlusParser.BlockContext)
-            else:
-                return self.getTypedRuleContext(TeamPlusPlusParser.BlockContext,i)
-
-
-        def ELSE(self):
-            return self.getToken(TeamPlusPlusParser.ELSE, 0)
 
         def getRuleIndex(self):
             return TeamPlusPlusParser.RULE_condition
@@ -2318,31 +2363,270 @@ class TeamPlusPlusParser ( Parser ):
 
         localctx = TeamPlusPlusParser.ConditionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 40, self.RULE_condition)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 357
+            self._errHandler.sync(self)
+            token = self._input.LA(1)
+            if token in [TeamPlusPlusParser.IF]:
+                self.state = 355
+                self.ifelse()
+                pass
+            elif token in [TeamPlusPlusParser.SWITCH]:
+                self.state = 356
+                self.switch_stmt()
+                pass
+            else:
+                raise NoViableAltException(self)
+
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class IfelseContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def IF(self):
+            return self.getToken(TeamPlusPlusParser.IF, 0)
+
+        def LEFT_PARENTHESIS(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.LEFT_PARENTHESIS)
+            else:
+                return self.getToken(TeamPlusPlusParser.LEFT_PARENTHESIS, i)
+
+        def expression(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(TeamPlusPlusParser.ExpressionContext)
+            else:
+                return self.getTypedRuleContext(TeamPlusPlusParser.ExpressionContext,i)
+
+
+        def RIGHT_PARENTHESIS(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.RIGHT_PARENTHESIS)
+            else:
+                return self.getToken(TeamPlusPlusParser.RIGHT_PARENTHESIS, i)
+
+        def THEN(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.THEN)
+            else:
+                return self.getToken(TeamPlusPlusParser.THEN, i)
+
+        def block(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(TeamPlusPlusParser.BlockContext)
+            else:
+                return self.getTypedRuleContext(TeamPlusPlusParser.BlockContext,i)
+
+
+        def ELIF(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.ELIF)
+            else:
+                return self.getToken(TeamPlusPlusParser.ELIF, i)
+
+        def ELSE(self):
+            return self.getToken(TeamPlusPlusParser.ELSE, 0)
+
+        def getRuleIndex(self):
+            return TeamPlusPlusParser.RULE_ifelse
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterIfelse" ):
+                listener.enterIfelse(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitIfelse" ):
+                listener.exitIfelse(self)
+
+
+
+
+    def ifelse(self):
+
+        localctx = TeamPlusPlusParser.IfelseContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 42, self.RULE_ifelse)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 345
+            self.state = 359
             self.match(TeamPlusPlusParser.IF)
-            self.state = 346
+            self.state = 360
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 347
+            self.state = 361
             self.expression()
-            self.state = 348
+            self.state = 362
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 349
+            self.state = 363
             self.match(TeamPlusPlusParser.THEN)
-            self.state = 350
+            self.state = 364
             self.block()
-            self.state = 353
+            self.state = 374
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==TeamPlusPlusParser.ELIF:
+                self.state = 365
+                self.match(TeamPlusPlusParser.ELIF)
+                self.state = 366
+                self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
+                self.state = 367
+                self.expression()
+                self.state = 368
+                self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
+                self.state = 369
+                self.match(TeamPlusPlusParser.THEN)
+                self.state = 370
+                self.block()
+                self.state = 376
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 379
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TeamPlusPlusParser.ELSE:
-                self.state = 351
+                self.state = 377
                 self.match(TeamPlusPlusParser.ELSE)
-                self.state = 352
+                self.state = 378
                 self.block()
 
 
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class Switch_stmtContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def SWITCH(self):
+            return self.getToken(TeamPlusPlusParser.SWITCH, 0)
+
+        def LEFT_PARENTHESIS(self):
+            return self.getToken(TeamPlusPlusParser.LEFT_PARENTHESIS, 0)
+
+        def var(self):
+            return self.getTypedRuleContext(TeamPlusPlusParser.VarContext,0)
+
+
+        def RIGHT_PARENTHESIS(self):
+            return self.getToken(TeamPlusPlusParser.RIGHT_PARENTHESIS, 0)
+
+        def LEFT_BRACE(self):
+            return self.getToken(TeamPlusPlusParser.LEFT_BRACE, 0)
+
+        def RIGHT_BRACE(self):
+            return self.getToken(TeamPlusPlusParser.RIGHT_BRACE, 0)
+
+        def CASE(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.CASE)
+            else:
+                return self.getToken(TeamPlusPlusParser.CASE, i)
+
+        def block(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(TeamPlusPlusParser.BlockContext)
+            else:
+                return self.getTypedRuleContext(TeamPlusPlusParser.BlockContext,i)
+
+
+        def DEFAULT(self):
+            return self.getToken(TeamPlusPlusParser.DEFAULT, 0)
+
+        def CTE_CHAR(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.CTE_CHAR)
+            else:
+                return self.getToken(TeamPlusPlusParser.CTE_CHAR, i)
+
+        def CTE_INT(self, i:int=None):
+            if i is None:
+                return self.getTokens(TeamPlusPlusParser.CTE_INT)
+            else:
+                return self.getToken(TeamPlusPlusParser.CTE_INT, i)
+
+        def getRuleIndex(self):
+            return TeamPlusPlusParser.RULE_switch_stmt
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterSwitch_stmt" ):
+                listener.enterSwitch_stmt(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitSwitch_stmt" ):
+                listener.exitSwitch_stmt(self)
+
+
+
+
+    def switch_stmt(self):
+
+        localctx = TeamPlusPlusParser.Switch_stmtContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 44, self.RULE_switch_stmt)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 381
+            self.match(TeamPlusPlusParser.SWITCH)
+            self.state = 382
+            self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
+            self.state = 383
+            self.var()
+            self.state = 384
+            self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
+            self.state = 385
+            self.match(TeamPlusPlusParser.LEFT_BRACE)
+            self.state = 391
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==TeamPlusPlusParser.CASE:
+                self.state = 386
+                self.match(TeamPlusPlusParser.CASE)
+                self.state = 387
+                _la = self._input.LA(1)
+                if not(_la==TeamPlusPlusParser.CTE_INT or _la==TeamPlusPlusParser.CTE_CHAR):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
+                self.state = 388
+                self.block()
+                self.state = 393
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 396
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            if _la==TeamPlusPlusParser.DEFAULT:
+                self.state = 394
+                self.match(TeamPlusPlusParser.DEFAULT)
+                self.state = 395
+                self.block()
+
+
+            self.state = 398
+            self.match(TeamPlusPlusParser.RIGHT_BRACE)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2384,18 +2668,18 @@ class TeamPlusPlusParser ( Parser ):
     def loop(self):
 
         localctx = TeamPlusPlusParser.LoopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_loop)
+        self.enterRule(localctx, 46, self.RULE_loop)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 357
+            self.state = 402
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TeamPlusPlusParser.WHILE]:
-                self.state = 355
+                self.state = 400
                 self.wloop()
                 pass
             elif token in [TeamPlusPlusParser.FROM]:
-                self.state = 356
+                self.state = 401
                 self.floop()
                 pass
             else:
@@ -2451,18 +2735,18 @@ class TeamPlusPlusParser ( Parser ):
     def wloop(self):
 
         localctx = TeamPlusPlusParser.WloopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 44, self.RULE_wloop)
+        self.enterRule(localctx, 48, self.RULE_wloop)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 359
+            self.state = 404
             self.match(TeamPlusPlusParser.WHILE)
-            self.state = 360
+            self.state = 405
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-            self.state = 361
+            self.state = 406
             self.expression()
-            self.state = 362
+            self.state = 407
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
-            self.state = 363
+            self.state = 408
             self.block()
         except RecognitionException as re:
             localctx.exception = re
@@ -2521,22 +2805,22 @@ class TeamPlusPlusParser ( Parser ):
     def floop(self):
 
         localctx = TeamPlusPlusParser.FloopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 46, self.RULE_floop)
+        self.enterRule(localctx, 50, self.RULE_floop)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 365
+            self.state = 410
             self.match(TeamPlusPlusParser.FROM)
-            self.state = 366
+            self.state = 411
             self.var()
-            self.state = 367
+            self.state = 412
             self.match(TeamPlusPlusParser.ASSIGN)
-            self.state = 368
+            self.state = 413
             self.exp()
-            self.state = 369
+            self.state = 414
             self.match(TeamPlusPlusParser.TO)
-            self.state = 370
+            self.state = 415
             self.exp()
-            self.state = 371
+            self.state = 416
             self.block()
         except RecognitionException as re:
             localctx.exception = re
@@ -2586,25 +2870,25 @@ class TeamPlusPlusParser ( Parser ):
     def expression(self):
 
         localctx = TeamPlusPlusParser.ExpressionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 48, self.RULE_expression)
+        self.enterRule(localctx, 52, self.RULE_expression)
         try:
-            self.state = 380
+            self.state = 425
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TeamPlusPlusParser.LEFT_PARENTHESIS, TeamPlusPlusParser.PLUS, TeamPlusPlusParser.MINUS, TeamPlusPlusParser.CTE_INT, TeamPlusPlusParser.CTE_FLOAT, TeamPlusPlusParser.CTE_CHAR, TeamPlusPlusParser.ID]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 373
+                self.state = 418
                 self.express()
-                self.state = 374
+                self.state = 419
                 self.expression_A()
                 pass
             elif token in [TeamPlusPlusParser.NOT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 376
+                self.state = 421
                 self.match(TeamPlusPlusParser.NOT)
-                self.state = 377
+                self.state = 422
                 self.expression()
-                self.state = 378
+                self.state = 423
                 self.expression_A()
                 pass
             else:
@@ -2657,24 +2941,24 @@ class TeamPlusPlusParser ( Parser ):
     def expression_A(self):
 
         localctx = TeamPlusPlusParser.Expression_AContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 50, self.RULE_expression_A)
+        self.enterRule(localctx, 54, self.RULE_expression_A)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 386
+            self.state = 431
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,46,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,53,self._ctx)
             if la_ == 1:
-                self.state = 382
+                self.state = 427
                 _la = self._input.LA(1)
                 if not(_la==TeamPlusPlusParser.AND or _la==TeamPlusPlusParser.OR):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 383
+                self.state = 428
                 self.expression()
-                self.state = 384
+                self.state = 429
                 self.expression_A()
 
 
@@ -2722,19 +3006,19 @@ class TeamPlusPlusParser ( Parser ):
     def express(self):
 
         localctx = TeamPlusPlusParser.ExpressContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 52, self.RULE_express)
+        self.enterRule(localctx, 56, self.RULE_express)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 388
+            self.state = 433
             self.exp()
-            self.state = 392
+            self.state = 437
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.EQUALS) | (1 << TeamPlusPlusParser.GREATER_THAN) | (1 << TeamPlusPlusParser.LESS_THAN) | (1 << TeamPlusPlusParser.GREATER_EQUALS) | (1 << TeamPlusPlusParser.LESS_EQUALS) | (1 << TeamPlusPlusParser.DIFFERENT))) != 0):
-                self.state = 389
+                self.state = 434
                 self.relop()
-                self.state = 390
+                self.state = 435
                 self.exp()
 
 
@@ -2785,21 +3069,21 @@ class TeamPlusPlusParser ( Parser ):
     def exp(self):
 
         localctx = TeamPlusPlusParser.ExpContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 54, self.RULE_exp)
+        self.enterRule(localctx, 58, self.RULE_exp)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 394
+            self.state = 439
             self.term()
-            self.state = 400
+            self.state = 445
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==TeamPlusPlusParser.PLUS or _la==TeamPlusPlusParser.MINUS:
-                self.state = 395
+                self.state = 440
                 self.sumop()
-                self.state = 396
+                self.state = 441
                 self.term()
-                self.state = 402
+                self.state = 447
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -2850,21 +3134,21 @@ class TeamPlusPlusParser ( Parser ):
     def term(self):
 
         localctx = TeamPlusPlusParser.TermContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 56, self.RULE_term)
+        self.enterRule(localctx, 60, self.RULE_term)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 403
+            self.state = 448
             self.factor()
-            self.state = 409
+            self.state = 454
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==TeamPlusPlusParser.MULT or _la==TeamPlusPlusParser.DIV:
-                self.state = 404
+                self.state = 449
                 self.mulop()
-                self.state = 405
+                self.state = 450
                 self.factor()
-                self.state = 411
+                self.state = 456
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -2919,31 +3203,31 @@ class TeamPlusPlusParser ( Parser ):
     def factor(self):
 
         localctx = TeamPlusPlusParser.FactorContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 58, self.RULE_factor)
+        self.enterRule(localctx, 62, self.RULE_factor)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 420
+            self.state = 465
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TeamPlusPlusParser.LEFT_PARENTHESIS]:
-                self.state = 412
+                self.state = 457
                 self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
-                self.state = 413
+                self.state = 458
                 self.expression()
-                self.state = 414
+                self.state = 459
                 self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
                 pass
             elif token in [TeamPlusPlusParser.PLUS, TeamPlusPlusParser.MINUS, TeamPlusPlusParser.CTE_INT, TeamPlusPlusParser.CTE_FLOAT, TeamPlusPlusParser.CTE_CHAR, TeamPlusPlusParser.ID]:
-                self.state = 417
+                self.state = 462
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==TeamPlusPlusParser.PLUS or _la==TeamPlusPlusParser.MINUS:
-                    self.state = 416
+                    self.state = 461
                     self.sumop()
 
 
-                self.state = 419
+                self.state = 464
                 self.value()
                 pass
             else:
@@ -3000,11 +3284,11 @@ class TeamPlusPlusParser ( Parser ):
     def relop(self):
 
         localctx = TeamPlusPlusParser.RelopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 60, self.RULE_relop)
+        self.enterRule(localctx, 64, self.RULE_relop)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 422
+            self.state = 467
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TeamPlusPlusParser.EQUALS) | (1 << TeamPlusPlusParser.GREATER_THAN) | (1 << TeamPlusPlusParser.LESS_THAN) | (1 << TeamPlusPlusParser.GREATER_EQUALS) | (1 << TeamPlusPlusParser.LESS_EQUALS) | (1 << TeamPlusPlusParser.DIFFERENT))) != 0)):
                 self._errHandler.recoverInline(self)
@@ -3050,11 +3334,11 @@ class TeamPlusPlusParser ( Parser ):
     def sumop(self):
 
         localctx = TeamPlusPlusParser.SumopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 62, self.RULE_sumop)
+        self.enterRule(localctx, 66, self.RULE_sumop)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 424
+            self.state = 469
             _la = self._input.LA(1)
             if not(_la==TeamPlusPlusParser.PLUS or _la==TeamPlusPlusParser.MINUS):
                 self._errHandler.recoverInline(self)
@@ -3100,11 +3384,11 @@ class TeamPlusPlusParser ( Parser ):
     def mulop(self):
 
         localctx = TeamPlusPlusParser.MulopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 64, self.RULE_mulop)
+        self.enterRule(localctx, 68, self.RULE_mulop)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 426
+            self.state = 471
             _la = self._input.LA(1)
             if not(_la==TeamPlusPlusParser.MULT or _la==TeamPlusPlusParser.DIV):
                 self._errHandler.recoverInline(self)
@@ -3161,34 +3445,34 @@ class TeamPlusPlusParser ( Parser ):
     def value(self):
 
         localctx = TeamPlusPlusParser.ValueContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 66, self.RULE_value)
+        self.enterRule(localctx, 70, self.RULE_value)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 433
+            self.state = 478
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,52,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,59,self._ctx)
             if la_ == 1:
-                self.state = 428
+                self.state = 473
                 self.var()
                 pass
 
             elif la_ == 2:
-                self.state = 429
+                self.state = 474
                 self.match(TeamPlusPlusParser.CTE_INT)
                 pass
 
             elif la_ == 3:
-                self.state = 430
+                self.state = 475
                 self.match(TeamPlusPlusParser.CTE_FLOAT)
                 pass
 
             elif la_ == 4:
-                self.state = 431
+                self.state = 476
                 self.match(TeamPlusPlusParser.CTE_CHAR)
                 pass
 
             elif la_ == 5:
-                self.state = 432
+                self.state = 477
                 self.funcall()
                 pass
 

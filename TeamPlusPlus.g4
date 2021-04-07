@@ -3,7 +3,7 @@ grammar TeamPlusPlus;
 // Parser Rules
 program     : PROGRAM ID SEMICOLON imports? classes? tpp_vars? functions? main EOF;
 
-imports     : (IMPORT ID (AS ID)? SEMICOLON)+;
+imports     : (IMPORT ID SEMICOLON)+;
 
 classes     : (CLASS ID (INHERITS ID)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON)+;
 
@@ -15,9 +15,9 @@ var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
 
-functions   : (FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
+functions   : (FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS ((tpp_type | ID) ID (COMMA (tpp_type | ID) ID)*)? RIGHT_PARENTHESIS funblock)+;
 
-c_functions : METHODS (level? FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS (tpp_type ID (COMMA tpp_type ID)*)? RIGHT_PARENTHESIS funblock)+;
+c_functions : METHODS (level? FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS ((tpp_type | ID) ID (COMMA (tpp_type | ID) ID)*)? RIGHT_PARENTHESIS funblock)+;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
@@ -41,7 +41,11 @@ tpp_print   : PRINT LEFT_PARENTHESIS (expression | CTE_STRING) (COMMA (expressio
 
 block       : LEFT_BRACE statement* RIGHT_BRACE;
 
-condition   : IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS THEN block (ELSE block)?;
+condition   : (ifelse | switch_stmt);
+
+ifelse      : IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS THEN block (ELIF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS THEN block)* (ELSE block)?;
+
+switch_stmt : SWITCH LEFT_PARENTHESIS var RIGHT_PARENTHESIS LEFT_BRACE (CASE (CTE_CHAR | CTE_INT) block)* (DEFAULT block)?  RIGHT_BRACE;
 
 loop        : (wloop | floop);
 
@@ -80,7 +84,11 @@ INHERITS    : 'inherits';
 MAIN        : 'main';
 IF          : 'if';
 ELSE        : 'else';
+ELIF        : 'elif';
 THEN        : 'then';
+SWITCH      : 'switch';
+CASE        : 'case';
+DEFAULT     : 'default';
 FUNC        : 'func';
 RETURN      : 'return';
 READ        : 'read';

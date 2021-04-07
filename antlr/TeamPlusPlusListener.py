@@ -197,6 +197,24 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#ifelse.
+    def enterIfelse(self, ctx:TeamPlusPlusParser.IfelseContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#ifelse.
+    def exitIfelse(self, ctx:TeamPlusPlusParser.IfelseContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#switch_stmt.
+    def enterSwitch_stmt(self, ctx:TeamPlusPlusParser.Switch_stmtContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#switch_stmt.
+    def exitSwitch_stmt(self, ctx:TeamPlusPlusParser.Switch_stmtContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#loop.
     def enterLoop(self, ctx:TeamPlusPlusParser.LoopContext):
         pass
