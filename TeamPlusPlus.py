@@ -4,10 +4,6 @@ from antlr.TeamPlusPlusLexer import TeamPlusPlusLexer
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
-class KeyPrinter(TeamPlusPlusListener):     
-    def exitProgram(self, ctx): 
-        print("Apropiado")
-
 def main(argv):
     input_stream = FileStream(argv[1])
     lexer = TeamPlusPlusLexer(input_stream)
@@ -19,9 +15,9 @@ def main(argv):
         print("Incorrecto")
         sys.exit()
 
-    printer = KeyPrinter()
-    walker = ParseTreeWalker()
-    walker.walk(printer, tree)
+    if parser.getNumberOfSyntaxErrors() == 0:
+        print("Correcto")
+        sys.exit()
  
 if __name__ == '__main__':
     main(sys.argv)
