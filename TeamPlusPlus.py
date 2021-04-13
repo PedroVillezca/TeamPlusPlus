@@ -4,6 +4,8 @@ from antlr.TeamPlusPlusLexer import TeamPlusPlusLexer
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
+from DirGen import DirGen
+
 def main(argv):
     input_stream = FileStream(argv[1])
     lexer = TeamPlusPlusLexer(input_stream)
@@ -14,6 +16,10 @@ def main(argv):
     if parser.getNumberOfSyntaxErrors() != 0:
         print("Incorrecto")
         sys.exit()
+
+    dir_gen = DirGen()
+    walker = ParseTreeWalker()
+    walker.walk(dir_gen, tree)
 
     if parser.getNumberOfSyntaxErrors() == 0:
         print("Correcto")
