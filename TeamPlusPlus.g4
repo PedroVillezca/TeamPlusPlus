@@ -5,19 +5,31 @@ program     : PROGRAM ID SEMICOLON imports? classes? tpp_vars? functions? main E
 
 imports     : (IMPORT ID SEMICOLON)+;
 
-classes     : (CLASS ID (INHERITS ID)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON)+;
+classes     : (tpp_class)+;
 
-tpp_vars    : VARS ((ID | tpp_type) init (COMMA init)* SEMICOLON)+;
+tpp_class   : CLASS ID (inherit)? LEFT_BRACE c_vars? c_functions? RIGHT_BRACE SEMICOLON;
 
-c_vars      : ATTRIBUTES (level? (ID | tpp_type) init (COMMA init)* SEMICOLON)+;
+inherit     : INHERITS ID;
+
+tpp_vars    : VARS ((id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
+
+id_type     : ID;
+
+c_vars      : ATTRIBUTES (level? (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
 var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
 
-functions   : (FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS ((tpp_type | ID) ID (COMMA (tpp_type | ID) ID)*)? RIGHT_PARENTHESIS funblock)+;
+functions   : (FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
 
-c_functions : METHODS (level? FUNC (VOID | tpp_type) ID LEFT_PARENTHESIS ((tpp_type | ID) ID (COMMA (tpp_type | ID) ID)*)? RIGHT_PARENTHESIS funblock)+;
+declare_func: (void_type | tpp_type) ID;
+
+param       : (tpp_type | id_type) ID;
+
+void_type   : VOID;
+
+c_functions : METHODS (level? FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 

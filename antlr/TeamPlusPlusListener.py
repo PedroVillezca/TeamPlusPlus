@@ -35,12 +35,39 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_class.
+    def enterTpp_class(self, ctx:TeamPlusPlusParser.Tpp_classContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_class.
+    def exitTpp_class(self, ctx:TeamPlusPlusParser.Tpp_classContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#inherit.
+    def enterInherit(self, ctx:TeamPlusPlusParser.InheritContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#inherit.
+    def exitInherit(self, ctx:TeamPlusPlusParser.InheritContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#tpp_vars.
     def enterTpp_vars(self, ctx:TeamPlusPlusParser.Tpp_varsContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#tpp_vars.
     def exitTpp_vars(self, ctx:TeamPlusPlusParser.Tpp_varsContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#id_type.
+    def enterId_type(self, ctx:TeamPlusPlusParser.Id_typeContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#id_type.
+    def exitId_type(self, ctx:TeamPlusPlusParser.Id_typeContext):
         pass
 
 
@@ -77,6 +104,33 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#functions.
     def exitFunctions(self, ctx:TeamPlusPlusParser.FunctionsContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#declare_func.
+    def enterDeclare_func(self, ctx:TeamPlusPlusParser.Declare_funcContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#declare_func.
+    def exitDeclare_func(self, ctx:TeamPlusPlusParser.Declare_funcContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#param.
+    def enterParam(self, ctx:TeamPlusPlusParser.ParamContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#param.
+    def exitParam(self, ctx:TeamPlusPlusParser.ParamContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#void_type.
+    def enterVoid_type(self, ctx:TeamPlusPlusParser.Void_typeContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#void_type.
+    def exitVoid_type(self, ctx:TeamPlusPlusParser.Void_typeContext):
         pass
 
 
