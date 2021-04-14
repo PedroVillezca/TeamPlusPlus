@@ -15,7 +15,7 @@ tpp_vars    : VARS ((id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
 id_type     : ID;
 
-c_vars      : ATTRIBUTES (level? (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
+c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
 var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
 
@@ -29,7 +29,7 @@ param       : (tpp_type | id_type) ID;
 
 void_type   : VOID;
 
-c_functions : METHODS (level? FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
+c_functions : METHODS (level FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 

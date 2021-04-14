@@ -25,18 +25,30 @@ class UserClass:
     def __repr__(self):
         return f'\nClass\n \tName: {self.name}\n \tParent: {self.parent}\n \tAttributes: {self.attributes}\n \tMethods{self.methods}'
 
+    def set_data_from_parent(self, parent):
+        for (var_name, var_obj) in parent.attributes.items():
+            self.attributes[var_name] = var_obj
+        
+        for (method_name, method_obj) in parent.methods.table.items():
+            self.methods.table[method_name] = method_obj
+
+    def set_parent(self, parent):
+        self.parent = parent.name
+        self.set_data_from_parent(parent)
+
 class Function:
-    def __init__(self, name, return_type = Type.VOID, level = Level.PUBLIC):
+    def __init__(self, name, return_type = Type.VOID, level = Level.PUBLIC, original_class = None):
         self.name = name
         self.level = level
         self.return_type = return_type
+        self.original_class = original_class
         self.variables = dict()
 
     def __repr__(self):
-        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {self.return_type}\n \tVariables{self.variables}'
+        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {self.return_type}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
     
 class Variable:
-    def __init__(self, name, type, type_id = None, level = Level.PUBLIC):
+    def __init__(self, name, type, type_id = None, level = Level.PUBLIC, original_class = None):
         self.name = name
         self.type = type
         if self.type == Type.ID:
@@ -44,9 +56,10 @@ class Variable:
         else:
             self.type_id = None
         self.level = level
+        self.original_class = original_class
         
     def __repr__(self):
-        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type}'
+        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type} Original Class: {self.original_class}\n'
 
 class DirFunc:
     def __init__(self):
@@ -68,9 +81,6 @@ class DirClass:
     def add(self, userClass):
         self.table[userClass.name] = userClass
 
-    def setParent(self, className, parent):
-        self.table[className].parent = parent
-
 class DirGen(TeamPlusPlusListener):
     def __init__(self):
         self.dir_func = DirFunc()
@@ -80,12 +90,12 @@ class DirGen(TeamPlusPlusListener):
         self.current_type = None
         self.current_type_id = ""
         self.current_level = ""
-        self.in_class = None
+        self.in_class = 0
 
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"
 
-    def function_exists(self, function_name, class_name = None):
+    def function_exists(self, function_name, class_name = None):            
         # Search only in the main function directory
         if self.in_class == 0:
             if function_name in self.dir_func.table.keys():
@@ -100,6 +110,18 @@ class DirGen(TeamPlusPlusListener):
             if class_obj.parent is not None:
                 return self.function_exists(function_name, class_obj.parent)
             return False
+
+    def add_function(self, function_name, class_name = None, function_type = Type.VOID, function_level = Level.PUBLIC):
+        self.current_scope = function_name
+
+        if self.function_exists(function_name, class_name):
+            raise Exception(f'Function \'{function_name}\' already declared.')
+        
+        if self.in_class == 0:
+            self.dir_func.add(Function(function_name, function_type, function_level))
+        else:
+            self.dir_class.table[class_name].methods.add(Function(function_name, function_type, function_level, class_name))
+    
             
     def variable_exists(self, variable_name, class_name = None):
 
@@ -128,27 +150,22 @@ class DirGen(TeamPlusPlusListener):
 
     
     # Point 1
-    def enterProgram(self, node):
-        self.current_scope = 'global'
-
-        if self.function_exists(self.current_scope):
-            raise Exception(f'Function \'{self.current_scope}\' already declared.')
-        
-        self.dir_func.add(Function('global'))
+    def enterProgram(self, ctx):
+        self.add_function('global')
         
     # Point 9 
-    def enterClasses(self, node):
+    def enterClasses(self, ctx):
         self.in_class = 1
         
     # Point 11
-    def exitClasses(self, node):
+    def exitClasses(self, ctx):
         self.in_class = 0
         self.current_level = Level.PUBLIC
         self.current_scope = 'global'
         
     # Point 2
-    def enterTpp_class(self, node):
-        self.current_scope = node.ID().getText()
+    def enterTpp_class(self, ctx):
+        self.current_scope = ctx.ID().getText()
         self.current_class = self.current_scope
 
         if self.current_scope in self.dir_class.table.keys():
@@ -157,23 +174,26 @@ class DirGen(TeamPlusPlusListener):
         self.dir_class.add(UserClass(self.current_scope))
         
     # Point 3
-    def exitInherit(self, node):
-        if not node.ID().getText() in self.dir_class.table.keys():
-            raise Exception(f'Class \'{self.current_scope}\' inherits from undeclared class \'{node.ID().getText()}\'.')
+    def exitInherit(self, ctx):
+        parent_name = ctx.ID().getText()
+        if not parent_name in self.dir_class.table.keys():
+            raise Exception(f'Class \'{self.current_scope}\' inherits from undeclared class \'{parent_name}\'.')
         
-        self.dir_class.setParent(self.current_scope, node.ID().getText())
+        current_class = self.dir_class.table[self.current_scope]
+        parent_obj = self.dir_class.table[parent_name]
+        current_class.set_parent(parent_obj)
             
     # Point 6
-    def exitId_type(self, node):
-        if not node.ID().getText() in self.dir_class.table.keys():
-            raise Exception(f'Class \'{node.ID().getText()}\' is undefined.')
+    def exitId_type(self, ctx):
+        if not ctx.ID().getText() in self.dir_class.table.keys():
+            raise Exception(f'Class \'{ctx.ID().getText()}\' is undefined.')
         
         self.current_type = Type.ID
-        self.current_type_id = node.ID().getText()
+        self.current_type_id = ctx.ID().getText()
         
     # Point 7
-    def enterInit(self, node):
-        variable_name = node.ID().getText()
+    def enterInit(self, ctx):
+        variable_name = ctx.ID().getText()
 
         if self.variable_exists(variable_name, self.current_class):
             raise Exception(f'Variable \'{variable_name}\' already declared.')
@@ -181,29 +201,21 @@ class DirGen(TeamPlusPlusListener):
         if self.in_class == 0: # Variable out of classes
             self.dir_func.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
         elif self.current_scope == self.current_class: # Variable is an attribute
-            self.dir_class.table[self.current_class].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
+            self.dir_class.table[self.current_class].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level, self.current_class)
         else: # Variable is local to a method
-            self.dir_class.table[current_class].methods.table[current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
+            self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
 
     # Point 5
-    def exitVoid_type(self, node):
+    def exitVoid_type(self, ctx):
         self.current_type = Type.VOID
-
-    # Point 8
-    def exitDeclare_func(self, node):
-        self.current_scope = node.ID().getText()
-
-        if self.function_exists(self.current_scope, self.current_class):
-            raise Exception(f'Function \'{self.current_scope}\' already declared.')
         
-        if self.in_class == 0:
-            self.dir_func.add(Function(self.current_scope, self.current_type, self.current_level))
-        else:
-            self.dir_class.table[self.current_class].methods.add(Function(self.current_scope, self.current_type, self.current_level))
+    # Point 8
+    def exitDeclare_func(self, ctx):
+        self.add_function(ctx.ID().getText(), self.current_class, self.current_type, self.current_level)
         
     # Point 7
-    def exitParam(self, node):
-        variable_name = node.ID().getText()
+    def exitParam(self, ctx):
+        variable_name = ctx.ID().getText()
 
         if self.variable_exists(variable_name, self.current_class):
             raise Exception(f'Variable \'{variable_name}\' already declared.')
@@ -214,31 +226,25 @@ class DirGen(TeamPlusPlusListener):
             self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
     
     # Point 10
-    def enterMain(self, node):
-        self.current_scope = 'main'
-
-        if self.function_exists(self.current_scope):
-            raise Exception(f'Function \'{self.current_scope}\' already declared.')
-        
-        self.dir_func.add(Function('main'))
+    def enterMain(self, ctx):
+        self.add_function('main')
     
     # Point 5
-    def exitTpp_type(self, node):
-        if node.INT() is not None:
+    def exitTpp_type(self, ctx):
+        if ctx.INT() is not None:
             self.current_type = Type.INT
-        elif node.FLOAT() is not None:
+        elif ctx.FLOAT() is not None:
             self.current_type = Type.FLOAT
-        elif node.CHAR() is not None: 
+        elif ctx.CHAR() is not None: 
             self.current_type = Type.CHAR
         else:
-            raise Exception(f'Type \'{node.getStart().getText()}\' is invalid.')
+            raise Exception(f'Type \'{ctx.getStart().getText()}\' is invalid.')
 
     # Point 4
-    def exitLevel(self, node):
-        if node.PUBLIC() is not None:
+    def exitLevel(self, ctx):
+        if ctx.PUBLIC() is not None:
             self.current_level = Level.PUBLIC
-        elif node.PRIVATE() is not None:
+        elif ctx.PRIVATE() is not None:
             self.current_level = Level.PRIVATE
         else:
-            raise Exception(f'Level \'{node.getStart().getText()}\' is invalid.')
-        
+            raise Exception(f'Level \'{ctx.getStart().getText()}\' is invalid.')

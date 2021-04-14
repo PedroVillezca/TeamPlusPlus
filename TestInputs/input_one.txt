@@ -1,19 +1,29 @@
 program input_one;
 
 class OtherClass {
+    attributes
+        public int h, i;
+        private int s;
     methods
-        private func int getB() {
+        public func int getB() {
+            print(s);
             return(b);
+        }
+
+        private func void OtherClass() {
         }
 };
 
 class myClass inherits OtherClass {
     attributes
         private int a, b;
-        float c, d;
+        public float c, d;
 
     methods
         private func int getA() {
+            vars
+                float a2;
+            
             return(a);
         }
 
