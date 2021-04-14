@@ -23,6 +23,7 @@ def main(argv):
 
     if parser.getNumberOfSyntaxErrors() == 0:
         print("Correcto")
+        print(dir_gen)
         sys.exit()
  
 if __name__ == '__main__':

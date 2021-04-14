@@ -1,13 +1,24 @@
 program input_one;
 
+class OtherClass {
+    methods
+        private func int getB() {
+            return(b);
+        }
+};
+
 class myClass inherits OtherClass {
     attributes
         private int a, b;
-        public float c, d;
+        float c, d;
 
     methods
         private func int getA() {
             return(a);
+        }
+
+        private func int setC(int z) {
+            return(c);
         }
 };
 
