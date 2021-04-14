@@ -18,7 +18,7 @@ class Level(Enum):
 class UserClass:
     def __init__(self, name, parent = None):
         self.name = name
-        self.methods = DirFunc()
+        self.methods = dict()
         self.attributes = dict()
         self.parent = parent
 
@@ -29,8 +29,8 @@ class UserClass:
         for (var_name, var_obj) in parent.attributes.items():
             self.attributes[var_name] = var_obj
         
-        for (method_name, method_obj) in parent.methods.table.items():
-            self.methods.table[method_name] = method_obj
+        for (method_name, method_obj) in parent.methods.items():
+            self.methods[method_name] = method_obj
 
     def set_parent(self, parent):
         self.parent = parent.name
@@ -73,30 +73,10 @@ class Variable:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-class DirFunc:
-    def __init__(self):
-        self.table = dict()
-
-    def __repr__(self):
-        return f"DirFunc: {self.table}"
-
-    def add(self, function):
-        self.table[function.name] = function
-
-class DirClass:
-    def __init__(self):
-        self.table = dict()
-    
-    def __repr__(self):
-        return f"DirClass: {self.table}" 
-
-    def add(self, userClass):
-        self.table[userClass.name] = userClass
-
 class DirGen(TeamPlusPlusListener):
     def __init__(self):
-        self.dir_func = DirFunc()
-        self.dir_class = DirClass()
+        self.dir_func = dict()
+        self.dir_class = dict()
         self.current_scope = ""
         self.current_class = ""
         self.current_type = None
@@ -111,14 +91,14 @@ class DirGen(TeamPlusPlusListener):
     def function_exists(self, function_name, class_name = None):            
         # Search only in the main function directory
         if self.in_class == 0:
-            if function_name in self.dir_func.table.keys():
+            if function_name in self.dir_func.keys():
                 return True
             return False
 
         # Search in the directories of the class and all of its ancestors.
         if self.in_class == 1:
-            class_obj = self.dir_class.table[class_name]
-            if function_name in class_obj.methods.table.keys():
+            class_obj = self.dir_class[class_name]
+            if function_name in class_obj.methods.keys():
                 return True
             return False
 
@@ -129,24 +109,23 @@ class DirGen(TeamPlusPlusListener):
             raise Exception(f'Function \'{new_function.name}\' already declared.')
         
         if self.in_class == 0:
-            self.dir_func.add(new_function)
+            self.dir_func[new_function.name] = new_function
         else:
             new_function.set_level(function_level)
             new_function.set_original_class(class_name)
-            self.dir_class.table[class_name].methods.add(new_function)
+            self.dir_class[class_name].methods[new_function.name] = new_function
     
-            
     def variable_exists(self, variable_name, class_name):
 
         def attribute_search(variable_name, class_name):
-            class_obj = self.dir_class.table[class_name]
+            class_obj = self.dir_class[class_name]
             if variable_name in class_obj.attributes.keys():
                 return True
             return False
 
         # Search outside of classes
         if self.in_class == 0:
-            if variable_name in self.dir_func.table[self.current_scope].variables.keys() or variable_name in self.dir_func.table['global'].variables.keys():
+            if variable_name in self.dir_func[self.current_scope].variables.keys() or variable_name in self.dir_func['global'].variables.keys():
                 return True
             return False
         
@@ -155,7 +134,7 @@ class DirGen(TeamPlusPlusListener):
             if self.in_function == 0: # Variable is an attribute
                 return attribute_search(variable_name, class_name)
             else: # Variable is local to a method
-                if variable_name in self.dir_class.table[class_name].methods.table[self.current_scope].variables.keys():
+                if variable_name in self.dir_class[class_name].methods[self.current_scope].variables.keys():
                     return True
                 return attribute_search(variable_name, class_name)
     
@@ -164,13 +143,13 @@ class DirGen(TeamPlusPlusListener):
             raise Exception(f'Variable \'{new_variable.name}\' already declared.')
         
         if self.in_class == 0: # Variable out of classes
-            self.dir_func.table[self.current_scope].variables[new_variable.name] = new_variable
+            self.dir_func[self.current_scope].variables[new_variable.name] = new_variable
         elif self.in_function == 0: # Variable is an attribute
             new_variable.set_level(variable_level)
             new_variable.set_original_class(class_name)
-            self.dir_class.table[class_name].attributes[new_variable.name] = new_variable
+            self.dir_class[class_name].attributes[new_variable.name] = new_variable
         else: # Variable is local to a method
-            self.dir_class.table[class_name].methods.table[self.current_scope].variables[new_variable.name] = new_variable
+            self.dir_class[class_name].methods[self.current_scope].variables[new_variable.name] = new_variable
     
     # Point 1
     def enterProgram(self, ctx):
@@ -192,24 +171,25 @@ class DirGen(TeamPlusPlusListener):
         self.current_scope = ctx.ID().getText()
         self.current_class = self.current_scope
 
-        if self.current_scope in self.dir_class.table.keys():
+        if self.current_scope in self.dir_class.keys():
             raise Exception(f'Class \'{self.current_scope}\' already declared.')
         
-        self.dir_class.add(UserClass(self.current_scope))
+        new_class = UserClass(self.current_scope)
+        self.dir_class[new_class.name] = new_class
         
     # Point 3
     def exitInherit(self, ctx):
         parent_name = ctx.ID().getText()
-        if not parent_name in self.dir_class.table.keys():
+        if not parent_name in self.dir_class.keys():
             raise Exception(f'Class \'{self.current_scope}\' inherits from undeclared class \'{parent_name}\'.')
         
-        current_class = self.dir_class.table[self.current_scope]
-        parent_obj = self.dir_class.table[parent_name]
+        current_class = self.dir_class[self.current_scope]
+        parent_obj = self.dir_class[parent_name]
         current_class.set_parent(parent_obj)
             
     # Point 6
     def exitId_type(self, ctx):
-        if not ctx.ID().getText() in self.dir_class.table.keys():
+        if not ctx.ID().getText() in self.dir_class.keys():
            raise Exception(f'Class \'{ctx.ID().getText()}\' is undefined.')
         
         self.current_type = Type.ID
