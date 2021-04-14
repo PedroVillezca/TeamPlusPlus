@@ -25,6 +25,7 @@ class myClass inherits OtherClass {
         private func int getA() {
             vars
                 float a2;
+                OtherClass oth;
             
             return(a);
         }

@@ -37,7 +37,7 @@ class UserClass:
         self.set_data_from_parent(parent)
 
 class Function:
-    def __init__(self, name, return_type = Type.VOID, level = Level.PUBLIC, original_class = None):
+    def __init__(self, name, return_type = Type.VOID, level = None, original_class = None):
         self.name = name
         self.level = level
         self.return_type = return_type
@@ -47,8 +47,14 @@ class Function:
     def __repr__(self):
         return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {self.return_type}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
     
+    def set_level(self, level):
+        self.level = level
+
+    def set_original_class(self, original_class):
+        self.original_class = original_class
+
 class Variable:
-    def __init__(self, name, type, type_id = None, level = Level.PUBLIC, original_class = None):
+    def __init__(self, name, type, type_id = None, level = None, original_class = None):
         self.name = name
         self.type = type
         if self.type == Type.ID:
@@ -59,7 +65,13 @@ class Variable:
         self.original_class = original_class
         
     def __repr__(self):
-        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type} Original Class: {self.original_class}\n'
+        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type} Type ID: {self.type_id} Original Class: {self.original_class}\n'
+
+    def set_level(self, level):
+        self.level = level
+
+    def set_original_class(self, original_class):
+        self.original_class = original_class
 
 class DirFunc:
     def __init__(self):
@@ -110,26 +122,26 @@ class DirGen(TeamPlusPlusListener):
                 return True
             return False
 
-    def add_function(self, function_name, class_name = None, function_type = Type.VOID, function_level = Level.PUBLIC):
-        self.current_scope = function_name
+    def add_function(self, new_function, class_name = None, function_level = None):
+        self.current_scope = new_function.name
 
-        if self.function_exists(function_name, class_name):
-            raise Exception(f'Function \'{function_name}\' already declared.')
+        if self.function_exists(new_function.name, class_name):
+            raise Exception(f'Function \'{new_function.name}\' already declared.')
         
         if self.in_class == 0:
-            self.dir_func.add(Function(function_name, function_type, function_level))
+            self.dir_func.add(new_function)
         else:
-            self.dir_class.table[class_name].methods.add(Function(function_name, function_type, function_level, class_name))
+            new_function.set_level(function_level)
+            new_function.set_original_class(class_name)
+            self.dir_class.table[class_name].methods.add(new_function)
     
             
-    def variable_exists(self, variable_name, class_name = None):
+    def variable_exists(self, variable_name, class_name):
 
         def attribute_search(variable_name, class_name):
             class_obj = self.dir_class.table[class_name]
             if variable_name in class_obj.attributes.keys():
                 return True
-            if class_obj.parent is not None:
-                return attribute_search(variable_name, class_obj.parent)
             return False
 
         # Search outside of classes
@@ -140,17 +152,30 @@ class DirGen(TeamPlusPlusListener):
         
         # Search inside classes
         if self.in_class == 1:
-            if self.current_scope == self.current_class: # Variable is an attribute
+            if self.in_function == 0: # Variable is an attribute
                 return attribute_search(variable_name, class_name)
             else: # Variable is local to a method
-                if variable_name in self.dir_class.table[self.current_class].methods.table[self.current_scope].variables.keys():
+                if variable_name in self.dir_class.table[class_name].methods.table[self.current_scope].variables.keys():
                     return True
                 return attribute_search(variable_name, class_name)
-
+    
+    def add_variable(self, new_variable, class_name, variable_level = None):
+        if self.variable_exists(new_variable.name, class_name):
+            raise Exception(f'Variable \'{new_variable.name}\' already declared.')
+        
+        if self.in_class == 0: # Variable out of classes
+            self.dir_func.table[self.current_scope].variables[new_variable.name] = new_variable
+        elif self.in_function == 0: # Variable is an attribute
+            new_variable.set_level(variable_level)
+            new_variable.set_original_class(class_name)
+            self.dir_class.table[class_name].attributes[new_variable.name] = new_variable
+        else: # Variable is local to a method
+            self.dir_class.table[class_name].methods.table[self.current_scope].variables[new_variable.name] = new_variable
     
     # Point 1
     def enterProgram(self, ctx):
-        self.add_function('global')
+        new_function = Function('global')
+        self.add_function(new_function)
         
     # Point 9 
     def enterClasses(self, ctx):
@@ -185,25 +210,17 @@ class DirGen(TeamPlusPlusListener):
     # Point 6
     def exitId_type(self, ctx):
         if not ctx.ID().getText() in self.dir_class.table.keys():
-            raise Exception(f'Class \'{ctx.ID().getText()}\' is undefined.')
+           raise Exception(f'Class \'{ctx.ID().getText()}\' is undefined.')
         
         self.current_type = Type.ID
-        self.current_type_id = ctx.ID().getText()
-        
+        self.current_type_id = ctx.ID().getText() 
+    
     # Point 7
     def enterInit(self, ctx):
         variable_name = ctx.ID().getText()
-
-        if self.variable_exists(variable_name, self.current_class):
-            raise Exception(f'Variable \'{variable_name}\' already declared.')
+        new_variable = Variable(variable_name, self.current_type, self.current_type_id)
+        self.add_variable(new_variable, self.current_class, self.current_level)
         
-        if self.in_class == 0: # Variable out of classes
-            self.dir_func.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
-        elif self.in_function == 0: # Variable is an attribute
-            self.dir_class.table[self.current_class].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level, self.current_class)
-        else: # Variable is local to a method
-            self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
-
     # Point 5
     def exitVoid_type(self, ctx):
         self.current_type = Type.VOID
@@ -214,27 +231,23 @@ class DirGen(TeamPlusPlusListener):
     
     # Point 8
     def exitDeclare_func(self, ctx):
-        self.add_function(ctx.ID().getText(), self.current_class, self.current_type, self.current_level)
+        new_function = Function(ctx.ID().getText(), self.current_type)
+        self.add_function(new_function, self.current_class, self.current_level)
         
     # Point 7
     def exitParam(self, ctx):
         variable_name = ctx.ID().getText()
-
-        if self.variable_exists(variable_name, self.current_class):
-            raise Exception(f'Variable \'{variable_name}\' already declared.')
+        new_variable = Variable(variable_name, self.current_type, self.current_type_id)
+        self.add_variable(new_variable, self.current_class)
         
-        if self.in_class == 0: # Variable out of classes
-            self.dir_func.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
-        else: # Variable is local to a method
-            self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
-    
     # Point 13
     def exitFunblock(self, ctx):
         self.in_function = 0
 
     # Point 10
     def enterMain(self, ctx):
-        self.add_function('main')
+        new_function = Function('main')
+        self.add_function(new_function)
     
     # Point 5
     def exitTpp_type(self, ctx):
