@@ -10,7 +10,9 @@ class OtherClass {
             return(b);
         }
 
-        private func void OtherClass() {
+        private func void OtherClass(int other) {
+            vars 
+                char re;
         }
 };
 

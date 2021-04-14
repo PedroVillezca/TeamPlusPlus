@@ -91,6 +91,7 @@ class DirGen(TeamPlusPlusListener):
         self.current_type_id = ""
         self.current_level = ""
         self.in_class = 0
+        self.in_function = 0
 
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"
@@ -107,8 +108,6 @@ class DirGen(TeamPlusPlusListener):
             class_obj = self.dir_class.table[class_name]
             if function_name in class_obj.methods.table.keys():
                 return True
-            if class_obj.parent is not None:
-                return self.function_exists(function_name, class_obj.parent)
             return False
 
     def add_function(self, function_name, class_name = None, function_type = Type.VOID, function_level = Level.PUBLIC):
@@ -200,7 +199,7 @@ class DirGen(TeamPlusPlusListener):
         
         if self.in_class == 0: # Variable out of classes
             self.dir_func.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
-        elif self.current_scope == self.current_class: # Variable is an attribute
+        elif self.in_function == 0: # Variable is an attribute
             self.dir_class.table[self.current_class].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level, self.current_class)
         else: # Variable is local to a method
             self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
@@ -208,7 +207,11 @@ class DirGen(TeamPlusPlusListener):
     # Point 5
     def exitVoid_type(self, ctx):
         self.current_type = Type.VOID
-        
+    
+    # Point 12
+    def enterDeclare_func(self, ctx):
+        self.in_function = 1
+    
     # Point 8
     def exitDeclare_func(self, ctx):
         self.add_function(ctx.ID().getText(), self.current_class, self.current_type, self.current_level)
@@ -225,6 +228,10 @@ class DirGen(TeamPlusPlusListener):
         else: # Variable is local to a method
             self.dir_class.table[self.current_class].methods.table[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, self.current_level)
     
+    # Point 13
+    def exitFunblock(self, ctx):
+        self.in_function = 0
+
     # Point 10
     def enterMain(self, ctx):
         self.add_function('main')
