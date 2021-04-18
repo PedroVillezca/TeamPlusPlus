@@ -1,0 +1,52 @@
+program input_one;
+
+class OtherClass {
+    attributes
+        public int h, i;
+        private int s;
+    methods
+        public func int getB() {
+            print(s);
+            return(b);
+        }
+
+        private func void OtherClass(int other) {
+            vars 
+                char re;
+        }
+};
+
+class myClass inherits OtherClass {
+    attributes
+        private int a, b;
+        public float c, d;
+
+    methods
+        private func int getA() {
+            vars
+                float a2;
+                OtherClass oth;
+            
+            return(a);
+        }
+
+        private func int setC(int z) {
+            return(c);
+        }
+};
+
+vars
+    float z;
+
+func void diff(float x, float y) {
+    z = y - x;
+    print(z);
+}
+
+main() {
+    vars
+        char e[2];
+        myClass obj;
+    
+    print("Hello World!");
+}
