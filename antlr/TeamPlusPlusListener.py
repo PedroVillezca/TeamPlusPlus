@@ -89,6 +89,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#attr_call.
+    def enterAttr_call(self, ctx:TeamPlusPlusParser.Attr_callContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#attr_call.
+    def exitAttr_call(self, ctx:TeamPlusPlusParser.Attr_callContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init.
     def enterInit(self, ctx:TeamPlusPlusParser.InitContext):
         pass
@@ -206,6 +215,24 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#func_name.
+    def enterFunc_name(self, ctx:TeamPlusPlusParser.Func_nameContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#func_name.
+    def exitFunc_name(self, ctx:TeamPlusPlusParser.Func_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#method_call.
+    def enterMethod_call(self, ctx:TeamPlusPlusParser.Method_callContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#method_call.
+    def exitMethod_call(self, ctx:TeamPlusPlusParser.Method_callContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#tpp_return.
     def enterTpp_return(self, ctx:TeamPlusPlusParser.Tpp_returnContext):
         pass
@@ -305,12 +332,30 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#expression_A.
-    def enterExpression_A(self, ctx:TeamPlusPlusParser.Expression_AContext):
+    # Enter a parse tree produced by TeamPlusPlusParser#orop.
+    def enterOrop(self, ctx:TeamPlusPlusParser.OropContext):
         pass
 
-    # Exit a parse tree produced by TeamPlusPlusParser#expression_A.
-    def exitExpression_A(self, ctx:TeamPlusPlusParser.Expression_AContext):
+    # Exit a parse tree produced by TeamPlusPlusParser#orop.
+    def exitOrop(self, ctx:TeamPlusPlusParser.OropContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#expressio.
+    def enterExpressio(self, ctx:TeamPlusPlusParser.ExpressioContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#expressio.
+    def exitExpressio(self, ctx:TeamPlusPlusParser.ExpressioContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#andop.
+    def enterAndop(self, ctx:TeamPlusPlusParser.AndopContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#andop.
+    def exitAndop(self, ctx:TeamPlusPlusParser.AndopContext):
         pass
 
 
@@ -320,6 +365,15 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#express.
     def exitExpress(self, ctx:TeamPlusPlusParser.ExpressContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#rel_exp.
+    def enterRel_exp(self, ctx:TeamPlusPlusParser.Rel_expContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#rel_exp.
+    def exitRel_exp(self, ctx:TeamPlusPlusParser.Rel_expContext):
         pass
 
 
@@ -347,6 +401,33 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#factor.
     def exitFactor(self, ctx:TeamPlusPlusParser.FactorContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#factor_elem.
+    def enterFactor_elem(self, ctx:TeamPlusPlusParser.Factor_elemContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#factor_elem.
+    def exitFactor_elem(self, ctx:TeamPlusPlusParser.Factor_elemContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#fake_bottom.
+    def enterFake_bottom(self, ctx:TeamPlusPlusParser.Fake_bottomContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#fake_bottom.
+    def exitFake_bottom(self, ctx:TeamPlusPlusParser.Fake_bottomContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#unop.
+    def enterUnop(self, ctx:TeamPlusPlusParser.UnopContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#unop.
+    def exitUnop(self, ctx:TeamPlusPlusParser.UnopContext):
         pass
 
 
@@ -383,6 +464,33 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#value.
     def exitValue(self, ctx:TeamPlusPlusParser.ValueContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#val_var.
+    def enterVal_var(self, ctx:TeamPlusPlusParser.Val_varContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#val_var.
+    def exitVal_var(self, ctx:TeamPlusPlusParser.Val_varContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#val_cte.
+    def enterVal_cte(self, ctx:TeamPlusPlusParser.Val_cteContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#val_cte.
+    def exitVal_cte(self, ctx:TeamPlusPlusParser.Val_cteContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#val_funcall.
+    def enterVal_funcall(self, ctx:TeamPlusPlusParser.Val_funcallContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#val_funcall.
+    def exitVal_funcall(self, ctx:TeamPlusPlusParser.Val_funcallContext):
         pass
 
 

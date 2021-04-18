@@ -17,7 +17,9 @@ id_type     : ID;
 
 c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
-var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
+var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
+
+attr_call   : DOT var;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
 
@@ -43,7 +45,11 @@ statement   : (assignment | funcall SEMICOLON | tpp_return | read | tpp_print | 
 
 assignment  : var ASSIGN expression SEMICOLON;
 
-funcall     : (var DOT)? ID LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
+funcall     : (method_call)? func_name LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
+
+func_name   : ID;
+
+method_call : var DOT;
 
 tpp_return  : RETURN LEFT_PARENTHESIS exp RIGHT_PARENTHESIS SEMICOLON;
 
@@ -65,17 +71,29 @@ wloop       : WHILE LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block;
 
 floop       : FROM var ASSIGN exp TO exp block;
 
-expression  : express expression_A | NOT expression expression_A;
+expression  : expressio (orop expressio)*;
 
-expression_A: ((AND | OR) expression expression_A)?;
+orop        : OR;
 
-express     : exp (relop exp)?;
+expressio   : express (andop express)*;
+
+andop       : AND;
+
+express     : exp (relop rel_exp)?;
+
+rel_exp     : exp;
 
 exp         : term (sumop term)*;
 
 term        : factor (mulop factor)*;
 
-factor      : (LEFT_PARENTHESIS expression RIGHT_PARENTHESIS | sumop? value);
+factor      : unop? factor_elem;
+
+factor_elem : (fake_bottom | value);
+
+fake_bottom : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+unop        : (PLUS | MINUS | NOT);
 
 relop       : (EQUALS | GREATER_THAN | LESS_THAN | GREATER_EQUALS | LESS_EQUALS | DIFFERENT);
 
@@ -83,7 +101,13 @@ sumop       : (PLUS | MINUS);
 
 mulop       : (MULT | DIV);
 
-value       : (var | CTE_INT | CTE_FLOAT | CTE_CHAR | funcall);
+value       : (val_var | val_cte | val_funcall);
+
+val_var     : var;
+
+val_cte     : CTE_INT | CTE_FLOAT | CTE_CHAR;
+
+val_funcall : funcall;
 
 // Regular Definition
 PROGRAM     : 'program';
