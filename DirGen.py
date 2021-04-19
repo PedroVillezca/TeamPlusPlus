@@ -2,18 +2,7 @@ from antlr4 import *
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
-from enum import Enum
-
-class Type(Enum):
-    INT = 0
-    FLOAT = 1
-    CHAR = 2
-    VOID = 3
-    ID = 4
-
-class Level(Enum):
-    PUBLIC = 0
-    PRIVATE = 1
+from util.Enums import Type, Level
 
 class UserClass:
     def __init__(self, name, parent = None):
