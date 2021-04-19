@@ -1,7 +1,3 @@
-from antlr4 import *
-from antlr.TeamPlusPlusListener import TeamPlusPlusListener
-from antlr.TeamPlusPlusParser import TeamPlusPlusParser
-
 from util.Enums import Type, Level
 
 class UserClass:
@@ -62,7 +58,7 @@ class Variable:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-class DirGen(TeamPlusPlusListener):
+class DirGen:
     def __init__(self):
         self.dir_func = dict()
         self.dir_class = dict()
