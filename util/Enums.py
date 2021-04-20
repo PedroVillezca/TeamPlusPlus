@@ -28,4 +28,5 @@ class Operator(IntEnum):
     NEG = 13
     NOT = 14
     ASS = 15
+    FF = 16
     

@@ -1,5 +1,6 @@
 class Stack:
-    elements = []
+    def __init__(self):
+        self.elements = []
     
     def push(self, item):
         self.elements.append(item)
@@ -21,7 +22,8 @@ class Stack:
 
 
 class Queue:
-    elements = []
+    def __init__(self):
+        self.elements = []
     
     def push(self, item):
         self.elements.append(item)
