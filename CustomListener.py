@@ -36,7 +36,7 @@ class CustomListener(TeamPlusPlusListener):
         result_type = semantic_cube[left_operand.variable_type][right_operand.variable_type][top_operator]
 
         if result_type is None:
-            raise Exception(f"Invalid operand types \'{left_operand.variable_type}\' and \'{right_operand.variable_type}\' for operator {self.quadruple_list.top_operator()}.")
+            raise Exception(f"Invalid operand types \'{Type(left_operand.variable_type).name}\' and \'{Type(right_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
         
         result_name = self.get_temp(result_type)
         
@@ -200,7 +200,7 @@ class CustomListener(TeamPlusPlusListener):
             left_operand = self.quadruple_list.pop_operand()
         
             if left_operand.variable_type != Type.INT and left_operand.variable_type != Type.FLOAT:
-                raise Exception(f"Invalid operand type \'{left_operand.variable_type}\' for operator {self.quadruple_list.top_operator()}.")
+                raise Exception(f"Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
         
             if left_operand.variable_type == Type.INT or top_operator == Operator.NOT:
                 result_name = self.temp_ints.pop(0)
@@ -314,19 +314,19 @@ class CustomListener(TeamPlusPlusListener):
     # exitAssign_op: Point 35
     def exitAssign_op(self, ctx):
         if ctx.ASSIGN() is not None:
-            self.quadruple_list.push_operator(Operator.ASS)
+            self.quadruple_list.push_operator(Operator.ASSIGN)
         else:
             raise Exception(f"Invalid ASSIGN.")
         
     # exitAssign_exp: Point 36
     def exitAssign_exp(self, ctx):
         top_operator = self.quadruple_list.top_operator()
-        if top_operator == Operator.ASS:
+        if top_operator == Operator.ASSIGN:
             left_operand = self.quadruple_list.pop_operand()
             result = self.quadruple_list.pop_operand()
         
             if left_operand.variable_type != result.variable_type:
-                raise Exception(f"Type mismatch. Cannot assign value of type \'{left_operand.variable_type}\' to variable of type \'{result.variable_type}\'.")
+                raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
 
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, None, result.variable_name)
     
@@ -354,7 +354,7 @@ class CustomListener(TeamPlusPlusListener):
             func_obj = self.dir_gen.function_search(self.dir_gen.current_scope, self.dir_gen.current_class)
         
             if result.variable_type != func_obj.return_type:
-                raise Exception(f"Type mismatch. Cannot return value of type \'{result.variable_type}\' from function with return type \'{func_obj.return_type}\'.")
+                raise Exception(f"Type mismatch. Cannot return value of type \'{Type(result.variable_type).name}\' from function with return type \'{Type(func_obj.return_type).name}\'.")
             
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
         

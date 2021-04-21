@@ -1,4 +1,5 @@
 from util.DataStructures import Stack, Queue
+from util.Enums import Type, Operator
 
 class Operand:
     def __init__(self, variable_name, variable_type):
@@ -6,7 +7,7 @@ class Operand:
         self.variable_type = variable_type
 
     def __repr__(self):
-        return f'\nOperand \tName: {self.variable_name} \tType: {self.variable_type}\n'
+        return f'\nOperand \tName: {self.variable_name} \tType: {Type(self.variable_type).name}\n'
 
 class Quadruple:
     def __init__(self, operator, left_operand, right_operand, result):
@@ -16,7 +17,7 @@ class Quadruple:
         self.result = result
     
     def __repr__(self):
-        return f'\nOperator: {self.operator}\n Left Operand: {self.left_operand}\n Right Operand: {self.right_operand}\n Result: {self.result}\n'
+        return f'\nOperator: {Operator(self.operator).name}\n Left Operand: {self.left_operand}\n Right Operand: {self.right_operand}\n Result: {self.result}\n'
 
 class QuadrupleList:
     quadruple_list = Queue()

@@ -27,7 +27,7 @@ class Operator(IntEnum):
     POS = 12
     NEG = 13
     NOT = 14
-    ASS = 15
+    ASSIGN = 15
     FF = 16
     RETURN = 17
     READ = 18

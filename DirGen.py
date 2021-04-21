@@ -30,7 +30,7 @@ class Function:
         self.variables = dict()
 
     def __repr__(self):
-        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {self.return_type}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
+        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
     
     def set_level(self, level):
         self.level = level
@@ -50,7 +50,7 @@ class Variable:
         self.original_class = original_class
         
     def __repr__(self):
-        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type} Type ID: {self.type_id} Original Class: {self.original_class}\n'
+        return f'\tVariable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}\n'
 
     def set_level(self, level):
         self.level = level
@@ -238,5 +238,3 @@ class DirGen:
     # Point 13
     def exitFunblock(self, ctx):
         self.in_function = 0
-
-    
