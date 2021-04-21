@@ -4,7 +4,7 @@ from antlr.TeamPlusPlusLexer import TeamPlusPlusLexer
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
-from CustomListener import CustomListener
+from src.CustomListener import CustomListener
 
 def main(argv):
     input_stream = FileStream(argv[1])

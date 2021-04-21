@@ -2,10 +2,10 @@ from antlr4 import *
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
-from DirGen import DirGen
-from QuadrupleList import QuadrupleList, Operand
+from src.DirGen import DirGen
+from src.QuadrupleList import QuadrupleList, Operand
 from util.Enums import Operator, Type, Level
-from SemanticCube import semantic_cube
+from util.SemanticCube import semantic_cube
 
 class CustomListener(TeamPlusPlusListener):
     dir_gen = DirGen()
