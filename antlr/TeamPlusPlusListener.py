@@ -107,6 +107,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#init_id.
+    def enterInit_id(self, ctx:TeamPlusPlusParser.Init_idContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#init_id.
+    def exitInit_id(self, ctx:TeamPlusPlusParser.Init_idContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#functions.
     def enterFunctions(self, ctx:TeamPlusPlusParser.FunctionsContext):
         pass
@@ -197,12 +206,39 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#var_stmt.
+    def enterVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#var_stmt.
+    def exitVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#assignment.
     def enterAssignment(self, ctx:TeamPlusPlusParser.AssignmentContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#assignment.
     def exitAssignment(self, ctx:TeamPlusPlusParser.AssignmentContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#assign_exp.
+    def enterAssign_exp(self, ctx:TeamPlusPlusParser.Assign_expContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#assign_exp.
+    def exitAssign_exp(self, ctx:TeamPlusPlusParser.Assign_expContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#assign_op.
+    def enterAssign_op(self, ctx:TeamPlusPlusParser.Assign_opContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#assign_op.
+    def exitAssign_op(self, ctx:TeamPlusPlusParser.Assign_opContext):
         pass
 
 
@@ -251,12 +287,48 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#read_var.
+    def enterRead_var(self, ctx:TeamPlusPlusParser.Read_varContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#read_var.
+    def exitRead_var(self, ctx:TeamPlusPlusParser.Read_varContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#tpp_print.
     def enterTpp_print(self, ctx:TeamPlusPlusParser.Tpp_printContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#tpp_print.
     def exitTpp_print(self, ctx:TeamPlusPlusParser.Tpp_printContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#print_val.
+    def enterPrint_val(self, ctx:TeamPlusPlusParser.Print_valContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#print_val.
+    def exitPrint_val(self, ctx:TeamPlusPlusParser.Print_valContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#print_exp.
+    def enterPrint_exp(self, ctx:TeamPlusPlusParser.Print_expContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#print_exp.
+    def exitPrint_exp(self, ctx:TeamPlusPlusParser.Print_expContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#print_string.
+    def enterPrint_string(self, ctx:TeamPlusPlusParser.Print_stringContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#print_string.
+    def exitPrint_string(self, ctx:TeamPlusPlusParser.Print_stringContext):
         pass
 
 

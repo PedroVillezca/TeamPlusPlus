@@ -72,8 +72,8 @@ class CustomListener(TeamPlusPlusListener):
         self.dir_gen.exitId_type(ctx)
     
     # Point 7
-    def enterInit(self, ctx):
-        self.dir_gen.enterInit(ctx)
+    def enterInit_id(self, ctx):
+        self.dir_gen.enterInit_id(ctx)
 
     # Point 7
     def exitParam(self, ctx):
@@ -175,7 +175,7 @@ class CustomListener(TeamPlusPlusListener):
         elif self.current_type == Type.CHAR:
             self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
         else:
-            raise Exception(f"Functions can not return objects.")
+            raise Exception(f"Functions can not return non-primitive types to be used in expressions.")
         
     # exitValue: Point 20
     def exitValue(self, ctx):

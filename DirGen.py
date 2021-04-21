@@ -199,7 +199,7 @@ class DirGen:
         self.current_type_id = ctx.ID().getText() 
     
     # Point 7
-    def enterInit(self, ctx):
+    def enterInit_id(self, ctx):
         variable_name = ctx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class, self.current_level)
