@@ -29,4 +29,7 @@ class Operator(IntEnum):
     NOT = 14
     ASS = 15
     FF = 16
+    RETURN = 17
+    READ = 18
+    PRINT = 19
     

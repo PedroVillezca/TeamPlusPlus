@@ -107,12 +107,12 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#init_id.
-    def enterInit_id(self, ctx:TeamPlusPlusParser.Init_idContext):
+    # Enter a parse tree produced by TeamPlusPlusParser#init_assign.
+    def enterInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
         pass
 
-    # Exit a parse tree produced by TeamPlusPlusParser#init_id.
-    def exitInit_id(self, ctx:TeamPlusPlusParser.Init_idContext):
+    # Exit a parse tree produced by TeamPlusPlusParser#init_assign.
+    def exitInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
         pass
 
 

@@ -21,9 +21,9 @@ var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
 attr_call   : DOT var;
 
-init        : init_id (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (assign_exp)?;
+init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? init_assign;
 
-init_id     : ID;
+init_assign : (assign_exp)?;
 
 functions   : (FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
 

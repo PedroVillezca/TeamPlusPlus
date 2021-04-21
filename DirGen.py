@@ -88,7 +88,7 @@ class DirGen:
 
         # Search in the directories of the class and all of its ancestors.
         if self.in_class == 1:
-            return self.method_search(function_name, class_name) 
+            return self.method_search(function_name, class_name)
 
     def add_function(self, new_function, class_name = None, function_level = None):
         self.current_scope = new_function.name
@@ -199,7 +199,7 @@ class DirGen:
         self.current_type_id = ctx.ID().getText() 
     
     # Point 7
-    def enterInit_id(self, ctx):
+    def enterInit(self, ctx):
         variable_name = ctx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class, self.current_level)

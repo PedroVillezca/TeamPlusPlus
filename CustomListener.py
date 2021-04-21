@@ -72,8 +72,8 @@ class CustomListener(TeamPlusPlusListener):
         self.dir_gen.exitId_type(ctx)
     
     # Point 7
-    def enterInit_id(self, ctx):
-        self.dir_gen.enterInit_id(ctx)
+    def enterInit(self, ctx):
+        self.dir_gen.enterInit(ctx)
 
     # Point 7
     def exitParam(self, ctx):
@@ -197,19 +197,19 @@ class CustomListener(TeamPlusPlusListener):
     def exitFactor_elem(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.POS or top_operator == Operator.NEG or top_operator == Operator.NOT:
-            right_operand = self.quadruple_list.pop_operand()
+            left_operand = self.quadruple_list.pop_operand()
         
-            if right_operand.variable_type != Type.INT and right_operand.variable_type != Type.FLOAT:
-                raise Exception(f"Invalid operand type \'{right_operand.variable_type}\' for operator {self.quadruple_list.top_operator()}.")
+            if left_operand.variable_type != Type.INT and left_operand.variable_type != Type.FLOAT:
+                raise Exception(f"Invalid operand type \'{left_operand.variable_type}\' for operator {self.quadruple_list.top_operator()}.")
         
-            if right_operand.variable_type == Type.INT or top_operator == Operator.NOT:
+            if left_operand.variable_type == Type.INT or top_operator == Operator.NOT:
                 result_name = self.temp_ints.pop(0)
                 result_type = Type.INT
             else:
                 result_name = self.temp_floats.pop(0)
                 result_type = Type.FLOAT
 
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, right_operand.variable_name, result_name)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, None, result_name)
             self.quadruple_list.push_operand(result_name, result_type)
         
     # enterFake_bottom: Point 23
@@ -300,3 +300,97 @@ class CustomListener(TeamPlusPlusListener):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.OR:
             self.generate_quadruple(top_operator)
+
+
+
+    # enterAssign_exp: Point 16
+    def enterAssign_exp(self, ctx):
+        self.quadruple_list.push_operand(self.caller_name, self.current_type)
+
+    # exitVar_stmt: Point 20
+    def exitVar_stmt(self, ctx):
+        self.caller_name = ""
+        
+    # exitAssign_op: Point 35
+    def exitAssign_op(self, ctx):
+        if ctx.ASSIGN() is not None:
+            self.quadruple_list.push_operator(Operator.ASS)
+        else:
+            raise Exception(f"Invalid ASSIGN.")
+        
+    # exitAssign_exp: Point 36
+    def exitAssign_exp(self, ctx):
+        top_operator = self.quadruple_list.top_operator()
+        if top_operator == Operator.ASS:
+            left_operand = self.quadruple_list.pop_operand()
+            result = self.quadruple_list.pop_operand()
+        
+            if left_operand.variable_type != result.variable_type:
+                raise Exception(f"Type mismatch. Cannot assign value of type \'{left_operand.variable_type}\' to variable of type \'{result.variable_type}\'.")
+
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, None, result.variable_name)
+    
+    # enterInit_id: Point 37
+    def enterInit_assign(self, ctx):
+        self.caller_name += ctx.parentCtx.ID().getText()
+        self.current_type = self.dir_gen.current_type
+        
+    # exitInit_assign: Point 38
+    def exitInit_assign(self, ctx):
+       self.caller_name = ""
+        
+    # enterTpp_return: Point 39
+    def enterTpp_return(self, ctx):
+        if ctx.RETURN() is not None:
+            self.quadruple_list.push_operator(Operator.RETURN)
+        else:
+            raise Exception(f"Invalid RETURN.")
+        
+    # exitTpp_return: Point 40
+    def exitTpp_return(self, ctx):
+        top_operator = self.quadruple_list.top_operator()
+        if top_operator == Operator.RETURN:
+            result = self.quadruple_list.pop_operand()
+            func_obj = self.dir_gen.function_search(self.dir_gen.current_scope, self.dir_gen.current_class)
+        
+            if result.variable_type != func_obj.return_type:
+                raise Exception(f"Type mismatch. Cannot return value of type \'{result.variable_type}\' from function with return type \'{func_obj.return_type}\'.")
+            
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+        
+    # enterRead_var: Point 41
+    def enterRead_var(self, ctx):
+        if ctx.parentCtx.READ() is not None:
+            self.quadruple_list.push_operator(Operator.READ)
+        else:
+            raise Exception(f"Invalid READ.")
+        
+    # exitRead_var: Point 42
+    def exitRead_var(self, ctx):
+        top_operator = self.quadruple_list.top_operator()
+        if top_operator == Operator.READ:
+            result = Operand(self.caller_name, self.current_type)
+            self.caller_name = ""
+
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+        
+    # enterPrint_val: Point 43
+    def enterPrint_val(self, ctx):
+        if ctx.parentCtx.PRINT() is not None:
+            self.quadruple_list.push_operator(Operator.PRINT)
+        else:
+            raise Exception(f"Invalid PRINT.")
+        
+    # exitPrint_exp: Point 44
+    def exitPrint_exp(self, ctx):
+        top_operator = self.quadruple_list.top_operator()
+        if top_operator == Operator.PRINT:
+            result = self.quadruple_list.pop_operand()
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+        
+    # exitPrint_string: Point 45
+    def exitPrint_string(self, ctx):
+        top_operator = self.quadruple_list.top_operator()
+        if top_operator == Operator.PRINT:
+            result = ctx.CTE_STRING().getText()
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result)
