@@ -1,19 +1,4 @@
-from antlr4 import *
-from antlr.TeamPlusPlusListener import TeamPlusPlusListener
-from antlr.TeamPlusPlusParser import TeamPlusPlusParser
-
-from enum import Enum
-
-class Type(Enum):
-    INT = 0
-    FLOAT = 1
-    CHAR = 2
-    VOID = 3
-    ID = 4
-
-class Level(Enum):
-    PUBLIC = 0
-    PRIVATE = 1
+from util.Enums import Type, Level
 
 class UserClass:
     def __init__(self, name, parent = None):
@@ -45,7 +30,7 @@ class Function:
         self.variables = dict()
 
     def __repr__(self):
-        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {self.return_type}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
+        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
     
     def set_level(self, level):
         self.level = level
@@ -65,7 +50,7 @@ class Variable:
         self.original_class = original_class
         
     def __repr__(self):
-        return f'\tVariable Name: {self.name} Level: {self.level} Type: {self.type} Type ID: {self.type_id} Original Class: {self.original_class}\n'
+        return f'\tVariable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}\n'
 
     def set_level(self, level):
         self.level = level
@@ -73,7 +58,7 @@ class Variable:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-class DirGen(TeamPlusPlusListener):
+class DirGen:
     def __init__(self):
         self.dir_func = dict()
         self.dir_class = dict()
@@ -88,24 +73,27 @@ class DirGen(TeamPlusPlusListener):
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"
 
-    def function_exists(self, function_name, class_name = None):            
+    def method_search(self, function_name, class_name):
+        class_obj = self.dir_class[class_name]
+        if function_name in class_obj.methods.keys():
+            return class_obj.methods[function_name]
+        return None
+
+    def function_search(self, function_name, class_name = None):            
         # Search only in the main function directory
         if self.in_class == 0:
             if function_name in self.dir_func.keys():
-                return True
-            return False
+                return self.dir_func[function_name]
+            return None
 
         # Search in the directories of the class and all of its ancestors.
         if self.in_class == 1:
-            class_obj = self.dir_class[class_name]
-            if function_name in class_obj.methods.keys():
-                return True
-            return False
+            return self.method_search(function_name, class_name)
 
     def add_function(self, new_function, class_name = None, function_level = None):
         self.current_scope = new_function.name
 
-        if self.function_exists(new_function.name, class_name):
+        if self.function_search(new_function.name, class_name) is not None:
             raise Exception(f'Function \'{new_function.name}\' already declared.')
         
         if self.in_class == 0:
@@ -115,31 +103,32 @@ class DirGen(TeamPlusPlusListener):
             new_function.set_original_class(class_name)
             self.dir_class[class_name].methods[new_function.name] = new_function
     
-    def variable_exists(self, variable_name, class_name):
-
-        def attribute_search(variable_name, class_name):
-            class_obj = self.dir_class[class_name]
-            if variable_name in class_obj.attributes.keys():
-                return True
-            return False
-
+    def attribute_search(self, variable_name, class_name):
+        class_obj = self.dir_class[class_name]
+        if variable_name in class_obj.attributes.keys():
+            return class_obj.attributes[variable_name]
+        return None
+    
+    def variable_search(self, variable_name, class_name):
         # Search outside of classes
         if self.in_class == 0:
-            if variable_name in self.dir_func[self.current_scope].variables.keys() or variable_name in self.dir_func['global'].variables.keys():
-                return True
-            return False
+            if variable_name in self.dir_func[self.current_scope].variables.keys():
+                return self.dir_func[self.current_scope].variables[variable_name]
+            if variable_name in self.dir_func['global'].variables.keys():
+                return self.dir_func['global'].variables[variable_name]
+            return None
         
         # Search inside classes
         if self.in_class == 1:
             if self.in_function == 0: # Variable is an attribute
-                return attribute_search(variable_name, class_name)
+                return self.attribute_search(variable_name, class_name)
             else: # Variable is local to a method
                 if variable_name in self.dir_class[class_name].methods[self.current_scope].variables.keys():
-                    return True
-                return attribute_search(variable_name, class_name)
+                    return self.dir_class[class_name].methods[self.current_scope].variables[variable_name]
+                return self.attribute_search(variable_name, class_name)
     
     def add_variable(self, new_variable, class_name, variable_level = None):
-        if self.variable_exists(new_variable.name, class_name):
+        if self.variable_search(new_variable.name, class_name) is not None:
             raise Exception(f'Variable \'{new_variable.name}\' already declared.')
         
         if self.in_class == 0: # Variable out of classes
@@ -155,17 +144,7 @@ class DirGen(TeamPlusPlusListener):
     def enterProgram(self, ctx):
         new_function = Function('global')
         self.add_function(new_function)
-        
-    # Point 9 
-    def enterClasses(self, ctx):
-        self.in_class = 1
-        
-    # Point 11
-    def exitClasses(self, ctx):
-        self.in_class = 0
-        self.current_level = Level.PUBLIC
-        self.current_scope = 'global'
-        
+
     # Point 2
     def enterTpp_class(self, ctx):
         self.current_scope = ctx.ID().getText()
@@ -186,7 +165,31 @@ class DirGen(TeamPlusPlusListener):
         current_class = self.dir_class[self.current_scope]
         parent_obj = self.dir_class[parent_name]
         current_class.set_parent(parent_obj)
-            
+    
+    # Point 4
+    def exitLevel(self, ctx):
+        if ctx.PUBLIC() is not None:
+            self.current_level = Level.PUBLIC
+        elif ctx.PRIVATE() is not None:
+            self.current_level = Level.PRIVATE
+        else:
+            raise Exception(f'Level \'{ctx.getStart().getText()}\' is invalid.')
+    
+    # Point 5
+    def exitTpp_type(self, ctx):
+        if ctx.INT() is not None:
+            self.current_type = Type.INT
+        elif ctx.FLOAT() is not None:
+            self.current_type = Type.FLOAT
+        elif ctx.CHAR() is not None: 
+            self.current_type = Type.CHAR
+        else:
+            raise Exception(f'Type \'{ctx.getStart().getText()}\' is invalid.')
+        
+    # Point 5
+    def exitVoid_type(self, ctx):
+        self.current_type = Type.VOID
+
     # Point 6
     def exitId_type(self, ctx):
         if not ctx.ID().getText() in self.dir_class.keys():
@@ -200,51 +203,38 @@ class DirGen(TeamPlusPlusListener):
         variable_name = ctx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class, self.current_level)
-        
-    # Point 5
-    def exitVoid_type(self, ctx):
-        self.current_type = Type.VOID
     
-    # Point 12
-    def enterDeclare_func(self, ctx):
-        self.in_function = 1
-    
-    # Point 8
-    def exitDeclare_func(self, ctx):
-        new_function = Function(ctx.ID().getText(), self.current_type)
-        self.add_function(new_function, self.current_class, self.current_level)
-        
     # Point 7
     def exitParam(self, ctx):
         variable_name = ctx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class)
-        
-    # Point 13
-    def exitFunblock(self, ctx):
-        self.in_function = 0
 
+    # Point 8
+    def exitDeclare_func(self, ctx):
+        new_function = Function(ctx.ID().getText(), self.current_type)
+        self.add_function(new_function, self.current_class, self.current_level)
+    
+    # Point 9 
+    def enterClasses(self, ctx):
+        self.in_class = 1
+    
     # Point 10
     def enterMain(self, ctx):
         new_function = Function('main')
         self.add_function(new_function)
-    
-    # Point 5
-    def exitTpp_type(self, ctx):
-        if ctx.INT() is not None:
-            self.current_type = Type.INT
-        elif ctx.FLOAT() is not None:
-            self.current_type = Type.FLOAT
-        elif ctx.CHAR() is not None: 
-            self.current_type = Type.CHAR
-        else:
-            raise Exception(f'Type \'{ctx.getStart().getText()}\' is invalid.')
-
-    # Point 4
-    def exitLevel(self, ctx):
-        if ctx.PUBLIC() is not None:
-            self.current_level = Level.PUBLIC
-        elif ctx.PRIVATE() is not None:
-            self.current_level = Level.PRIVATE
-        else:
-            raise Exception(f'Level \'{ctx.getStart().getText()}\' is invalid.')
+        
+    # Point 11
+    def exitClasses(self, ctx):
+        self.in_class = 0
+        self.current_level = Level.PUBLIC
+        self.current_scope = 'global'
+        self.current_class = None
+        
+    # Point 12
+    def enterDeclare_func(self, ctx):
+        self.in_function = 1
+        
+    # Point 13
+    def exitFunblock(self, ctx):
+        self.in_function = 0

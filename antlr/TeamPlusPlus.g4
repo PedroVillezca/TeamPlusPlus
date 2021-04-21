@@ -17,9 +17,13 @@ id_type     : ID;
 
 c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
-var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (DOT var)?;
+var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
-init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? (ASSIGN expression)?;
+attr_call   : DOT var;
+
+init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? init_assign;
+
+init_assign : (assign_exp)?;
 
 functions   : (FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
 
@@ -39,17 +43,35 @@ tpp_type    : (INT | FLOAT | CHAR);
 
 level       : (PUBLIC | PRIVATE);
 
-statement   : (assignment | funcall SEMICOLON | tpp_return | read | tpp_print | condition | loop);
+statement   : (var_stmt | tpp_return | tpp_print | condition | loop);
 
-assignment  : var ASSIGN expression SEMICOLON;
+var_stmt    : (assignment | funcall SEMICOLON | read);
 
-funcall     : (var DOT)? ID LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
+assignment  : var assign_exp SEMICOLON;
+
+assign_exp  : assign_op expression;
+
+assign_op   : ASSIGN;
+
+funcall     : (method_call)? func_name LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
+
+func_name   : ID;
+
+method_call : var DOT;
 
 tpp_return  : RETURN LEFT_PARENTHESIS exp RIGHT_PARENTHESIS SEMICOLON;
 
-read        : READ LEFT_PARENTHESIS var (COMMA var)* RIGHT_PARENTHESIS SEMICOLON;
+read        : READ LEFT_PARENTHESIS read_var (COMMA read_var)* RIGHT_PARENTHESIS SEMICOLON;
 
-tpp_print   : PRINT LEFT_PARENTHESIS (expression | CTE_STRING) (COMMA (expression | CTE_STRING))* RIGHT_PARENTHESIS SEMICOLON;
+read_var    : var;
+
+tpp_print   : PRINT LEFT_PARENTHESIS print_val (COMMA print_val)* RIGHT_PARENTHESIS SEMICOLON;
+
+print_val   : (print_exp | print_string);
+
+print_exp   : expression;
+
+print_string: CTE_STRING;
 
 block       : LEFT_BRACE statement* RIGHT_BRACE;
 
@@ -65,17 +87,29 @@ wloop       : WHILE LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block;
 
 floop       : FROM var ASSIGN exp TO exp block;
 
-expression  : express expression_A | NOT expression expression_A;
+expression  : expressio (orop expressio)*;
 
-expression_A: ((AND | OR) expression expression_A)?;
+orop        : OR;
 
-express     : exp (relop exp)?;
+expressio   : express (andop express)*;
+
+andop       : AND;
+
+express     : exp (relop rel_exp)?;
+
+rel_exp     : exp;
 
 exp         : term (sumop term)*;
 
 term        : factor (mulop factor)*;
 
-factor      : (LEFT_PARENTHESIS expression RIGHT_PARENTHESIS | sumop? value);
+factor      : unop? factor_elem;
+
+factor_elem : (fake_bottom | value);
+
+fake_bottom : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+unop        : (PLUS | MINUS | NOT);
 
 relop       : (EQUALS | GREATER_THAN | LESS_THAN | GREATER_EQUALS | LESS_EQUALS | DIFFERENT);
 
@@ -83,7 +117,13 @@ sumop       : (PLUS | MINUS);
 
 mulop       : (MULT | DIV);
 
-value       : (var | CTE_INT | CTE_FLOAT | CTE_CHAR | funcall);
+value       : (val_var | val_cte | val_funcall);
+
+val_var     : var;
+
+val_cte     : CTE_INT | CTE_FLOAT | CTE_CHAR;
+
+val_funcall : funcall;
 
 // Regular Definition
 PROGRAM     : 'program';

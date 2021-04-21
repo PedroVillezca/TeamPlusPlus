@@ -4,7 +4,7 @@ from antlr.TeamPlusPlusLexer import TeamPlusPlusLexer
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
-from DirGen import DirGen
+from src.CustomListener import CustomListener
 
 def main(argv):
     input_stream = FileStream(argv[1])
@@ -17,13 +17,13 @@ def main(argv):
         print("Incorrecto")
         sys.exit()
 
-    dir_gen = DirGen()
+    custom_listener = CustomListener()
     walker = ParseTreeWalker()
-    walker.walk(dir_gen, tree)
+    walker.walk(custom_listener, tree)
 
     if parser.getNumberOfSyntaxErrors() == 0:
         print("Correcto")
-        print(dir_gen)
+        print(custom_listener)
         sys.exit()
  
 if __name__ == '__main__':

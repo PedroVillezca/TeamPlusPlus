@@ -1,0 +1,32 @@
+program input_two;
+
+class First {
+    attributes
+        private float amount;
+
+    methods
+        public func float getTotalAmount() {
+            amount = 3 / 12.45 * 45 + -8;
+            print("The total amount is ", amount, " dollars");
+            return(amount * ((5.0 + 34) / 12) - -5);
+        }
+};
+
+vars 
+    int a;
+    float b;
+
+main() {
+    vars
+        First wallet;
+        float c;
+        int readme;
+    
+    read(readme, c);
+    c = wallet.getTotalAmount();
+    if (wallet.getTotalAmount() > 100 and not wallet.getTotalAmount() > 1000 or 3.1416 == 0) then {
+        print(-a + -b - +c);
+    }
+    
+    print("Done");
+}
