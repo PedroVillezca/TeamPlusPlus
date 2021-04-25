@@ -32,4 +32,6 @@ class Operator(IntEnum):
     RETURN = 17
     READ = 18
     PRINT = 19
+    GOTO = 20
+    GOTOF = 21
     

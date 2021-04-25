@@ -85,7 +85,9 @@ tpp_elif    : ELIF if_expr block;
 
 tpp_else    : ELSE block;
 
-switch_stmt : SWITCH LEFT_PARENTHESIS var RIGHT_PARENTHESIS LEFT_BRACE cases (tpp_default)?  RIGHT_BRACE;
+switch_stmt : SWITCH switch_var LEFT_BRACE cases (tpp_default)?  RIGHT_BRACE;
+
+switch_var  : LEFT_PARENTHESIS var RIGHT_PARENTHESIS;
 
 cases       : tpp_case (next_case)*;
 

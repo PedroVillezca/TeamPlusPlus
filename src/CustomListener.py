@@ -18,6 +18,7 @@ class CustomListener(TeamPlusPlusListener):
     current_type_id = None
     is_attribute = False
     caller_name = ""
+    switch_var = None
 
     def __repr__(self):
         return f'\nDir Gen: \n {self.dir_gen} \n\n Quadruple List: \n {self.quadruple_list}'
@@ -43,6 +44,23 @@ class CustomListener(TeamPlusPlusListener):
         self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, right_operand.variable_name, result_name)
         self.quadruple_list.push_operand(result_name, result_type)
     
+    def create_gotof(self):
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count)
+        left_operand = self.quadruple_list.pop_operand()
+        self.quadruple_list.push_quadruple(Operator.GOTOF, left_operand.variable_name, None, None)
+    
+    def create_goto(self):
+        self.quadruple_list.push_quadruple(Operator.GOTO, None, None, None)
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
+    
+    def empty_jumps(self):
+        while self.quadruple_list.top_jump() != Operator.FF:
+            index = self.quadruple_list.pop_jump()
+            self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
+        self.quadruple_list.pop_jump()
+
     # Point 1
     def enterProgram(self, ctx):
         self.dir_gen.enterProgram(ctx)
@@ -401,26 +419,99 @@ class CustomListener(TeamPlusPlusListener):
             result = ctx.CTE_STRING().getText()
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result)
 
-    # enterTpp_case: Point 16
-    # exitFor_var: Point 16
-    # exitSwitch_cte: Point 17
-    # enterIfelse: Point 46
-    # enterSwitch_stmt: Point 46
-    # exitIf_expr: Point 47
-    # enterTpp_elif: Point 48
-    # enterTpp_else: Point 48
-    # enterNext_case: Point 48
-    # enterTpp_default: Point 48
-    # exitWhile_expr: Point 47
-    # exitIfelse: Point 49
-    # enterSwitch_block: Point 50
-    # exitSwitch_stmt: Point 51
-    # enterWhile_expr: Point 52
-    # enterFor_to: Point 52
-    # exitWloop: Point 53
-    # exitFor_assign: Point 54
-    # exitFor_to: Point 55
-    # exitFloop: Point 56
 
+
+
+    # exitFor_var: Point 16
+    def exitFor_var(self, ctx):
+        self.quadruple_list.push_operand(self.caller_name, self.current_type)
+
+    # exitSwitch_cte: Point 17
+    def exitSwitch_cte(self, ctx):
+        if ctx.CTE_INT() is not None:
+            self.quadruple_list.push_operand(self.temp_ints.pop(0), Type.INT)
+        elif ctx.CTE_CHAR() is not None:
+            self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
+        else:
+            raise Exception(f"Invalid constant for switch statement.")
+
+    # enterIfelse: Point 46
+    def enterIfelse(self, ctx):
+        self.quadruple_list.push_jump(Operator.FF)
+
+    # enterSwitch_stmt: Point 46
+    def enterSwitch_stmt(self, ctx):
+        self.quadruple_list.push_jump(Operator.FF)
+
+    # exitIf_expr: Point 47
+    def exitIf_expr(self, ctx):
+        self.create_gotof()
+
+    # exitWhile_expr: Point 47
+    def exitWhile_expr(self, ctx):
+        self.create_gotof()
+
+    # enterTpp_elif: Point 48
+    def enterTpp_elif(self, ctx):
+        self.create_goto()
+
+    # enterTpp_else: Point 48
+    def enterTpp_else(self, ctx):
+        self.create_goto()
+
+    # enterNext_case: Point 48
+    def enterNext_case(self, ctx):
+        self.create_goto()
+
+    # enterTpp_default: Point 48
+    def enterTpp_default(self, ctx):
+        self.create_goto()
+
+    # exitIfelse: Point 49
+    def exitIfelse(self, ctx):
+        self.empty_jumps()
+
+    # enterSwitch_block: Point 50
+    def enterSwitch_block(self, ctx):
+        self.quadruple_list.push_operator(Operator.EQ)
+        self.generate_quadruple(self.quadruple_list.top_operator())
+        self.create_gotof()
+        
+    # exitSwitch_stmt: Point 51
+    def exitSwitch_stmt(self, ctx):
+        self.empty_jumps()
+        self.is_attribute = False
+        
+    # enterWhile_expr: Point 52
+    def enterWhile_expr(self, ctx):
+        print("enterWhile_expr")
+
+    # enterFor_to: Point 52
+    def enterFor_to(self, ctx):
+        print("enterFor_to")
+
+    # exitWloop: Point 53
+    def exitWloop(self, ctx):
+        print("exitWloop")
+
+    # exitFor_assign: Point 54
+    def exitFor_assign(self, ctx):
+        print("exitFor_assign")
+
+    # exitFor_to: Point 55
+    def exitFor_to(self, ctx):
+        print("exitFor_to")
+        
+    # exitFloop: Point 56
+    def exitFloop(self, ctx):
+        print("exitFloop")
+    
+    # exitSwitch_var: Point 57
+    def exitSwitch_var(self, ctx):
+        self.switch_var = Operand(self.caller_name, self.current_type)
+    
+    # enterTpp_case: Point 58
+    def enterTpp_case(self, ctx):
+        self.quadruple_list.push_operand(self.switch_var.variable_name, self.switch_var.variable_type)
 
     

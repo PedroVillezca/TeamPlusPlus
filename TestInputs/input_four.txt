@@ -1,0 +1,45 @@
+program inputThree;
+
+vars
+    int a, b, c = 123, h, i;
+    float d, e = 3.1416, f, j;
+    char x = 'w';
+
+main() {
+    if (a * c < d + e) {
+        print("Option 1");
+    } elif (a * c == d + e) {
+        print("Option 2");
+
+        if ( d == e) {
+            read(x);
+        } elif (d < e) {
+            read(c);
+        }
+        print("Option 4");
+    } else {
+        print("Option 3");
+    }
+    print("Enter Switch");
+
+    switch(b) {
+        case 1 {
+            print("Case 1");
+        }
+        case 2 {
+            print("Case 2");
+        }
+        default {
+            print("Default");
+            switch(a) {
+                case 1 {
+                    print("Case 2-1");
+                } case 2 {
+                    print("Case 2-2");
+                }
+            }
+            print("Default 2");
+        }
+    }
+
+}
