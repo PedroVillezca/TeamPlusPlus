@@ -121,7 +121,11 @@ class CustomListener(TeamPlusPlusListener):
         self.current_type = var_obj.type
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
-        self.caller_name += var_name
+        if self.is_attribute:
+            self.caller_name += var_name
+        else:
+            self.caller_name = var_name
+        
         
     # enterAttr_call: Point 15
     def enterAttr_call(self, ctx):
@@ -164,7 +168,10 @@ class CustomListener(TeamPlusPlusListener):
             raise Exception(f"Function \'{func_name}\' is private to class {func_obj.original_class}.")
         
         self.current_type = func_obj.return_type
-        self.caller_name += func_name
+        if self.is_attribute:
+            self.caller_name += func_name
+        else:
+            self.caller_name = func_name
         
     # exitVal_funcall: Point 19
     def exitVal_funcall(self, ctx):
@@ -180,7 +187,6 @@ class CustomListener(TeamPlusPlusListener):
     # exitValue: Point 20
     def exitValue(self, ctx):
         self.is_attribute = False
-        self.caller_name = ""
         
     # exitUnop: Point 21
     def exitUnop(self, ctx):
@@ -301,15 +307,17 @@ class CustomListener(TeamPlusPlusListener):
         if top_operator == Operator.OR:
             self.generate_quadruple(top_operator)
 
-
-
     # enterAssign_exp: Point 16
     def enterAssign_exp(self, ctx):
         self.quadruple_list.push_operand(self.caller_name, self.current_type)
 
     # exitVar_stmt: Point 20
     def exitVar_stmt(self, ctx):
-        self.caller_name = ""
+        self.is_attribute = False
+
+    # exitAssignment: Point 20
+    def exitAssignment(self, ctx):
+        self.is_attribute = False
         
     # exitAssign_op: Point 35
     def exitAssign_op(self, ctx):
@@ -332,7 +340,7 @@ class CustomListener(TeamPlusPlusListener):
     
     # enterInit_id: Point 37
     def enterInit_assign(self, ctx):
-        self.caller_name += ctx.parentCtx.ID().getText()
+        self.caller_name = ctx.parentCtx.ID().getText()
         self.current_type = self.dir_gen.current_type
         
     # exitInit_assign: Point 38
@@ -370,8 +378,6 @@ class CustomListener(TeamPlusPlusListener):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.READ:
             result = Operand(self.caller_name, self.current_type)
-            self.caller_name = ""
-
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
         
     # enterPrint_val: Point 43
@@ -394,3 +400,27 @@ class CustomListener(TeamPlusPlusListener):
         if top_operator == Operator.PRINT:
             result = ctx.CTE_STRING().getText()
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result)
+
+    # enterTpp_case: Point 16
+    # exitFor_var: Point 16
+    # exitSwitch_cte: Point 17
+    # enterIfelse: Point 46
+    # enterSwitch_stmt: Point 46
+    # exitIf_expr: Point 47
+    # enterTpp_elif: Point 48
+    # enterTpp_else: Point 48
+    # enterNext_case: Point 48
+    # enterTpp_default: Point 48
+    # exitWhile_expr: Point 47
+    # exitIfelse: Point 49
+    # enterSwitch_block: Point 50
+    # exitSwitch_stmt: Point 51
+    # enterWhile_expr: Point 52
+    # enterFor_to: Point 52
+    # exitWloop: Point 53
+    # exitFor_assign: Point 54
+    # exitFor_to: Point 55
+    # exitFloop: Point 56
+
+
+    

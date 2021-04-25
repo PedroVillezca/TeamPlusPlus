@@ -16,6 +16,10 @@ vars
     int a;
     float b;
 
+func float getTotalAmount() {
+    return(3.1426);
+}
+
 main() {
     vars
         First wallet;
@@ -23,8 +27,8 @@ main() {
         int readme;
     
     read(readme, c);
-    c = wallet.getTotalAmount();
-    if (wallet.getTotalAmount() > 100 and not wallet.getTotalAmount() > 1000 or 3.1416 == 0) then {
+    c = getTotalAmount();
+    if (wallet.getTotalAmount() > 100 and not wallet.getTotalAmount() > 1000 or 3.1416 == 0) {
         print(-a + -b - +c);
     }
     

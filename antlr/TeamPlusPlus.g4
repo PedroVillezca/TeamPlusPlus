@@ -77,15 +77,41 @@ block       : LEFT_BRACE statement* RIGHT_BRACE;
 
 condition   : (ifelse | switch_stmt);
 
-ifelse      : IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS THEN block (ELIF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS THEN block)* (ELSE block)?;
+ifelse      : IF if_expr block (tpp_elif)* (tpp_else)?;
 
-switch_stmt : SWITCH LEFT_PARENTHESIS var RIGHT_PARENTHESIS LEFT_BRACE (CASE (CTE_CHAR | CTE_INT) block)* (DEFAULT block)?  RIGHT_BRACE;
+if_expr     : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+tpp_elif    : ELIF if_expr block;
+
+tpp_else    : ELSE block;
+
+switch_stmt : SWITCH LEFT_PARENTHESIS var RIGHT_PARENTHESIS LEFT_BRACE cases (tpp_default)?  RIGHT_BRACE;
+
+cases       : tpp_case (next_case)*;
+
+next_case   : tpp_case;
+
+tpp_case    : CASE switch_cte switch_block;
+
+switch_cte  : (CTE_CHAR | CTE_INT);
+
+switch_block: block;
+
+tpp_default     : DEFAULT block;
 
 loop        : (wloop | floop);
 
-wloop       : WHILE LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block;
+wloop       : WHILE while_expr block;
 
-floop       : FROM var ASSIGN exp TO exp block;
+while_expr  : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+floop       : FROM for_assign for_to block;
+
+for_assign  : for_var ASSIGN exp;
+
+for_var     : var;
+
+for_to      : TO exp;
 
 expression  : expressio (orop expressio)*;
 
@@ -137,7 +163,6 @@ MAIN        : 'main';
 IF          : 'if';
 ELSE        : 'else';
 ELIF        : 'elif';
-THEN        : 'then';
 SWITCH      : 'switch';
 CASE        : 'case';
 DEFAULT     : 'default';

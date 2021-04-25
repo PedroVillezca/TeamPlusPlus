@@ -1,0 +1,42 @@
+program inputThree;
+
+vars
+    int a, b, c = 123, h, i;
+    float d, e = 3.1416, f, j;
+    char x = 'w';
+
+main() {
+    if (a * c < d + e) {
+        print("Option 1");
+    } elif (a * c > d + e) {
+        print("Option 2");
+    } elif (a * c == d + e) {
+        print("Option 3");
+
+        if (x == 'd') {
+            print(x);
+        }
+    } else {
+        print("Impossible");
+    }
+
+    from a = 10 / 5 * 0 to 100 {
+        from b = a + 1 to a * 10 {
+            switch(b) {
+                case 100 {
+                    print("Cien");
+                } case 200 {
+                    print("Cien dos veces");
+                } default {
+                    print("Otra cosa");
+                }
+            }
+        }
+    }
+
+    while (e < b * c and h < 10000) {
+        if (i / 2 == 0) {
+            j = e + a / 2;
+        }
+    }
+}
