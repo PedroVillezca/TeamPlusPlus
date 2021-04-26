@@ -1,11 +1,20 @@
 program inputThree;
 
+class Pelos {
+    attributes
+        public int longitud;
+        public char color;
+};
+
 vars
     int a, b, c = 123, h, i;
     float d, e = 3.1416, f, j;
     char x = 'w';
 
 main() {
+    vars
+        Pelos quietos;
+
     if (a * c < d + e) {
         print("Option 1");
     } elif (a * c == d + e) {
@@ -25,20 +34,19 @@ main() {
     switch(b) {
         case 1 {
             print("Case 1");
+            switch(quietos.longitud) {
+                case 1 {
+                    print(a + b / 4);
+                } case 2 {
+                    print("Case 2-2");
+                }
+            }
         }
         case 2 {
             print("Case 2");
         }
         default {
             print("Default");
-            switch(a) {
-                case 1 {
-                    print("Case 2-1");
-                } case 2 {
-                    print("Case 2-2");
-                }
-            }
-            print("Default 2");
         }
     }
 

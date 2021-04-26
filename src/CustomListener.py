@@ -6,6 +6,7 @@ from src.DirGen import DirGen
 from src.QuadrupleList import QuadrupleList, Operand
 from util.Enums import Operator, Type, Level
 from util.SemanticCube import semantic_cube
+from util.DataStructures import Stack
 
 class CustomListener(TeamPlusPlusListener):
     dir_gen = DirGen()
@@ -18,7 +19,7 @@ class CustomListener(TeamPlusPlusListener):
     current_type_id = None
     is_attribute = False
     caller_name = ""
-    switch_var = None
+    recurrent_vars = Stack()
 
     def __repr__(self):
         return f'\nDir Gen: \n {self.dir_gen} \n\n Quadruple List: \n {self.quadruple_list}'
@@ -49,11 +50,19 @@ class CustomListener(TeamPlusPlusListener):
         left_operand = self.quadruple_list.pop_operand()
         self.quadruple_list.push_quadruple(Operator.GOTOF, left_operand.variable_name, None, None)
     
-    def create_goto(self):
+    def create_cond_goto(self):
         self.quadruple_list.push_quadruple(Operator.GOTO, None, None, None)
         index = self.quadruple_list.pop_jump()
         self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
+
+    def create_loop_goto(self):
+        self.quadruple_list.push_quadruple(Operator.GOTO, None, None, None)
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(self.quadruple_list.quadruple_count-1, index)
+        
     
     def empty_jumps(self):
         while self.quadruple_list.top_jump() != Operator.FF:
@@ -125,10 +134,7 @@ class CustomListener(TeamPlusPlusListener):
     def enterVar(self, ctx):
         var_name = ctx.ID().getText()
 
-        if self.is_attribute:
-            var_obj = self.dir_gen.attribute_search(var_name, self.current_type_id)
-        else:
-            var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
+        var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
 
         if var_obj is None:
             raise Exception(f"Variable \'{var_name}\' does not exist.")
@@ -139,11 +145,27 @@ class CustomListener(TeamPlusPlusListener):
         self.current_type = var_obj.type
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
-        if self.is_attribute:
-            self.caller_name += var_name
-        else:
-            self.caller_name = var_name
+        self.caller_name = var_name
+
+    # exitVar: Point 20
+    def exitVar(self, ctx):
+        self.is_attribute = False
+
+    # enterAttr: Point 60
+    def enterAttr(self, ctx):
+        var_name = ctx.ID().getText()
+        var_obj = self.dir_gen.attribute_search(var_name, self.current_type_id)
+
+        if var_obj is None:
+            raise Exception(f"Variable \'{var_name}\' does not exist.")
         
+        if var_obj.level == Level.PRIVATE and var_obj.original_class != self.dir_gen.current_class:
+            raise Exception(f"Variable \'{var_name}\' is private to class {var_obj.original_class}.")
+        
+        self.current_type = var_obj.type
+        if var_obj.type == Type.ID:
+            self.current_type_id = var_obj.type_id
+        self.caller_name += var_name
         
     # enterAttr_call: Point 15
     def enterAttr_call(self, ctx):
@@ -201,10 +223,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
         else:
             raise Exception(f"Functions can not return non-primitive types to be used in expressions.")
-        
-    # exitValue: Point 20
-    def exitValue(self, ctx):
-        self.is_attribute = False
         
     # exitUnop: Point 21
     def exitUnop(self, ctx):
@@ -328,14 +346,6 @@ class CustomListener(TeamPlusPlusListener):
     # enterAssign_exp: Point 16
     def enterAssign_exp(self, ctx):
         self.quadruple_list.push_operand(self.caller_name, self.current_type)
-
-    # exitVar_stmt: Point 20
-    def exitVar_stmt(self, ctx):
-        self.is_attribute = False
-
-    # exitAssignment: Point 20
-    def exitAssignment(self, ctx):
-        self.is_attribute = False
         
     # exitAssign_op: Point 35
     def exitAssign_op(self, ctx):
@@ -420,12 +430,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result)
 
 
-
-
-    # exitFor_var: Point 16
-    def exitFor_var(self, ctx):
-        self.quadruple_list.push_operand(self.caller_name, self.current_type)
-
     # exitSwitch_cte: Point 17
     def exitSwitch_cte(self, ctx):
         if ctx.CTE_INT() is not None:
@@ -453,19 +457,19 @@ class CustomListener(TeamPlusPlusListener):
 
     # enterTpp_elif: Point 48
     def enterTpp_elif(self, ctx):
-        self.create_goto()
+        self.create_cond_goto()
 
     # enterTpp_else: Point 48
     def enterTpp_else(self, ctx):
-        self.create_goto()
+        self.create_cond_goto()
 
     # enterNext_case: Point 48
     def enterNext_case(self, ctx):
-        self.create_goto()
+        self.create_cond_goto()
 
     # enterTpp_default: Point 48
     def enterTpp_default(self, ctx):
-        self.create_goto()
+        self.create_cond_goto()
 
     # exitIfelse: Point 49
     def exitIfelse(self, ctx):
@@ -480,38 +484,57 @@ class CustomListener(TeamPlusPlusListener):
     # exitSwitch_stmt: Point 51
     def exitSwitch_stmt(self, ctx):
         self.empty_jumps()
-        self.is_attribute = False
+        self.recurrent_vars.pop()
         
     # enterWhile_expr: Point 52
     def enterWhile_expr(self, ctx):
-        print("enterWhile_expr")
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count)
 
     # enterFor_to: Point 52
     def enterFor_to(self, ctx):
-        print("enterFor_to")
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count)
 
     # exitWloop: Point 53
     def exitWloop(self, ctx):
-        print("exitWloop")
+        self.create_loop_goto()
 
     # exitFor_assign: Point 54
     def exitFor_assign(self, ctx):
-        print("exitFor_assign")
+        left_operand = self.quadruple_list.pop_operand()
+        result = self.quadruple_list.pop_operand()
+    
+        if left_operand.variable_type != result.variable_type:
+            raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
+
+        self.quadruple_list.push_quadruple(Operator.ASSIGN, left_operand.variable_name, None, result.variable_name)
+        self.quadruple_list.push_operand(result.variable_name, result.variable_type)
 
     # exitFor_to: Point 55
     def exitFor_to(self, ctx):
-        print("exitFor_to")
+        self.quadruple_list.push_operator(Operator.LTE)
+        self.generate_quadruple(self.quadruple_list.top_operator())
+        self.create_gotof()
         
     # exitFloop: Point 56
     def exitFloop(self, ctx):
-        print("exitFloop")
+        for_var = self.recurrent_vars.pop()
+        const_temp = self.get_temp(Type.INT)
+        res_temp = self.get_temp(for_var.variable_type)
+        self.quadruple_list.push_quadruple(Operator.SUM, for_var.variable_name, const_temp, res_temp)
+        self.quadruple_list.push_quadruple(Operator.ASSIGN, res_temp, None, for_var.variable_name)
+        self.create_loop_goto()
     
     # exitSwitch_var: Point 57
     def exitSwitch_var(self, ctx):
-        self.switch_var = Operand(self.caller_name, self.current_type)
+        self.recurrent_vars.push(Operand(self.caller_name, self.current_type))
     
     # enterTpp_case: Point 58
     def enterTpp_case(self, ctx):
-        self.quadruple_list.push_operand(self.switch_var.variable_name, self.switch_var.variable_type)
+        self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
+    
+    # exitFor_var: Point 59
+    def exitFor_var(self, ctx):
+        self.recurrent_vars.push(Operand(self.caller_name, self.current_type))
+        self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
 
     

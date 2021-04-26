@@ -19,7 +19,9 @@ c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLO
 
 var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
-attr_call   : DOT var;
+attr_call   : DOT attr;
+
+attr        : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
 init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? init_assign;
 
@@ -43,9 +45,7 @@ tpp_type    : (INT | FLOAT | CHAR);
 
 level       : (PUBLIC | PRIVATE);
 
-statement   : (var_stmt | tpp_return | tpp_print | condition | loop);
-
-var_stmt    : (assignment | funcall SEMICOLON | read);
+statement   : (assignment | funcall SEMICOLON | read | tpp_return | tpp_print | condition | loop);
 
 assignment  : var assign_exp SEMICOLON;
 
@@ -99,7 +99,7 @@ switch_cte  : (CTE_CHAR | CTE_INT);
 
 switch_block: block;
 
-tpp_default     : DEFAULT block;
+tpp_default : DEFAULT block;
 
 loop        : (wloop | floop);
 

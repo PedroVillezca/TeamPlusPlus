@@ -3,6 +3,7 @@ program input_two;
 class First {
     attributes
         private float amount;
+        public int netWorth;
 
     methods
         public func float getTotalAmount() {
@@ -27,6 +28,8 @@ main() {
         int readme;
     
     read(readme, c);
+    wallet.netWorth = 1000;
+    print(wallet.netWorth);
     c = getTotalAmount();
     if (wallet.getTotalAmount() > 100 and not wallet.getTotalAmount() > 1000 or 3.1416 == 0) {
         print(-a + -b - +c);

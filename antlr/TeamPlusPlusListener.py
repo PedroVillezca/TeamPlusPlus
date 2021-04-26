@@ -98,6 +98,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#attr.
+    def enterAttr(self, ctx:TeamPlusPlusParser.AttrContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#attr.
+    def exitAttr(self, ctx:TeamPlusPlusParser.AttrContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init.
     def enterInit(self, ctx:TeamPlusPlusParser.InitContext):
         pass
@@ -203,15 +212,6 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#statement.
     def exitStatement(self, ctx:TeamPlusPlusParser.StatementContext):
-        pass
-
-
-    # Enter a parse tree produced by TeamPlusPlusParser#var_stmt.
-    def enterVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
-        pass
-
-    # Exit a parse tree produced by TeamPlusPlusParser#var_stmt.
-    def exitVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
         pass
 
 

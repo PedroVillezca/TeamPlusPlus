@@ -51,6 +51,6 @@ main() {
         myClass obj;
     
     print(obj.getB());
-    print(obj.h);
+    print(obj.h, e);
     print("Hello World! \n How is everyone");
 }
