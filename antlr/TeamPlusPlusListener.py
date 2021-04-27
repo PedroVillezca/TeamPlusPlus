@@ -395,12 +395,12 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#switch_var.
-    def enterSwitch_var(self, ctx:TeamPlusPlusParser.Switch_varContext):
+    # Enter a parse tree produced by TeamPlusPlusParser#switch_expr.
+    def enterSwitch_expr(self, ctx:TeamPlusPlusParser.Switch_exprContext):
         pass
 
-    # Exit a parse tree produced by TeamPlusPlusParser#switch_var.
-    def exitSwitch_var(self, ctx:TeamPlusPlusParser.Switch_varContext):
+    # Exit a parse tree produced by TeamPlusPlusParser#switch_expr.
+    def exitSwitch_expr(self, ctx:TeamPlusPlusParser.Switch_exprContext):
         pass
 
 

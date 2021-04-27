@@ -234,16 +234,16 @@ def serializedATN():
         buf.write("\7&\2\2\u01e9\u01eb\5Z.\2\u01ea\u01ec\5d\63\2\u01eb\u01ea")
         buf.write("\3\2\2\2\u01eb\u01ec\3\2\2\2\u01ec\u01ed\3\2\2\2\u01ed")
         buf.write("\u01ee\7\'\2\2\u01eeW\3\2\2\2\u01ef\u01f0\7(\2\2\u01f0")
-        buf.write("\u01f1\5\22\n\2\u01f1\u01f2\7)\2\2\u01f2Y\3\2\2\2\u01f3")
-        buf.write("\u01f7\5^\60\2\u01f4\u01f6\5\\/\2\u01f5\u01f4\3\2\2\2")
-        buf.write("\u01f6\u01f9\3\2\2\2\u01f7\u01f5\3\2\2\2\u01f7\u01f8\3")
-        buf.write("\2\2\2\u01f8[\3\2\2\2\u01f9\u01f7\3\2\2\2\u01fa\u01fb")
-        buf.write("\5^\60\2\u01fb]\3\2\2\2\u01fc\u01fd\7\17\2\2\u01fd\u01fe")
-        buf.write("\5`\61\2\u01fe\u01ff\5b\62\2\u01ff_\3\2\2\2\u0200\u0201")
-        buf.write("\t\4\2\2\u0201a\3\2\2\2\u0202\u0203\5J&\2\u0203c\3\2\2")
-        buf.write("\2\u0204\u0205\7\20\2\2\u0205\u0206\5J&\2\u0206e\3\2\2")
-        buf.write("\2\u0207\u020a\5h\65\2\u0208\u020a\5l\67\2\u0209\u0207")
-        buf.write("\3\2\2\2\u0209\u0208\3\2\2\2\u020ag\3\2\2\2\u020b\u020c")
+        buf.write("\u01f1\5t;\2\u01f1\u01f2\7)\2\2\u01f2Y\3\2\2\2\u01f3\u01f7")
+        buf.write("\5^\60\2\u01f4\u01f6\5\\/\2\u01f5\u01f4\3\2\2\2\u01f6")
+        buf.write("\u01f9\3\2\2\2\u01f7\u01f5\3\2\2\2\u01f7\u01f8\3\2\2\2")
+        buf.write("\u01f8[\3\2\2\2\u01f9\u01f7\3\2\2\2\u01fa\u01fb\5^\60")
+        buf.write("\2\u01fb]\3\2\2\2\u01fc\u01fd\7\17\2\2\u01fd\u01fe\5`")
+        buf.write("\61\2\u01fe\u01ff\5b\62\2\u01ff_\3\2\2\2\u0200\u0201\t")
+        buf.write("\4\2\2\u0201a\3\2\2\2\u0202\u0203\5J&\2\u0203c\3\2\2\2")
+        buf.write("\u0204\u0205\7\20\2\2\u0205\u0206\5J&\2\u0206e\3\2\2\2")
+        buf.write("\u0207\u020a\5h\65\2\u0208\u020a\5l\67\2\u0209\u0207\3")
+        buf.write("\2\2\2\u0209\u0208\3\2\2\2\u020ag\3\2\2\2\u020b\u020c")
         buf.write("\7\25\2\2\u020c\u020d\5j\66\2\u020d\u020e\5J&\2\u020e")
         buf.write("i\3\2\2\2\u020f\u0210\7(\2\2\u0210\u0211\5t;\2\u0211\u0212")
         buf.write("\7)\2\2\u0212k\3\2\2\2\u0213\u0214\7\26\2\2\u0214\u0215")
@@ -370,7 +370,7 @@ class TeamPlusPlusParser ( Parser ):
     RULE_tpp_elif = 40
     RULE_tpp_else = 41
     RULE_switch_stmt = 42
-    RULE_switch_var = 43
+    RULE_switch_expr = 43
     RULE_cases = 44
     RULE_next_case = 45
     RULE_tpp_case = 46
@@ -412,7 +412,7 @@ class TeamPlusPlusParser ( Parser ):
                    "assign_op", "funcall", "func_name", "method_call", "tpp_return", 
                    "read", "read_var", "tpp_print", "print_val", "print_exp", 
                    "print_string", "block", "condition", "ifelse", "if_expr", 
-                   "tpp_elif", "tpp_else", "switch_stmt", "switch_var", 
+                   "tpp_elif", "tpp_else", "switch_stmt", "switch_expr", 
                    "cases", "next_case", "tpp_case", "switch_cte", "switch_block", 
                    "tpp_default", "loop", "wloop", "while_expr", "floop", 
                    "for_assign", "for_var", "for_to", "expression", "orop", 
@@ -3396,8 +3396,8 @@ class TeamPlusPlusParser ( Parser ):
         def SWITCH(self):
             return self.getToken(TeamPlusPlusParser.SWITCH, 0)
 
-        def switch_var(self):
-            return self.getTypedRuleContext(TeamPlusPlusParser.Switch_varContext,0)
+        def switch_expr(self):
+            return self.getTypedRuleContext(TeamPlusPlusParser.Switch_exprContext,0)
 
 
         def LEFT_BRACE(self):
@@ -3438,7 +3438,7 @@ class TeamPlusPlusParser ( Parser ):
             self.state = 484
             self.match(TeamPlusPlusParser.SWITCH)
             self.state = 485
-            self.switch_var()
+            self.switch_expr()
             self.state = 486
             self.match(TeamPlusPlusParser.LEFT_BRACE)
             self.state = 487
@@ -3462,7 +3462,7 @@ class TeamPlusPlusParser ( Parser ):
         return localctx
 
 
-    class Switch_varContext(ParserRuleContext):
+    class Switch_exprContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -3472,37 +3472,37 @@ class TeamPlusPlusParser ( Parser ):
         def LEFT_PARENTHESIS(self):
             return self.getToken(TeamPlusPlusParser.LEFT_PARENTHESIS, 0)
 
-        def var(self):
-            return self.getTypedRuleContext(TeamPlusPlusParser.VarContext,0)
+        def expression(self):
+            return self.getTypedRuleContext(TeamPlusPlusParser.ExpressionContext,0)
 
 
         def RIGHT_PARENTHESIS(self):
             return self.getToken(TeamPlusPlusParser.RIGHT_PARENTHESIS, 0)
 
         def getRuleIndex(self):
-            return TeamPlusPlusParser.RULE_switch_var
+            return TeamPlusPlusParser.RULE_switch_expr
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterSwitch_var" ):
-                listener.enterSwitch_var(self)
+            if hasattr( listener, "enterSwitch_expr" ):
+                listener.enterSwitch_expr(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitSwitch_var" ):
-                listener.exitSwitch_var(self)
+            if hasattr( listener, "exitSwitch_expr" ):
+                listener.exitSwitch_expr(self)
 
 
 
 
-    def switch_var(self):
+    def switch_expr(self):
 
-        localctx = TeamPlusPlusParser.Switch_varContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 86, self.RULE_switch_var)
+        localctx = TeamPlusPlusParser.Switch_exprContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 86, self.RULE_switch_expr)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 493
             self.match(TeamPlusPlusParser.LEFT_PARENTHESIS)
             self.state = 494
-            self.var()
+            self.expression()
             self.state = 495
             self.match(TeamPlusPlusParser.RIGHT_PARENTHESIS)
         except RecognitionException as re:
