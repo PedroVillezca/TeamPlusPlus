@@ -40,5 +40,11 @@ class Queue:
     def front(self):
         return self.elements[0]
 
+    def at(self, i):
+        return self.elements[i]
+
+    def replace(self, i, item):
+        self.elements[i] = item
+
     def __repr__(self):
         return f"{self.elements}"

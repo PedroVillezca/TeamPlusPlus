@@ -1,0 +1,68 @@
+program inputThree;
+
+class OtherClass {
+    attributes
+        public int h, i;
+        private int s;
+    methods
+        private func int OtherClass(int other) {
+            vars 
+                char re;
+        }
+
+        public func int getB() {
+            print(s);
+            print(OtherClass());
+            return(i);
+        }
+};
+
+vars
+    int a, b, c = 123, h, i;
+    float d, e = 3.1416, f, j;
+    char x = 'w';
+
+func int sqrt() {
+    return(1);
+}
+
+main() {
+    vars
+        OtherClass oth, oth2;
+
+    if (a * c < d + e) {
+        print("Option 1");
+    } elif (a * c > d + e) {
+        print("Option 2");
+    } elif (a * c == d + e) {
+        print("Option 3");
+
+        if (x == 'd') {
+            print(x);
+        }
+    } else {
+        print("Impossible");
+    }
+
+    from a = 1 to oth / 4 {
+        from b = a + 1 to a * 10 {
+            switch(b) {
+                case 100 {
+                    print("Cien");
+                } case 200 {
+                    print("Cien dos veces");
+                } default {
+                    print("Otra cosa");
+                }
+            }
+        }
+    }
+
+    #print(oth);
+
+    while (e < b * c and h < 10000) {
+        if (i / 2 == 0) {
+            j = e + a / 2;
+        }
+    }
+}

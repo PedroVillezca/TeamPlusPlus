@@ -98,6 +98,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#attr.
+    def enterAttr(self, ctx:TeamPlusPlusParser.AttrContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#attr.
+    def exitAttr(self, ctx:TeamPlusPlusParser.AttrContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init.
     def enterInit(self, ctx:TeamPlusPlusParser.InitContext):
         pass
@@ -203,15 +212,6 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#statement.
     def exitStatement(self, ctx:TeamPlusPlusParser.StatementContext):
-        pass
-
-
-    # Enter a parse tree produced by TeamPlusPlusParser#var_stmt.
-    def enterVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
-        pass
-
-    # Exit a parse tree produced by TeamPlusPlusParser#var_stmt.
-    def exitVar_stmt(self, ctx:TeamPlusPlusParser.Var_stmtContext):
         pass
 
 
@@ -359,12 +359,102 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#if_expr.
+    def enterIf_expr(self, ctx:TeamPlusPlusParser.If_exprContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#if_expr.
+    def exitIf_expr(self, ctx:TeamPlusPlusParser.If_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_elif.
+    def enterTpp_elif(self, ctx:TeamPlusPlusParser.Tpp_elifContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_elif.
+    def exitTpp_elif(self, ctx:TeamPlusPlusParser.Tpp_elifContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_else.
+    def enterTpp_else(self, ctx:TeamPlusPlusParser.Tpp_elseContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_else.
+    def exitTpp_else(self, ctx:TeamPlusPlusParser.Tpp_elseContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#switch_stmt.
     def enterSwitch_stmt(self, ctx:TeamPlusPlusParser.Switch_stmtContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#switch_stmt.
     def exitSwitch_stmt(self, ctx:TeamPlusPlusParser.Switch_stmtContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#switch_expr.
+    def enterSwitch_expr(self, ctx:TeamPlusPlusParser.Switch_exprContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#switch_expr.
+    def exitSwitch_expr(self, ctx:TeamPlusPlusParser.Switch_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#cases.
+    def enterCases(self, ctx:TeamPlusPlusParser.CasesContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#cases.
+    def exitCases(self, ctx:TeamPlusPlusParser.CasesContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#next_case.
+    def enterNext_case(self, ctx:TeamPlusPlusParser.Next_caseContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#next_case.
+    def exitNext_case(self, ctx:TeamPlusPlusParser.Next_caseContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_case.
+    def enterTpp_case(self, ctx:TeamPlusPlusParser.Tpp_caseContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_case.
+    def exitTpp_case(self, ctx:TeamPlusPlusParser.Tpp_caseContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#switch_cte.
+    def enterSwitch_cte(self, ctx:TeamPlusPlusParser.Switch_cteContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#switch_cte.
+    def exitSwitch_cte(self, ctx:TeamPlusPlusParser.Switch_cteContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#switch_block.
+    def enterSwitch_block(self, ctx:TeamPlusPlusParser.Switch_blockContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#switch_block.
+    def exitSwitch_block(self, ctx:TeamPlusPlusParser.Switch_blockContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_default.
+    def enterTpp_default(self, ctx:TeamPlusPlusParser.Tpp_defaultContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_default.
+    def exitTpp_default(self, ctx:TeamPlusPlusParser.Tpp_defaultContext):
         pass
 
 
@@ -386,12 +476,48 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#while_expr.
+    def enterWhile_expr(self, ctx:TeamPlusPlusParser.While_exprContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#while_expr.
+    def exitWhile_expr(self, ctx:TeamPlusPlusParser.While_exprContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#floop.
     def enterFloop(self, ctx:TeamPlusPlusParser.FloopContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#floop.
     def exitFloop(self, ctx:TeamPlusPlusParser.FloopContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#for_assign.
+    def enterFor_assign(self, ctx:TeamPlusPlusParser.For_assignContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#for_assign.
+    def exitFor_assign(self, ctx:TeamPlusPlusParser.For_assignContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#for_var.
+    def enterFor_var(self, ctx:TeamPlusPlusParser.For_varContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#for_var.
+    def exitFor_var(self, ctx:TeamPlusPlusParser.For_varContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#for_to.
+    def enterFor_to(self, ctx:TeamPlusPlusParser.For_toContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#for_to.
+    def exitFor_to(self, ctx:TeamPlusPlusParser.For_toContext):
         pass
 
 
