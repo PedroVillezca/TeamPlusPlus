@@ -554,4 +554,3 @@ class CustomListener(TeamPlusPlusListener):
         self.recurrent_vars.push(Operand(self.caller_name, self.current_type))
         self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
 
-    
