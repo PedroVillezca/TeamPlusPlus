@@ -2,8 +2,8 @@ from util.DataStructures import Stack, Queue
 from util.Enums import Type, Operator
 
 class Operand:
-    def __init__(self, variable_name, variable_type, variable_type_id = None):
-        self.variable_name = variable_name
+    def __init__(self, address, variable_type, variable_type_id = None):
+        self.address = address
         self.variable_type = variable_type
         if self.variable_type == Type.ID:
             self.variable_type_id = variable_type_id
@@ -11,7 +11,7 @@ class Operand:
             self.variable_type_id = None
 
     def __repr__(self):
-        return f'\nOperand \tName: {self.variable_name} \tType: {Type(self.variable_type).name}\n'
+        return f'\nOperand \tAddress: {self.address} \tType: {Type(self.variable_type).name}\n'
 
 class Quadruple:
     def __init__(self, operator, left_operand, right_operand, result, index):

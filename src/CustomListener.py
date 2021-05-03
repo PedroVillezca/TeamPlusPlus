@@ -11,14 +11,12 @@ from util.DataStructures import Stack
 class CustomListener(TeamPlusPlusListener):
     dir_gen = DirGen()
     quadruple_list = QuadrupleList()
-    temp_ints = [f'ti{i}' for i in range(100)]
-    temp_floats = [f'tf{i}' for i in range(100)]
-    temp_chars = [f'tc{i}' for i in range(100)]
 
     current_type = None
     current_type_id = None
     is_attribute = False
     caller_name = ""
+    caller_address = None
     recurrent_vars = Stack()
 
     return_state = 0
@@ -31,16 +29,7 @@ class CustomListener(TeamPlusPlusListener):
 
     def get_temp(self, result_type):
         # Add temp var to current function depending on type
-        self.dir_gen.add_temp_var(result_type)
-
-        if result_type == Type.INT:
-            return self.temp_ints.pop(0)
-        elif result_type == Type.FLOAT:
-            return self.temp_floats.pop(0)
-        elif result_type == Type.CHAR:
-            return self.temp_chars.pop(0)
-        else:
-            return None
+        return self.dir_gen.get_temp_address(result_type)
 
     def generate_quadruple(self, top_operator):
         right_operand = self.quadruple_list.pop_operand()
@@ -50,10 +39,10 @@ class CustomListener(TeamPlusPlusListener):
         if result_type is None:
             raise Exception(f"Invalid operand types \'{Type(left_operand.variable_type).name}\' and \'{Type(right_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
         
-        result_name = self.get_temp(result_type)
+        result_address = self.get_temp(result_type)
         
-        self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, right_operand.variable_name, result_name)
-        self.quadruple_list.push_operand(result_name, result_type)
+        self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.address, right_operand.address, result_address)
+        self.quadruple_list.push_operand(result_address, result_type)
     
     def create_gotof(self):
         self.quadruple_list.push_jump(self.quadruple_list.quadruple_count)
@@ -61,7 +50,7 @@ class CustomListener(TeamPlusPlusListener):
         if left_operand.variable_type != Type.INT:
             raise Exception(f"Cannot evaluate value of type {Type(left_operand.variable_type).name} for conditions.")
         
-        self.quadruple_list.push_quadruple(Operator.GOTOF, left_operand.variable_name, None, None)
+        self.quadruple_list.push_quadruple(Operator.GOTOF, left_operand.address, None, None)
     
     def create_cond_goto(self):
         self.quadruple_list.push_quadruple(Operator.GOTO, None, None, None)
@@ -151,6 +140,7 @@ class CustomListener(TeamPlusPlusListener):
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
         self.caller_name = var_name
+        self.caller_address = var_obj.address
 
     # Point 20
     def exitVar(self, ctx):
@@ -171,6 +161,7 @@ class CustomListener(TeamPlusPlusListener):
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
         self.caller_name += var_name
+        self.caller_address = var_obj.address
         
     # Point 15
     def enterAttr_call(self, ctx):
@@ -184,16 +175,16 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 16
     def exitVal_var(self, ctx):
-        self.quadruple_list.push_operand(self.caller_name, self.current_type, self.current_type_id)
+        self.quadruple_list.push_operand(self.caller_address, self.current_type, self.current_type_id)
 
     # Point 17
     def exitVal_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.temp_ints.pop(0), Type.INT)
+            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
         elif ctx.CTE_FLOAT() is not None:
-            self.quadruple_list.push_operand(self.temp_floats.pop(0), Type.FLOAT)
+            self.quadruple_list.push_operand(self.get_temp(Type.FLOAT), Type.FLOAT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
+            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
         else:
             raise Exception(f"There are no class constants.")
         
@@ -217,11 +208,11 @@ class CustomListener(TeamPlusPlusListener):
         
     # Point 19
     def exitVal_funcall(self, ctx):
-        temp = self.get_temp(self.current_type)
-        if temp is None:
+        temp_address = self.get_temp(self.current_type)
+        if temp_address is None:
             raise Exception(f"Functions must return primitive types when used in expressions.")
 
-        self.quadruple_list.push_operand(temp, self.current_type)
+        self.quadruple_list.push_operand(temp_address, self.current_type)
         
     # Point 21
     def exitUnop(self, ctx):
@@ -244,14 +235,14 @@ class CustomListener(TeamPlusPlusListener):
                 raise Exception(f"Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
         
             if left_operand.variable_type == Type.INT or top_operator == Operator.NOT:
-                result_name = self.temp_ints.pop(0)
+                result_address = self.get_temp(Type.INT)
                 result_type = Type.INT
             else:
-                result_name = self.temp_floats.pop(0)
+                result_address = self.get_temp(Type.FLOAT)
                 result_type = Type.FLOAT
 
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, None, result_name)
-            self.quadruple_list.push_operand(result_name, result_type)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.address, None, result_address)
+            self.quadruple_list.push_operand(result_address, result_type)
         
     # Point 23
     def enterFake_bottom(self, ctx):
@@ -344,7 +335,7 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 16
     def enterAssign_exp(self, ctx):
-        self.quadruple_list.push_operand(self.caller_name, self.current_type)
+        self.quadruple_list.push_operand(self.caller_address, self.current_type)
         
     # Point 35
     def exitAssign_op(self, ctx):
@@ -366,7 +357,7 @@ class CustomListener(TeamPlusPlusListener):
             if left_operand.variable_type != result.variable_type:
                 raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
 
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.variable_name, None, result.variable_name)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), left_operand.address, None, result.address)
     
     # Point 37
     def enterInit_assign(self, ctx):
@@ -387,7 +378,7 @@ class CustomListener(TeamPlusPlusListener):
             if result.variable_type != func_obj.return_type:
                 raise Exception(f"Type mismatch. Cannot return value of type \'{Type(result.variable_type).name}\' from function with return type \'{Type(func_obj.return_type).name}\'.")
             
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 41
     def enterRead_var(self, ctx):
@@ -400,10 +391,10 @@ class CustomListener(TeamPlusPlusListener):
     def exitRead_var(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.READ:
-            result = Operand(self.caller_name, self.current_type)
+            result = Operand(self.caller_address, self.current_type)
             if result.variable_type == Type.ID:
                 raise Exception(f"Cannot read data for structured types.")
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 43
     def enterPrint_val(self, ctx):
@@ -419,7 +410,7 @@ class CustomListener(TeamPlusPlusListener):
             result = self.quadruple_list.pop_operand()
             if result.variable_type == Type.ID:
                 raise Exception(f"Cannot print value of a structured type.")
-            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.variable_name)
+            self.quadruple_list.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 45
     def exitPrint_string(self, ctx):
@@ -432,9 +423,9 @@ class CustomListener(TeamPlusPlusListener):
     # Point 17
     def exitSwitch_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.temp_ints.pop(0), Type.INT)
+            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
+            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
         else:
             raise Exception(f"Invalid constant for switch statement.")
 
@@ -508,8 +499,8 @@ class CustomListener(TeamPlusPlusListener):
         if left_operand.variable_type != result.variable_type:
             raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
 
-        self.quadruple_list.push_quadruple(Operator.ASSIGN, left_operand.variable_name, None, result.variable_name)
-        self.quadruple_list.push_operand(result.variable_name, result.variable_type)
+        self.quadruple_list.push_quadruple(Operator.ASSIGN, left_operand.address, None, result.address)
+        self.quadruple_list.push_operand(result.address, result.variable_type)
 
     # Point 55
     def exitFor_to(self, ctx):
@@ -520,10 +511,10 @@ class CustomListener(TeamPlusPlusListener):
     # Point 56
     def exitFloop(self, ctx):
         for_var = self.recurrent_vars.pop()
-        const_temp = self.get_temp(Type.INT)
-        res_temp = self.get_temp(for_var.variable_type)
-        self.quadruple_list.push_quadruple(Operator.SUM, for_var.variable_name, const_temp, res_temp)
-        self.quadruple_list.push_quadruple(Operator.ASSIGN, res_temp, None, for_var.variable_name)
+        const_temp_address = self.get_temp(Type.INT)
+        res_temp_address = self.get_temp(for_var.variable_type)
+        self.quadruple_list.push_quadruple(Operator.SUM, for_var.address, const_temp_address, res_temp_address)
+        self.quadruple_list.push_quadruple(Operator.ASSIGN, res_temp_address, None, for_var.address)
         self.create_loop_goto()
     
     # Point 57
@@ -536,12 +527,12 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 58
     def enterTpp_case(self, ctx):
-        self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
+        self.quadruple_list.push_operand(self.recurrent_vars.top().address, self.recurrent_vars.top().variable_type)
     
     # Point 59
     def exitFor_var(self, ctx):
-        self.recurrent_vars.push(Operand(self.caller_name, self.current_type))
-        self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
+        self.recurrent_vars.push(Operand(self.caller_address, self.current_type))
+        self.quadruple_list.push_operand(self.recurrent_vars.top().address, self.recurrent_vars.top().variable_type)
 
     # Point 65
     def exitReturn_type(self, ctx):
@@ -613,7 +604,7 @@ class CustomListener(TeamPlusPlusListener):
         else:
             raise Exception(f"Expected argument of type \'{Type(parameter.type).name}\' but received type \'{Type(argument.variable_type).name}\'")
 
-        self.quadruple_list.push_quadruple(Operator.PARAMETER, argument.variable_name, None, parameter.name)
+        self.quadruple_list.push_quadruple(Operator.PARAMETER, argument.address, None, parameter.address)
 
     # Point 70
     def enterArgument(self, ctx):

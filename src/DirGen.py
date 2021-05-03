@@ -1,4 +1,4 @@
-from src.VirtualMemory import SizeTemplate
+from src.VirtualMemory import GlobalAddressManager, FunctionAddressManager
 from util.Enums import Type, Level
 
 class UserClass:
@@ -31,10 +31,10 @@ class Function:
         self.variables = dict()
         self.params = []
         self.first_quad = None
-        self.size_template = SizeTemplate()
+        self.address_manager = FunctionAddressManager()
 
     def __repr__(self):
-        return f'\n\tFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n \tParams: {self.params}\n \tFirst Quad: {self.first_quad}\n \t{self.size_template}'
+        return f'\n\tFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n \tParams: {self.params}\n \tFirst Quad: {self.first_quad}\n \t{self.address_manager}'
     
     def set_level(self, level):
         self.level = level
@@ -42,20 +42,20 @@ class Function:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-    def add_local_var(self, type):
-        self.size_template.add_local(type)
+    def get_local_address(self, type):
+        return self.address_manager.get_local_address(type)
     
-    def add_temp_var(self, type):
-        self.size_template.add_temp(type)
+    def get_temp_address(self, type):
+        return self.address_manager.get_temp_address(type)
 
-    def add_param(self, variable_name, variable_type, variable_type_id):
-        self.params.append(Parameter(variable_name, variable_type, variable_type_id))
+    def add_param(self, variable_address, variable_type, variable_type_id):
+        self.params.append(Parameter(variable_address, variable_type, variable_type_id))
         
     def set_first_quad(self, first_quad):
         self.first_quad = first_quad
     
     def get_total_size(self):
-        return self.size_template.get_size()
+        return self.address_manager.get_size()
 
     def get_param_at(self, k):
         if k >= len(self.params):
@@ -63,18 +63,20 @@ class Function:
         return self.params[k]
 
 class Variable:
-    def __init__(self, name, type, type_id = None, level = None, original_class = None):
+    def __init__(self, name, type, type_id = None, address = None, level = None, original_class = None):
         self.name = name
         self.type = type
         if self.type == Type.ID:
             self.type_id = type_id
         else:
             self.type_id = None
+        self.address = address
         self.level = level
         self.original_class = original_class
         
+        
     def __repr__(self):
-        return f'\n\t\tVariable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}'
+        return f'\n\t\tAddress: {self.address} Variable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}'
 
     def set_level(self, level):
         self.level = level
@@ -83,8 +85,8 @@ class Variable:
         self.original_class = original_class
 
 class Parameter:
-    def __init__(self, name, type, type_id = None):
-        self.name = name
+    def __init__(self, address, type, type_id = None):
+        self.address = address
         self.type = type
         if self.type == Type.ID:
             self.type_id = type_id
@@ -92,7 +94,7 @@ class Parameter:
             self.type_id = None
 
     def __repr__(self):
-        return f"Name: {self.name}, Type: {self.type}, Type ID: {self.type_id}"
+        return f"Address: {self.address}, Type: {self.type}, Type ID: {self.type_id}"
 
 class DirGen:
     def __init__(self):
@@ -105,6 +107,8 @@ class DirGen:
         self.current_level = ""
         self.in_class = 0
         self.in_function = 0
+        
+        self.global_address_manager = GlobalAddressManager()
 
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"
@@ -156,45 +160,61 @@ class DirGen:
         
         # Search inside classes
         if self.in_class == 1:
-            if self.in_function == 0: # Variable is an attribute
+            if self.in_function == 0:
+                # Variable is an attribute
                 return self.attribute_search(variable_name, class_name)
-            else: # Variable is local to a method
+            else:
+                # Variable is local to a method
                 if variable_name in self.dir_class[class_name].methods[self.current_scope].variables.keys():
                     return self.dir_class[class_name].methods[self.current_scope].variables[variable_name]
                 return self.attribute_search(variable_name, class_name)
     
-    def add_variable(self, new_variable, class_name, variable_level = None):
-        if self.variable_search(new_variable.name, class_name) is not None:
-            raise Exception(f'Variable \'{new_variable.name}\' already declared.')
+    def add_variable(self, variable_name, class_name, variable_level = None):
+        if self.variable_search(variable_name, class_name) is not None:
+            raise Exception(f'Variable \'{variable_name}\' already declared.')
         
-        if self.in_class == 0: # Variable out of classes
-            self.dir_func[self.current_scope].variables[new_variable.name] = new_variable
-            self.dir_func[self.current_scope].add_local_var(new_variable.type)
-        elif self.in_function == 0: # Variable is an attribute
-            new_variable.set_level(variable_level)
-            new_variable.set_original_class(class_name)
-            self.dir_class[class_name].attributes[new_variable.name] = new_variable
-        else: # Variable is local to a method
-            self.dir_class[class_name].methods[self.current_scope].variables[new_variable.name] = new_variable
-            self.dir_class[class_name].methods[self.current_scope].add_local_var(new_variable.type)
+        if (self.current_scope == "global"):
+            # Variable is global
+            address = self.global_address_manager.get_address(self.current_type)
+            self.dir_func["global"].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+        elif self.in_class == 0:
+            # Variable is local to a function
+            address = self.dir_func[self.current_scope].get_local_address(self.current_type)
+            self.dir_func[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+        elif self.in_function == 0:
+            # Variable is an attribute
+            address = 9999
+            self.dir_class[class_name].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, variable_level, class_name)
+        else:
+            # Variable is local to a method
+            address = self.dir_class[class_name].methods[self.current_scope].get_local_address(self.current_type)
+            self.dir_class[class_name].methods[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+        
+        return address
 
-    def add_param(self, new_variable, class_name):
-        if self.in_class == 0: # Parameter belongs to a global function
-            self.dir_func[self.current_scope].add_param(new_variable.name, new_variable.type, new_variable.type_id)
-        else: # Parameter belongs to a method in a class
-            self.dir_class[class_name].methods[self.current_scope].add_param(new_variable.name, new_variable.type, new_variable.type_id)
+    def add_param(self, variable_address, class_name):
+        if self.in_class == 0:
+            # Parameter belongs to a global function
+            self.dir_func[self.current_scope].add_param(variable_address, self.current_type, self.current_type_id)
+        else:
+            # Parameter belongs to a method in a class
+            self.dir_class[class_name].methods[self.current_scope].add_param(variable_address, self.current_type, self.current_type_id)
     
     def set_first_quad(self, quadruple_count):
-        if self.in_class == 0: # First quad for a global function
+        if self.in_class == 0:
+            # First quad for a global function
             self.dir_func[self.current_scope].set_first_quad(quadruple_count)
-        else: # First quad for a method of a class
+        else:
+            # First quad for a method of a class
             self.dir_class[self.current_class].methods[self.current_scope].set_first_quad(quadruple_count)
 
-    def add_temp_var(self, type):
-        if self.in_class == 0: # Temp variable belongs to a global function
-            self.dir_func[self.current_scope].add_temp_var(type)
-        else: # Temp variable belongs to a method of a class
-            self.dir_class[self.current_class].methods[self.current_scope].add_temp_var(type)
+    def get_temp_address(self, type):
+        if self.in_class == 0:
+            # Temp variable belongs to a global function
+            return self.dir_func[self.current_scope].get_temp_address(type)
+        else:
+            # Temp variable belongs to a method of a class
+            return self.dir_class[self.current_class].methods[self.current_scope].get_temp_address(type)
 
     # Point 1
     def enterProgram(self, ctx):
@@ -257,20 +277,17 @@ class DirGen:
     # Point 7, Point 61
     def exitInit_arr(self, ctx):
         variable_name = ctx.parentCtx.ID().getText()
-        new_variable = Variable(variable_name, self.current_type, self.current_type_id)
-        self.add_variable(new_variable, self.current_class, self.current_level)
+        self.add_variable(variable_name, self.current_class, self.current_level)
     
     # Point 7, Point 61, Point 62
     def exitParam(self, ctx):
         # Point 7, Point 61
         variable_name = ctx.ID().getText()
-        new_variable = Variable(variable_name, self.current_type, self.current_type_id)
-        self.add_variable(new_variable, self.current_class)
+        variable_address = self.add_variable(variable_name, self.current_class)
 
         # Point 62
-        self.add_param(new_variable, self.current_class)
+        self.add_param(variable_address, self.current_class)
         
-
     # Point 8
     def exitDeclare_func(self, ctx):
         new_function = Function(ctx.ID().getText(), self.current_type)
