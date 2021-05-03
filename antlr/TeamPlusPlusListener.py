@@ -116,6 +116,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#init_arr.
+    def enterInit_arr(self, ctx:TeamPlusPlusParser.Init_arrContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#init_arr.
+    def exitInit_arr(self, ctx:TeamPlusPlusParser.Init_arrContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init_assign.
     def enterInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
         pass
@@ -134,6 +143,24 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#c_functions.
+    def enterC_functions(self, ctx:TeamPlusPlusParser.C_functionsContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#c_functions.
+    def exitC_functions(self, ctx:TeamPlusPlusParser.C_functionsContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#tpp_function.
+    def enterTpp_function(self, ctx:TeamPlusPlusParser.Tpp_functionContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#tpp_function.
+    def exitTpp_function(self, ctx:TeamPlusPlusParser.Tpp_functionContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#declare_func.
     def enterDeclare_func(self, ctx:TeamPlusPlusParser.Declare_funcContext):
         pass
@@ -143,12 +170,12 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#param.
-    def enterParam(self, ctx:TeamPlusPlusParser.ParamContext):
+    # Enter a parse tree produced by TeamPlusPlusParser#return_type.
+    def enterReturn_type(self, ctx:TeamPlusPlusParser.Return_typeContext):
         pass
 
-    # Exit a parse tree produced by TeamPlusPlusParser#param.
-    def exitParam(self, ctx:TeamPlusPlusParser.ParamContext):
+    # Exit a parse tree produced by TeamPlusPlusParser#return_type.
+    def exitReturn_type(self, ctx:TeamPlusPlusParser.Return_typeContext):
         pass
 
 
@@ -161,12 +188,21 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#c_functions.
-    def enterC_functions(self, ctx:TeamPlusPlusParser.C_functionsContext):
+    # Enter a parse tree produced by TeamPlusPlusParser#params.
+    def enterParams(self, ctx:TeamPlusPlusParser.ParamsContext):
         pass
 
-    # Exit a parse tree produced by TeamPlusPlusParser#c_functions.
-    def exitC_functions(self, ctx:TeamPlusPlusParser.C_functionsContext):
+    # Exit a parse tree produced by TeamPlusPlusParser#params.
+    def exitParams(self, ctx:TeamPlusPlusParser.ParamsContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#param.
+    def enterParam(self, ctx:TeamPlusPlusParser.ParamContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#param.
+    def exitParam(self, ctx:TeamPlusPlusParser.ParamContext):
         pass
 
 
@@ -248,6 +284,15 @@ class TeamPlusPlusListener(ParseTreeListener):
 
     # Exit a parse tree produced by TeamPlusPlusParser#funcall.
     def exitFuncall(self, ctx:TeamPlusPlusParser.FuncallContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#argument.
+    def enterArgument(self, ctx:TeamPlusPlusParser.ArgumentContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#argument.
+    def exitArgument(self, ctx:TeamPlusPlusParser.ArgumentContext):
         pass
 
 

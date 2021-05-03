@@ -2,9 +2,13 @@ from util.DataStructures import Stack, Queue
 from util.Enums import Type, Operator
 
 class Operand:
-    def __init__(self, variable_name, variable_type):
+    def __init__(self, variable_name, variable_type, variable_type_id = None):
         self.variable_name = variable_name
         self.variable_type = variable_type
+        if self.variable_type == Type.ID:
+            self.variable_type_id = variable_type_id
+        else:
+            self.variable_type_id = None
 
     def __repr__(self):
         return f'\nOperand \tName: {self.variable_name} \tType: {Type(self.variable_type).name}\n'
@@ -33,8 +37,8 @@ class QuadrupleList:
     def push_operator(self, operator):
         self.p_operators.push(operator)
 
-    def push_operand(self, variable_name, var_type):
-        self.p_operands.push(Operand(variable_name, var_type))
+    def push_operand(self, variable_name, var_type, var_type_id = None):
+        self.p_operands.push(Operand(variable_name, var_type, var_type_id))
 
     def push_quadruple(self, operator, left_operand, right_operand, result):
         self.quadruple_list.push(Quadruple(operator, left_operand, right_operand, result, self.quadruple_count))
@@ -66,4 +70,6 @@ class QuadrupleList:
         return self.p_operators.top()
     
     def top_jump(self):
+        if self.p_jumps.empty():
+            return None
         return self.p_jumps.top()

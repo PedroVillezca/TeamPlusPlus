@@ -34,4 +34,8 @@ class Operator(IntEnum):
     PRINT = 19
     GOTO = 20
     GOTOF = 21
+    GOSUB = 22
+    PARAMETER = 23
+    ERA = 24
+    ENDFUNC = 25
     

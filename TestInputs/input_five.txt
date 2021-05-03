@@ -1,0 +1,25 @@
+program input_five;
+
+vars
+    int a, b, c, d;
+    float e, f, g, h;
+
+func int diff(int r, int t) {
+    return(r - t);
+}
+
+func int uno(float r, float s, int q) {
+    vars
+        char y = 'a', o, u;
+
+    if (a * b + c + d < r - s and b * h == e / f) {
+        a = b / d;
+    }
+    print("VOID");
+    return(a);
+}
+
+main() {
+    uno(e, e, diff(2, uno(2.2, 2.2, 2)) + 4);
+    print("HELLO");
+}

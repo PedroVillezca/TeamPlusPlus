@@ -44,7 +44,7 @@ main() {
         print("Impossible");
     }
 
-    from a = 1 to oth / 4 {
+    from a = 1 to oth.h / 4 {
         from b = a + 1 to a * 10 {
             switch(b) {
                 case 100 {

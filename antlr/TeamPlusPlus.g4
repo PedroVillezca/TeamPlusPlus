@@ -23,19 +23,27 @@ attr_call   : DOT attr;
 
 attr        : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
-init        : ID (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)? init_assign;
+init        : ID init_arr init_assign;
+
+init_arr    : (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)?;
 
 init_assign : (assign_exp)?;
 
-functions   : (FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
+functions   : (tpp_function)+;
 
-declare_func: (void_type | tpp_type) ID;
+c_functions : METHODS (level tpp_function)+;
 
-param       : (tpp_type | id_type) ID;
+tpp_function: FUNC declare_func params funblock;
+
+declare_func: return_type ID;
+
+return_type : (void_type | tpp_type);
 
 void_type   : VOID;
 
-c_functions : METHODS (level FUNC declare_func LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS funblock)+;
+params      : LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS;
+
+param       : (tpp_type | id_type) ID;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
@@ -53,7 +61,9 @@ assign_exp  : assign_op expression;
 
 assign_op   : ASSIGN;
 
-funcall     : (method_call)? func_name LEFT_PARENTHESIS (expression (COMMA expression)*)? RIGHT_PARENTHESIS;
+funcall     : (method_call)? func_name LEFT_PARENTHESIS (argument (COMMA argument)*)? RIGHT_PARENTHESIS;
+
+argument    : expression;
 
 func_name   : ID;
 
