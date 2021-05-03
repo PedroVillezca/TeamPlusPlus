@@ -61,9 +61,7 @@ assign_exp  : assign_op expression;
 
 assign_op   : ASSIGN;
 
-funcall     : (method_call)? func_name LEFT_PARENTHESIS (argument next_arg*)? RIGHT_PARENTHESIS;
-
-next_arg    : COMMA argument;
+funcall     : (method_call)? func_name LEFT_PARENTHESIS (argument (COMMA argument)*)? RIGHT_PARENTHESIS;
 
 argument    : expression;
 

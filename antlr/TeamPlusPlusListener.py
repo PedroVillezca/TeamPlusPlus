@@ -287,15 +287,6 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TeamPlusPlusParser#next_arg.
-    def enterNext_arg(self, ctx:TeamPlusPlusParser.Next_argContext):
-        pass
-
-    # Exit a parse tree produced by TeamPlusPlusParser#next_arg.
-    def exitNext_arg(self, ctx:TeamPlusPlusParser.Next_argContext):
-        pass
-
-
     # Enter a parse tree produced by TeamPlusPlusParser#argument.
     def enterArgument(self, ctx:TeamPlusPlusParser.ArgumentContext):
         pass

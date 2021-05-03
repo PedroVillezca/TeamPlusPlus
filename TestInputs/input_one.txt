@@ -8,6 +8,7 @@ class OtherClass {
         private func int OtherClass(int other) {
             vars 
                 char re;
+            return(10);
         }
 
         public func int getB() {
@@ -32,7 +33,7 @@ class myClass inherits OtherClass {
         }
 
         private func float setC(int z) {
-            print(h);
+            print(h+a);
             return(c);
         }
 };
@@ -49,8 +50,9 @@ main() {
     vars
         char e[2];
         myClass obj;
-    
+
     print(obj.getB());
-    print(obj.h, e);
+    diff(2.2, 2.2);
+    print(e, obj.h);
     print("Hello World! \n How is everyone");
 }

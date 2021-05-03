@@ -1,3 +1,4 @@
+from src.VirtualMemory import SizeTemplate
 from util.Enums import Type, Level
 
 class UserClass:
@@ -28,15 +29,38 @@ class Function:
         self.return_type = return_type
         self.original_class = original_class
         self.variables = dict()
+        self.params = []
+        self.first_quad = None
+        self.size_template = SizeTemplate()
 
     def __repr__(self):
-        return f'\nFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n'
+        return f'\n\tFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n \tParams: {self.params}\n \tFirst Quad: {self.first_quad}\n \t{self.size_template}'
     
     def set_level(self, level):
         self.level = level
 
     def set_original_class(self, original_class):
         self.original_class = original_class
+
+    def add_local_var(self, type):
+        self.size_template.add_local(type)
+    
+    def add_temp_var(self, type):
+        self.size_template.add_temp(type)
+
+    def add_param(self, variable_name, variable_type, variable_type_id):
+        self.params.append(Parameter(variable_name, variable_type, variable_type_id))
+        
+    def set_first_quad(self, first_quad):
+        self.first_quad = first_quad
+    
+    def get_total_size(self):
+        return self.size_template.get_size()
+
+    def get_param_at(self, k):
+        if k >= len(self.params):
+            return None
+        return self.params[k]
 
 class Variable:
     def __init__(self, name, type, type_id = None, level = None, original_class = None):
@@ -50,13 +74,25 @@ class Variable:
         self.original_class = original_class
         
     def __repr__(self):
-        return f'\tVariable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}\n'
+        return f'\n\t\tVariable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}'
 
     def set_level(self, level):
         self.level = level
 
     def set_original_class(self, original_class):
         self.original_class = original_class
+
+class Parameter:
+    def __init__(self, name, type, type_id = None):
+        self.name = name
+        self.type = type
+        if self.type == Type.ID:
+            self.type_id = type_id
+        else:
+            self.type_id = None
+
+    def __repr__(self):
+        return f"Name: {self.name}, Type: {self.type}, Type ID: {self.type_id}"
 
 class DirGen:
     def __init__(self):
@@ -133,13 +169,33 @@ class DirGen:
         
         if self.in_class == 0: # Variable out of classes
             self.dir_func[self.current_scope].variables[new_variable.name] = new_variable
+            self.dir_func[self.current_scope].add_local_var(new_variable.type)
         elif self.in_function == 0: # Variable is an attribute
             new_variable.set_level(variable_level)
             new_variable.set_original_class(class_name)
             self.dir_class[class_name].attributes[new_variable.name] = new_variable
         else: # Variable is local to a method
             self.dir_class[class_name].methods[self.current_scope].variables[new_variable.name] = new_variable
+            self.dir_class[class_name].methods[self.current_scope].add_local_var(new_variable.type)
+
+    def add_param(self, new_variable, class_name):
+        if self.in_class == 0: # Parameter belongs to a global function
+            self.dir_func[self.current_scope].add_param(new_variable.name, new_variable.type, new_variable.type_id)
+        else: # Parameter belongs to a method in a class
+            self.dir_class[class_name].methods[self.current_scope].add_param(new_variable.name, new_variable.type, new_variable.type_id)
     
+    def set_first_quad(self, quadruple_count):
+        if self.in_class == 0: # First quad for a global function
+            self.dir_func[self.current_scope].set_first_quad(quadruple_count)
+        else: # First quad for a method of a class
+            self.dir_class[self.current_class].methods[self.current_scope].set_first_quad(quadruple_count)
+
+    def add_temp_var(self, type):
+        if self.in_class == 0: # Temp variable belongs to a global function
+            self.dir_func[self.current_scope].add_temp_var(type)
+        else: # Temp variable belongs to a method of a class
+            self.dir_class[self.current_class].methods[self.current_scope].add_temp_var(type)
+
     # Point 1
     def enterProgram(self, ctx):
         new_function = Function('global')
@@ -198,17 +254,22 @@ class DirGen:
         self.current_type = Type.ID
         self.current_type_id = ctx.ID().getText() 
     
-    # Point 7
-    def enterInit(self, ctx):
-        variable_name = ctx.ID().getText()
+    # Point 7, Point 61
+    def exitInit_arr(self, ctx):
+        variable_name = ctx.parentCtx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class, self.current_level)
     
-    # Point 7
+    # Point 7, Point 61, Point 62
     def exitParam(self, ctx):
+        # Point 7, Point 61
         variable_name = ctx.ID().getText()
         new_variable = Variable(variable_name, self.current_type, self.current_type_id)
         self.add_variable(new_variable, self.current_class)
+
+        # Point 62
+        self.add_param(new_variable, self.current_class)
+        
 
     # Point 8
     def exitDeclare_func(self, ctx):

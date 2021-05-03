@@ -21,16 +21,26 @@ class CustomListener(TeamPlusPlusListener):
     caller_name = ""
     recurrent_vars = Stack()
 
+    return_state = 0
+    called_function_name = ""
+    p_funcalls = Stack()
+
+
     def __repr__(self):
         return f'\nDir Gen: \n {self.dir_gen} \n\n Quadruple List: \n {self.quadruple_list}'
 
     def get_temp(self, result_type):
+        # Add temp var to current function depending on type
+        self.dir_gen.add_temp_var(result_type)
+
         if result_type == Type.INT:
             return self.temp_ints.pop(0)
         elif result_type == Type.FLOAT:
             return self.temp_floats.pop(0)
         elif result_type == Type.CHAR:
             return self.temp_chars.pop(0)
+        else:
+            return None
 
     def generate_quadruple(self, top_operator):
         right_operand = self.quadruple_list.pop_operand()
@@ -100,14 +110,6 @@ class CustomListener(TeamPlusPlusListener):
     # Point 6
     def exitId_type(self, ctx):
         self.dir_gen.exitId_type(ctx)
-    
-    # Point 7
-    def enterInit(self, ctx):
-        self.dir_gen.enterInit(ctx)
-
-    # Point 7
-    def exitParam(self, ctx):
-        self.dir_gen.exitParam(ctx)
 
     # Point 8
     def exitDeclare_func(self, ctx):
@@ -182,7 +184,7 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 16
     def exitVal_var(self, ctx):
-        self.quadruple_list.push_operand(self.caller_name, self.current_type)
+        self.quadruple_list.push_operand(self.caller_name, self.current_type, self.current_type_id)
 
     # Point 17
     def exitVal_cte(self, ctx):
@@ -211,21 +213,15 @@ class CustomListener(TeamPlusPlusListener):
             raise Exception(f"Function \'{func_name}\' is private to class {func_obj.original_class}.")
         
         self.current_type = func_obj.return_type
-        if self.is_attribute:
-            self.caller_name += func_name
-        else:
-            self.caller_name = func_name
+        self.called_function = func_name
         
     # Point 19
     def exitVal_funcall(self, ctx):
-        if self.current_type == Type.INT:
-            self.quadruple_list.push_operand(self.temp_ints.pop(0), Type.INT)
-        elif self.current_type == Type.FLOAT:
-            self.quadruple_list.push_operand(self.temp_floats.pop(0), Type.FLOAT)
-        elif self.current_type == Type.CHAR:
-            self.quadruple_list.push_operand(self.temp_chars.pop(0), Type.CHAR)
-        else:
-            raise Exception(f"Functions can not return non-primitive types to be used in expressions.")
+        temp = self.get_temp(self.current_type)
+        if temp is None:
+            raise Exception(f"Functions must return primitive types when used in expressions.")
+
+        self.quadruple_list.push_operand(temp, self.current_type)
         
     # Point 21
     def exitUnop(self, ctx):
@@ -332,7 +328,7 @@ class CustomListener(TeamPlusPlusListener):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.AND:
             self.generate_quadruple(top_operator)
-        
+
     # Point 33
     def exitOrop(self, ctx):
         if ctx.OR() is not None:
@@ -380,13 +376,6 @@ class CustomListener(TeamPlusPlusListener):
     # Point 38
     def exitInit_assign(self, ctx):
        self.caller_name = ""
-        
-    # Point 39
-    def enterTpp_return(self, ctx):
-        if ctx.RETURN() is not None:
-            self.quadruple_list.push_operator(Operator.RETURN)
-        else:
-            raise Exception(f"Invalid RETURN.")
         
     # Point 40
     def exitTpp_return(self, ctx):
@@ -553,4 +542,94 @@ class CustomListener(TeamPlusPlusListener):
     def exitFor_var(self, ctx):
         self.recurrent_vars.push(Operand(self.caller_name, self.current_type))
         self.quadruple_list.push_operand(self.recurrent_vars.top().variable_name, self.recurrent_vars.top().variable_type)
+
+    # Point 65
+    def exitReturn_type(self, ctx):
+        if (self.dir_gen.current_type == Type.VOID):
+            self.return_state = 0
+        else:
+            self.return_state = 1
+
+    # Point 39, Point 66
+    def enterTpp_return(self, ctx):
+        # Point 66
+        if self.return_state == 0: # Return statement in void function, raises error
+            raise Exception(f"Invalid return statement in void function")
+        elif self.quadruple_list.top_jump() is None: # Return statement in base of function declaration
+            self.return_state = 2
+        
+        # Point 39
+        if ctx.RETURN() is not None: 
+            self.quadruple_list.push_operator(Operator.RETURN)
+        else:
+            raise Exception(f"Invalid RETURN.")
+
+    # Point 7, Point 61, Point 62
+    def exitParam(self, ctx):
+        self.dir_gen.exitParam(ctx)
+        
+    # Point 63
+    def exitParams(self, ctx):
+        self.dir_gen.set_first_quad(self.quadruple_list.quadruple_count)
+        
+    # Point 64, Point 67
+    def exitTpp_function(self, ctx):
+        # Point 67
+        if self.return_state == 1: # Function needed return but no return was found outside of non-linear statements, raises error
+            raise Exception(f"Missing return statement outside of non-linear statements in non-void function \'{self.dir_gen.current_scope}\'.")
+
+        # Point 64
+        self.quadruple_list.push_quadruple(Operator.ENDFUNC, None, None, None)
+
+    # Point 7, Point 61
+    def exitInit_arr(self, ctx):
+        self.dir_gen.exitInit_arr(ctx)
+        
+    # Point 68
+    def exitFunc_name(self, ctx):
+        if self.is_attribute:
+            func_obj = self.dir_gen.method_search(self.called_function, self.current_type_id)
+        else:
+            func_obj = self.dir_gen.function_search(self.called_function, self.dir_gen.current_class)
+        
+        size = func_obj.get_total_size()
+        self.quadruple_list.push_quadruple(Operator.ERA, None, None, size)
+
+        # Pushing tuple of Function object and its parameter count to funcalls stack
+        self.p_funcalls.push([func_obj, 0])
+        
+    # Point 69
+    def exitArgument(self, ctx):
+        func_tuple = self.p_funcalls.top()
+        parameter = func_tuple[0].get_param_at(func_tuple[1] - 1)
+        if parameter is None:
+            raise Exception(f"Too many arguments given for function \'{func_tuple[0].name}\'.")
+        
+        argument = self.quadruple_list.pop_operand()
+
+        if parameter.type == argument.variable_type:
+            if parameter.type == Type.ID and parameter.type_id != argument.variable_type_id:
+                raise Exception(f"Expected argument of type \'{parameter.type_id}\' but received type \'{argument.variable_type_id}\'")
+        else:
+            raise Exception(f"Expected argument of type \'{Type(parameter.type).name}\' but received type \'{Type(argument.variable_type).name}\'")
+
+        self.quadruple_list.push_quadruple(Operator.PARAMETER, argument.variable_name, None, parameter.name)
+
+    # Point 70
+    def enterArgument(self, ctx):
+        # Increment parameter count for latest funcall
+        self.p_funcalls.elements[-1][1] += 1
+        
+    # Point 20, Point 71, Point 72
+    def exitFuncall(self, ctx):
+        func_tuple = self.p_funcalls.pop()
+        # Point 71
+        if func_tuple[1] < len(func_tuple[0].params):
+            raise Exception(f"Not enough arguments given for function \'{func_tuple[0].name}\'. Expected {len(func_tuple[0].params)} arguments but received {func_tuple[1]}.")
+        
+        # Point 72
+        self.quadruple_list.push_quadruple(Operator.GOSUB, func_tuple[0].name, None, func_tuple[0].first_quad)
+
+        # Point 20
+        self.is_attribute = False
 
