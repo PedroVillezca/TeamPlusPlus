@@ -48,6 +48,9 @@ class Function:
     def get_temp_address(self, type):
         return self.address_manager.get_temp_address(type)
 
+    def return_temp_address(self, address):
+        self.address_manager.return_temp_address(address)
+
     def add_param(self, variable_address, variable_type, variable_type_id):
         self.params.append(Parameter(variable_address, variable_type, variable_type_id))
         
@@ -215,6 +218,14 @@ class DirGen:
         else:
             # Temp variable belongs to a method of a class
             return self.dir_class[self.current_class].methods[self.current_scope].get_temp_address(type)
+
+    def return_temp_address(self, address):
+        if self.in_class == 0:
+            # Temp variable belongs to a global function
+            return self.dir_func[self.current_scope].return_temp_address(address)
+        else:
+            # Temp variable belongs to a method of a class
+            return self.dir_class[self.current_class].methods[self.current_scope].return_temp_address(address)
 
     # Point 1
     def enterProgram(self, ctx):

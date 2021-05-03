@@ -49,8 +49,33 @@ class TempAddressManager(AddressManager):
     def __init__(self):
         super().__init__(2)
 
-    # Add recycling address process
-    
+        self.free_addresses = {
+            Type.INT: [],
+            Type.FLOAT: [],
+            Type.CHAR: []
+        }
+
+    def get_address(self, type):
+        if not self.free_addresses[type]:
+            # Return newly generated address
+            return super().get_address(type)
+            
+        # Return recycled address
+        return self.free_addresses[type].pop(0)
+        
+    def return_address(self, address):
+        if address // 100 == 20:
+            # Address is an INT
+            self.free_addresses[Type.INT].append(address)
+        elif address // 100 == 21:
+            # Address is a FLOAT
+            self.free_addresses[Type.FLOAT].append(address)
+        elif address // 100 == 22:
+            # Address is a CHAR
+            self.free_addresses[Type.CHAR].append(address)
+        else:
+            raise Exception("Address does not belong to a primitive type and cannot be returned.")
+
 class FunctionAddressManager():
     def __init__(self):
         self.local = LocalAddressManager()
@@ -61,38 +86,15 @@ class FunctionAddressManager():
     
     def get_temp_address(self, type):
         return self.temp.get_address(type)
+    
+    def return_temp_address(self, address):
+        return self.temp.return_address(address)
 
     def get_size(self):
         return self.local.get_size() + self.temp.get_size()
 
     def __repr__(self):
         return f"Local: \n\t{self.local} \n \tTemp: \n\t{self.temp}"
-
-
-"""
-global = 0
-    int
-    float
-    char
-
-local 1
-    int
-    float
-    char
-
-temp 2
-    int
-    float
-    char
-
-classes*
-
-const 3
-    int
-    float
-    char
-
-"""
 
 class SizeTemplate:
     def __init__(self):
