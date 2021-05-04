@@ -3,10 +3,11 @@ from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
 from src.DirGen import DirGen
-from src.QuadrupleList import QuadrupleList, Operand
+from src.QuadrupleList import QuadrupleList
+from util.Classes import Operand
+from util.DataStructures import Stack
 from util.Enums import Operator, Type, Level
 from util.SemanticCube import semantic_cube
-from util.DataStructures import Stack
 
 class CustomListener(TeamPlusPlusListener):
     dir_gen = DirGen()
