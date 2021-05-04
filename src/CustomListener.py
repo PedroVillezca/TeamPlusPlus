@@ -1,3 +1,5 @@
+import sys
+
 from antlr4 import *
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
@@ -54,21 +56,22 @@ class CustomListener(TeamPlusPlusListener):
         result_type = semantic_cube[left_operand.variable_type][right_operand.variable_type][top_operator]
 
         if result_type is None:
-            raise Exception(f"Invalid operand types \'{Type(left_operand.variable_type).name}\' and \'{Type(right_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
-        
+            print(f"[Error] Invalid operand types \'{Type(left_operand.variable_type).name}\' and \'{Type(right_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
+            sys.exit()
+
         result_address = self.get_temp(result_type)
         
         self.push_quadruple(self.quadruple_list.pop_operator(), left_operand.address, right_operand.address, result_address)
         self.quadruple_list.push_operand(result_address, result_type)
-
         
     
     def create_gotof(self):
         self.quadruple_list.push_jump(self.quadruple_list.quadruple_count)
         left_operand = self.quadruple_list.pop_operand()
         if left_operand.variable_type != Type.INT:
-            raise Exception(f"Cannot evaluate value of type {Type(left_operand.variable_type).name} for conditions.")
-        
+            print(f"[Error] Cannot evaluate value of type {Type(left_operand.variable_type).name} for conditions.")
+            sys.exit()
+
         self.push_quadruple(Operator.GOTOF, left_operand.address, None, None)
     
     def create_cond_goto(self):
@@ -150,11 +153,13 @@ class CustomListener(TeamPlusPlusListener):
         var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
 
         if var_obj is None:
-            raise Exception(f"Variable \'{var_name}\' does not exist.")
-        
+            print(f"[Error] Variable \'{var_name}\' does not exist.")
+            sys.exit()
+
         if var_obj.level == Level.PRIVATE and var_obj.original_class != self.dir_gen.current_class:
-            raise Exception(f"Variable \'{var_name}\' is private to class {var_obj.original_class}.")
-        
+            print(f"[Error] Attribute \'{var_name}\' is private to class {var_obj.original_class}.")
+            sys.exit()
+
         self.current_type = var_obj.type
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
@@ -171,11 +176,13 @@ class CustomListener(TeamPlusPlusListener):
         var_obj = self.dir_gen.attribute_search(var_name, self.current_type_id)
 
         if var_obj is None:
-            raise Exception(f"Variable \'{var_name}\' does not exist.")
+            print(f"[Error] Variable \'{var_name}\' does not exist.")
+            sys.exit()
         
         if var_obj.level == Level.PRIVATE and var_obj.original_class != self.dir_gen.current_class:
-            raise Exception(f"Variable \'{var_name}\' is private to class {var_obj.original_class}.")
-        
+            print(f"[Error] Attribute \'{var_name}\' is private to class {var_obj.original_class}.")
+            sys.exit()
+
         self.current_type = var_obj.type
         if var_obj.type == Type.ID:
             self.current_type_id = var_obj.type_id
@@ -204,8 +211,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operand(self.get_temp(Type.FLOAT), Type.FLOAT)
         elif ctx.CTE_CHAR() is not None:
             self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
-        else:
-            raise Exception(f"There are no class constants.")
         
     # Point 18
     def enterFunc_name(self, ctx):
@@ -217,10 +222,12 @@ class CustomListener(TeamPlusPlusListener):
             func_obj = self.dir_gen.function_search(func_name, self.dir_gen.current_class)
 
         if func_obj is None:
-            raise Exception(f"Function \'{func_name}\' does not exist.")
-        
+            print(f"[Error] Function \'{func_name}\' does not exist.")
+            sys.exit()
+
         if func_obj.level == Level.PRIVATE and func_obj.original_class != self.dir_gen.current_class:
-            raise Exception(f"Function \'{func_name}\' is private to class {func_obj.original_class}.")
+            print(f"[Error] Function \'{func_name}\' is private to class {func_obj.original_class}.")
+            sys.exit()
         
         self.current_type = func_obj.return_type
         self.called_function = func_name
@@ -229,8 +236,9 @@ class CustomListener(TeamPlusPlusListener):
     def exitVal_funcall(self, ctx):
         temp_address = self.get_temp(self.current_type)
         if temp_address is None:
-            raise Exception(f"Functions must return primitive types when used in expressions.")
-
+            print("[Error] Functions must return primitive types when used in expressions.")
+            sys.exit()
+        
         self.quadruple_list.push_operand(temp_address, self.current_type)
         
     # Point 21
@@ -241,8 +249,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operator(Operator.NEG)
         elif ctx.NOT() is not None:
             self.quadruple_list.push_operator(Operator.NOT)
-        else:
-            raise Exception(f"Invalid unary operator.")
         
     # Point 22
     def exitFactor_elem(self, ctx):
@@ -251,8 +257,9 @@ class CustomListener(TeamPlusPlusListener):
             left_operand = self.quadruple_list.pop_operand()
         
             if left_operand.variable_type != Type.INT and left_operand.variable_type != Type.FLOAT:
-                raise Exception(f"Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
-        
+                print(f"Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
+                sys.exit()
+            
             if left_operand.variable_type == Type.INT or top_operator == Operator.NOT:
                 result_address = self.get_temp(Type.INT)
                 result_type = Type.INT
@@ -269,8 +276,6 @@ class CustomListener(TeamPlusPlusListener):
         
     # Point 24
     def exitFake_bottom(self, ctx):
-        if self.quadruple_list.top_operator() != Operator.FF:
-            raise Exception(f'Unexpected missing fake bottom.')
         self.quadruple_list.pop_operator()
         
     # Point 25
@@ -279,8 +284,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operator(Operator.MULT)
         elif ctx.DIV() is not None:
             self.quadruple_list.push_operator(Operator.DIV)
-        else:
-            raise Exception(f"Invalid MULOP.")
         
     # Point 26
     def exitFactor(self, ctx):
@@ -294,8 +297,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operator(Operator.SUM)
         elif ctx.MINUS() is not None:
             self.quadruple_list.push_operator(Operator.SUB)
-        else:
-            raise Exception(f"Invalid SUMOP.")
         
     # Point 28
     def exitTerm(self, ctx):
@@ -317,8 +318,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operator(Operator.LTE)
         elif ctx.DIFFERENT() is not None:
             self.quadruple_list.push_operator(Operator.DIFF)
-        else:
-            raise Exception(f"Invalid RELOP.")
 
     # Point 30
     def exitRel_exp(self, ctx):
@@ -328,10 +327,7 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 31
     def exitAndop(self, ctx):
-        if ctx.AND() is not None:
-            self.quadruple_list.push_operator(Operator.AND)
-        else:
-            raise Exception(f"Invalid ANDOP.")
+        self.quadruple_list.push_operator(Operator.AND)
         
     # Point 32
     def exitExpress(self, ctx):
@@ -341,10 +337,7 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 33
     def exitOrop(self, ctx):
-        if ctx.OR() is not None:
-            self.quadruple_list.push_operator(Operator.OR)
-        else:
-            raise Exception(f"Invalid OROP.")
+        self.quadruple_list.push_operator(Operator.OR)
         
     # Point 34
     def exitExpressio(self, ctx):
@@ -358,10 +351,7 @@ class CustomListener(TeamPlusPlusListener):
         
     # Point 35
     def exitAssign_op(self, ctx):
-        if ctx.ASSIGN() is not None:
-            self.quadruple_list.push_operator(Operator.ASSIGN)
-        else:
-            raise Exception(f"Invalid ASSIGN.")
+        self.quadruple_list.push_operator(Operator.ASSIGN)
         
     # Point 36
     def exitAssign_exp(self, ctx):
@@ -371,11 +361,12 @@ class CustomListener(TeamPlusPlusListener):
             result = self.quadruple_list.pop_operand()
         
             if left_operand.variable_type == Type.ID:
-                raise Exception(f"Cannot assign values of structured type.")
+                print("[Error] Cannot assign values of structured type.")
+                sys.exit()
 
             if left_operand.variable_type != result.variable_type:
-                raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
-
+                print(f"[Error] Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
+                sys.exit()
             self.push_quadruple(self.quadruple_list.pop_operator(), left_operand.address, None, result.address)
     
     # Point 37
@@ -395,40 +386,41 @@ class CustomListener(TeamPlusPlusListener):
             func_obj = self.dir_gen.function_search(self.dir_gen.current_scope, self.dir_gen.current_class)
         
             if result.variable_type != func_obj.return_type:
-                raise Exception(f"Type mismatch. Cannot return value of type \'{Type(result.variable_type).name}\' from function with return type \'{Type(func_obj.return_type).name}\'.")
-            
+                print(f"[Error] Type mismatch. Cannot return value of type \'{Type(result.variable_type).name}\' from function with return type \'{Type(func_obj.return_type).name}\'.")
+                sys.exit()
+
             self.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 41
     def enterRead_var(self, ctx):
-        if ctx.parentCtx.READ() is not None:
-            self.quadruple_list.push_operator(Operator.READ)
-        else:
-            raise Exception(f"Invalid READ.")
+        self.quadruple_list.push_operator(Operator.READ)
         
     # Point 42
     def exitRead_var(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.READ:
             result = Operand(self.caller_address, self.current_type)
+
             if result.variable_type == Type.ID:
-                raise Exception(f"Cannot read data for structured types.")
+                print("[Error] Cannot read data for structured types.")
+                sys.exit()
+                
             self.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 43
     def enterPrint_val(self, ctx):
-        if ctx.parentCtx.PRINT() is not None:
-            self.quadruple_list.push_operator(Operator.PRINT)
-        else:
-            raise Exception(f"Invalid PRINT.")
+        self.quadruple_list.push_operator(Operator.PRINT)
         
     # Point 44
     def exitPrint_exp(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.PRINT:
             result = self.quadruple_list.pop_operand()
+
             if result.variable_type == Type.ID:
-                raise Exception(f"Cannot print value of a structured type.")
+                print("[Error] Cannot print value of a structured type.")
+                sys.exit()
+                
             self.push_quadruple(self.quadruple_list.pop_operator(), None, None, result.address)
         
     # Point 45
@@ -445,8 +437,6 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
         elif ctx.CTE_CHAR() is not None:
             self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
-        else:
-            raise Exception(f"Invalid constant for switch statement.")
 
     # Point 46
     def enterIfelse(self, ctx):
@@ -513,10 +503,11 @@ class CustomListener(TeamPlusPlusListener):
         result = self.quadruple_list.pop_operand()
 
         if left_operand.variable_type == Type.ID:
-                raise Exception(f"Cannot assign values of structured type.")
-    
+            print("[Error] Cannot assign values of structured type.")
+            sys.exit()
         if left_operand.variable_type != result.variable_type:
-            raise Exception(f"Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
+            print(f"[Error] Type mismatch. Cannot assign value of type \'{Type(left_operand.variable_type).name}\' to variable of type \'{Type(result.variable_type).name}\'.")
+            sys.exit()
 
         self.push_quadruple(Operator.ASSIGN, left_operand.address, None, result.address)
         self.quadruple_list.push_operand(result.address, result.variable_type)
@@ -540,8 +531,9 @@ class CustomListener(TeamPlusPlusListener):
     def exitSwitch_expr(self, ctx):
         recurrent_var = self.quadruple_list.pop_operand()
         if recurrent_var.variable_type != Type.INT and recurrent_var.variable_type != Type.CHAR:
-            raise Exception(f"Cannot create switch statement with type \'{Type(recurrent_var.variable_type).name}\'.")
-        
+            print(f"[Error] Cannot create switch statement with type \'{Type(recurrent_var.variable_type).name}\'.")
+            sys.exit()
+
         self.recurrent_vars.push(recurrent_var)
     
     # Point 58
@@ -564,15 +556,13 @@ class CustomListener(TeamPlusPlusListener):
     def enterTpp_return(self, ctx):
         # Point 66
         if self.return_state == 0: # Return statement in void function, raises error
-            raise Exception(f"Invalid return statement in void function")
+            print("[Error] Invalid return statement in void function")
+            sys.exit()
         elif self.quadruple_list.top_jump() is None: # Return statement in base of function declaration
             self.return_state = 2
         
         # Point 39
-        if ctx.RETURN() is not None: 
-            self.quadruple_list.push_operator(Operator.RETURN)
-        else:
-            raise Exception(f"Invalid RETURN.")
+        self.quadruple_list.push_operator(Operator.RETURN)
 
     # Point 7, Point 61, Point 62
     def exitParam(self, ctx):
@@ -586,7 +576,8 @@ class CustomListener(TeamPlusPlusListener):
     def exitTpp_function(self, ctx):
         # Point 67
         if self.return_state == 1: # Function needed return but no return was found outside of non-linear statements, raises error
-            raise Exception(f"Missing return statement outside of non-linear statements in non-void function \'{self.dir_gen.current_scope}\'.")
+            print(f"[Error] Missing return statement outside of non-linear statements in non-void function \'{self.dir_gen.current_scope}\'.")
+            sys.exit()
 
         # Point 64
         self.push_quadruple(Operator.ENDFUNC, None, None, None)
@@ -613,15 +604,18 @@ class CustomListener(TeamPlusPlusListener):
         func_tuple = self.p_funcalls.top()
         parameter = func_tuple[0].get_param_at(func_tuple[1] - 1)
         if parameter is None:
-            raise Exception(f"Too many arguments given for function \'{func_tuple[0].name}\'.")
-        
+            print(f"[Error] Too many arguments given for function \'{func_tuple[0].name}\'.")
+            sys.exit()
+            
         argument = self.quadruple_list.pop_operand()
 
         if parameter.type == argument.variable_type:
             if parameter.type == Type.ID and parameter.type_id != argument.variable_type_id:
-                raise Exception(f"Expected argument of type \'{parameter.type_id}\' but received type \'{argument.variable_type_id}\'")
+                print(f"[Error] Expected argument of type \'{parameter.type_id}\' but received type \'{argument.variable_type_id}\'")
+                sys.exit()
         else:
-            raise Exception(f"Expected argument of type \'{Type(parameter.type).name}\' but received type \'{Type(argument.variable_type).name}\'")
+            print(f"[Error] Expected argument of type \'{Type(parameter.type).name}\' but received type \'{Type(argument.variable_type).name}\'")
+            sys.exit()
 
         self.push_quadruple(Operator.PARAMETER, argument.address, None, parameter.address)
 
@@ -635,11 +629,11 @@ class CustomListener(TeamPlusPlusListener):
         func_tuple = self.p_funcalls.pop()
         # Point 71
         if func_tuple[1] < len(func_tuple[0].params):
-            raise Exception(f"Not enough arguments given for function \'{func_tuple[0].name}\'. Expected {len(func_tuple[0].params)} arguments but received {func_tuple[1]}.")
-        
+            print(f"[Error] Not enough arguments given for function \'{func_tuple[0].name}\'. Expected {len(func_tuple[0].params)} arguments but received {func_tuple[1]}.")
+            sys.exit()
+
         # Point 72
         self.quadruple_list.push_quadruple(Operator.GOSUB, func_tuple[0].name, None, func_tuple[0].first_quad)
 
         # Point 20
         self.is_attribute = False
-

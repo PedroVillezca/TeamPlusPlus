@@ -14,7 +14,7 @@ def main(argv):
     tree = parser.program()
 
     if parser.getNumberOfSyntaxErrors() != 0:
-        print("Incorrecto")
+        print("Unsuccessful Compilation...")
         sys.exit()
 
     custom_listener = CustomListener()
@@ -22,7 +22,7 @@ def main(argv):
     walker.walk(custom_listener, tree)
 
     if parser.getNumberOfSyntaxErrors() == 0:
-        print("Correcto")
+        print("Successful Compilation!")
         print(custom_listener)
         sys.exit()
  

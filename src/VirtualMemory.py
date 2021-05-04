@@ -12,11 +12,13 @@ class AddressManager:
     
     def get_address(self, type):
         if type == Type.ID or type == Type.VOID:
-            raise Exception(f"Can't get address for variable of type \'{Type(type).name}\'.")
+            print(f"[Error] Cannot get address for variable of type \'{Type(type).name}\'.")
+            sys.exit()
         
         if self.addresses[type] > 99:
-            raise Exception(f"Address limit for variable of type \'{Type(type).name}\' exceeded in current context.")
-        
+            print(f"[Error] Address limit for variables of type \'{Type(type).name}\' exceeded in current context.")
+            sys.exit()
+
         context_val = self.context * 1000
 
         if type == Type.INT:
@@ -73,9 +75,7 @@ class TempAddressManager(AddressManager):
         elif address // 100 == 22:
             # Address is a CHAR
             self.free_addresses[Type.CHAR].append(address)
-        else:
-            raise Exception("Address does not belong to a primitive type and cannot be returned.")
-
+            
 class FunctionAddressManager():
     def __init__(self):
         self.local = LocalAddressManager()

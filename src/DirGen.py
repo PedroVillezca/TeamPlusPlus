@@ -40,7 +40,8 @@ class DirGen:
         self.current_scope = new_function.name
 
         if self.function_search(new_function.name, class_name) is not None:
-            raise Exception(f'Function \'{new_function.name}\' already declared.')
+            print(f'[Error] Function \'{new_function.name}\' already declared.')
+            sys.exit()
         
         if self.in_class == 0:
             self.dir_func[new_function.name] = new_function
@@ -77,8 +78,9 @@ class DirGen:
     
     def add_variable(self, variable_name, class_name, variable_level = None):
         if self.variable_search(variable_name, class_name) is not None:
-            raise Exception(f'Variable \'{variable_name}\' already declared.')
-        
+            print(f'[Error] Variable \'{variable_name}\' already declared.')
+            sys.exit()
+
         if (self.current_scope == "global"):
             # Variable is global
             address = self.global_address_manager.get_address(self.current_type)
@@ -141,7 +143,8 @@ class DirGen:
         self.current_class = self.current_scope
 
         if self.current_scope in self.dir_class.keys():
-            raise Exception(f'Class \'{self.current_scope}\' already declared.')
+            print(f'[Error] Class \'{self.current_scope}\' already declared.')
+            sys.exit()
         
         new_class = UserClass(self.current_scope)
         self.dir_class[new_class.name] = new_class
@@ -150,7 +153,8 @@ class DirGen:
     def exitInherit(self, ctx):
         parent_name = ctx.ID().getText()
         if not parent_name in self.dir_class.keys():
-            raise Exception(f'Class \'{self.current_scope}\' inherits from undeclared class \'{parent_name}\'.')
+            print(f'[Error] Class \'{self.current_scope}\' inherits from undeclared class \'{parent_name}\'.')
+            sys.exit()
         
         current_class = self.dir_class[self.current_scope]
         parent_obj = self.dir_class[parent_name]
@@ -162,8 +166,6 @@ class DirGen:
             self.current_level = Level.PUBLIC
         elif ctx.PRIVATE() is not None:
             self.current_level = Level.PRIVATE
-        else:
-            raise Exception(f'Level \'{ctx.getStart().getText()}\' is invalid.')
     
     # Point 5
     def exitTpp_type(self, ctx):
@@ -173,8 +175,6 @@ class DirGen:
             self.current_type = Type.FLOAT
         elif ctx.CHAR() is not None: 
             self.current_type = Type.CHAR
-        else:
-            raise Exception(f'Type \'{ctx.getStart().getText()}\' is invalid.')
         
     # Point 5
     def exitVoid_type(self, ctx):
@@ -183,7 +183,8 @@ class DirGen:
     # Point 6
     def exitId_type(self, ctx):
         if not ctx.ID().getText() in self.dir_class.keys():
-           raise Exception(f'Class \'{ctx.ID().getText()}\' is undefined.')
+           print(f'[Error] Class \'{ctx.ID().getText()}\' is undefined.')
+           sys.exit()
         
         self.current_type = Type.ID
         self.current_type_id = ctx.ID().getText() 
