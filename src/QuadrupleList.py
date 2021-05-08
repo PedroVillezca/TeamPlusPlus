@@ -1,28 +1,6 @@
 from util.DataStructures import Stack, Queue
+from util.Classes import Quadruple, Operand
 from util.Enums import Type, Operator
-
-class Operand:
-    def __init__(self, variable_name, variable_type, variable_type_id = None):
-        self.variable_name = variable_name
-        self.variable_type = variable_type
-        if self.variable_type == Type.ID:
-            self.variable_type_id = variable_type_id
-        else:
-            self.variable_type_id = None
-
-    def __repr__(self):
-        return f'\nOperand \tName: {self.variable_name} \tType: {Type(self.variable_type).name}\n'
-
-class Quadruple:
-    def __init__(self, operator, left_operand, right_operand, result, index):
-        self.operator = operator
-        self.left_operand = left_operand
-        self.right_operand = right_operand
-        self.result = result
-        self.index = index
-    
-    def __repr__(self):
-        return f'\n {self.index} Operator: {Operator(self.operator).name}\t Left Operand: {self.left_operand}\t Right Operand: {self.right_operand}\t Result: {self.result}'
 
 class QuadrupleList:
     quadruple_list = Queue()

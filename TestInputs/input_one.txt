@@ -13,7 +13,7 @@ class OtherClass {
 
         public func int getB() {
             print(s);
-            print(OtherClass());
+            print(OtherClass(69));
             return(i);
         }
 };
@@ -27,7 +27,7 @@ class myClass inherits OtherClass {
         private func int getA() {
             vars
                 float a2;
-                OtherClass oth;
+                # OtherClass oth;
             
             return(a);
         }
@@ -49,10 +49,10 @@ func void diff(float x, float y) {
 main() {
     vars
         char e[2];
-        myClass obj;
+        # myClass obj;
 
-    print(obj.getB());
+    # print(obj.getB());
     diff(2.2, 2.2);
-    print(e, obj.h);
+    print(e);
     print("Hello World! \n How is everyone");
 }
