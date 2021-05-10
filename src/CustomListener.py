@@ -41,7 +41,6 @@ class CustomListener(TeamPlusPlusListener):
                 # Address is not being used as a recurrent variable, recycle
                 self.dir_gen.return_temp_address(address)
 
-
     def push_quadruple(self, operator, left_operand, right_operand, result):
         self.quadruple_list.push_quadruple(operator, left_operand, right_operand, result)
         
@@ -94,9 +93,14 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         self.quadruple_list.pop_jump()
 
-    # Point 1
+    # Point 1, Point 73
     def enterProgram(self, ctx):
+        # Point 1
         self.dir_gen.enterProgram(ctx)
+
+        # Point 73
+        self.push_quadruple(Operator.GOTO, None, None, None)
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
 
     # Point 2
     def enterTpp_class(self, ctx):
@@ -130,9 +134,14 @@ class CustomListener(TeamPlusPlusListener):
     def enterClasses(self, ctx):
         self.dir_gen.enterClasses(ctx)
     
-    # Point 10
+    # Point 10, Point 74
     def enterMain(self, ctx):
+        # Point 10
         self.dir_gen.enterMain(ctx)
+
+        # Point 74
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         
     # Point 11
     def exitClasses(self, ctx):
@@ -558,7 +567,7 @@ class CustomListener(TeamPlusPlusListener):
         if self.return_state == 0: # Return statement in void function, raises error
             print("[Error] Invalid return statement in void function")
             sys.exit()
-        elif self.quadruple_list.top_jump() is None: # Return statement in base of function declaration
+        elif self.quadruple_list.p_jumps.size() == 1: # Return statement in base of function declaration
             self.return_state = 2
         
         # Point 39
