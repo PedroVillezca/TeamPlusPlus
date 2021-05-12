@@ -1,3 +1,4 @@
+import sys
 from util.Enums import Type
 
 class AddressManager:

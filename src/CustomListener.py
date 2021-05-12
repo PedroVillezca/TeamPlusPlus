@@ -23,7 +23,8 @@ class CustomListener(TeamPlusPlusListener):
     recurrent_vars = Stack()
 
     return_state = 0
-    called_function_name = ""
+    called_function = ""
+    called_function_addr = None
     p_funcalls = Stack()
 
 
@@ -244,10 +245,12 @@ class CustomListener(TeamPlusPlusListener):
     # Point 19
     def exitVal_funcall(self, ctx):
         temp_address = self.get_temp(self.current_type)
+        
         if temp_address is None:
             print("[Error] Functions must return primitive types when used in expressions.")
             sys.exit()
         
+        self.push_quadruple(Operator.ASSIGN, self.called_function_addr, None, temp_address)
         self.quadruple_list.push_operand(temp_address, self.current_type)
         
     # Point 21
@@ -636,6 +639,8 @@ class CustomListener(TeamPlusPlusListener):
     # Point 20, Point 71, Point 72
     def exitFuncall(self, ctx):
         func_tuple = self.p_funcalls.pop()
+        self.current_type = func_tuple[0].return_type
+        self.called_function_addr = func_tuple[0].return_addr
         # Point 71
         if func_tuple[1] < len(func_tuple[0].params):
             print(f"[Error] Not enough arguments given for function \'{func_tuple[0].name}\'. Expected {len(func_tuple[0].params)} arguments but received {func_tuple[1]}.")
