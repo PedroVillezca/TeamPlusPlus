@@ -20,8 +20,13 @@ func int uno(float r, float s, int q) {
     return(a);
 }
 
+func void dos() {
+    print(1 + 2, 3.0, 4, 5.123, 'c', 1, 2.0, 3.0, 'c', 5.123);
+}
+
 main() {
     globchar = 'a';
     uno(e, e, diff(2, uno(2.2, 2.2, 2), globchar) + 4);
     print("HELLO");
+    dos();
 }

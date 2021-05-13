@@ -76,6 +76,26 @@ class TempAddressManager(AddressManager):
         elif address // 100 == 22:
             # Address is a CHAR
             self.free_addresses[Type.CHAR].append(address)
+
+class ConstAddressManager(AddressManager):
+    def __init__(self):
+        super().__init__(3)
+
+        self.const_table = {
+            Type.INT: {},
+            Type.FLOAT: {},
+            Type.CHAR: {}
+        }
+    
+    def get_address(self, type, value):
+        if value in self.const_table[type].keys():
+            # Return previously assigned address for this value
+            return self.const_table[type][value]
+        
+        # Assign new address to unseen constant
+        address = super().get_address(type)
+        self.const_table[type][value] = address
+        return address
             
 class FunctionAddressManager():
     def __init__(self):

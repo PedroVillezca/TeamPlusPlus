@@ -1,4 +1,4 @@
-from src.VirtualMemory import GlobalAddressManager
+from src.VirtualMemory import GlobalAddressManager, ConstAddressManager
 from util.Classes import UserClass, Function, Variable, Parameter
 from util.Enums import Type, Level
 
@@ -15,6 +15,7 @@ class DirGen:
         self.in_function = 0
         
         self.global_address_manager = GlobalAddressManager()
+        self.const_address_manager = ConstAddressManager()
 
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"

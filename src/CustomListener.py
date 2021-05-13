@@ -216,11 +216,11 @@ class CustomListener(TeamPlusPlusListener):
     # Point 17
     def exitVal_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.INT, int(ctx.CTE_INT().getText())), Type.INT)
         elif ctx.CTE_FLOAT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.FLOAT), Type.FLOAT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.FLOAT, float(ctx.CTE_FLOAT().getText())), Type.FLOAT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
         
     # Point 18
     def enterFunc_name(self, ctx):
@@ -446,9 +446,9 @@ class CustomListener(TeamPlusPlusListener):
     # Point 17
     def exitSwitch_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.INT, int(ctx.CTE_INT().getText())), Type.INT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
 
     # Point 46
     def enterIfelse(self, ctx):
