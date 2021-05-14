@@ -38,4 +38,5 @@ class Operator(IntEnum):
     PARAMETER = 23
     ERA = 24
     ENDFUNC = 25
+    GOMAIN = 26
     

@@ -1,7 +1,9 @@
 grammar TeamPlusPlus;
 
 // Parser Rules
-program     : PROGRAM ID SEMICOLON imports? classes? tpp_vars? functions? main EOF;
+program     : PROGRAM ID SEMICOLON imports? classes? global_vars functions? main EOF;
+
+global_vars : tpp_vars?;
 
 imports     : (IMPORT ID SEMICOLON)+;
 

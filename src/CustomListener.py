@@ -94,12 +94,12 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         self.quadruple_list.pop_jump()
 
-    # Point 1, Point 73
+    # Point 1, Point 75
     def enterProgram(self, ctx):
         # Point 1
         self.dir_gen.enterProgram(ctx)
 
-        # Point 73
+        # Point 75
         self.push_quadruple(Operator.GOTO, None, None, None)
         self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
 
@@ -383,7 +383,10 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 37
     def enterInit_assign(self, ctx):
-        self.caller_name = ctx.parentCtx.ID().getText()
+        var_name = ctx.parentCtx.ID().getText()
+        var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
+        self.caller_name = var_name
+        self.caller_address = var_obj.address
         self.current_type = self.dir_gen.current_type
         
     # Point 38
@@ -651,3 +654,14 @@ class CustomListener(TeamPlusPlusListener):
 
         # Point 20
         self.is_attribute = False
+
+    # Point 73
+    def exitGlobal_vars(self, ctx):
+        self.push_quadruple(Operator.GOMAIN, None, None, None)
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
+
+    # Point 76
+    def enterGlobal_vars(self, ctx):
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
+
