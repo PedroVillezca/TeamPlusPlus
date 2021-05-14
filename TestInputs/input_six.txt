@@ -1,7 +1,7 @@
 program input_six;
 
 vars
-    int b, c = 2 + 1, e, bool;
+    int b, c = 2 + -2, e, bool;
     float f, g = 3.14;
 
 main() {

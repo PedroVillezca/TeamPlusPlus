@@ -66,10 +66,14 @@ class VirtualMachine:
         left_type = (quad.left_operand // 100) % 10
         right_type = (quad.right_operand // 100) % 10
 
-        if left_type != Type.INT or right_type != Type.INT:
-            result = left_op / right_op
-        else:
-            result = left_op // right_op
+        try:
+            if left_type != Type.INT or right_type != Type.INT:
+                result = left_op / right_op
+            else:
+                result = left_op // right_op
+        except ZeroDivisionError:
+            print("[Error] Can't perform division by zero.")
+            sys.exit()
 
         self.write_address(quad.result, result)
     
