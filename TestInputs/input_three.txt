@@ -8,11 +8,12 @@ class OtherClass {
         private func int OtherClass(int other) {
             vars 
                 char re;
+            return(other);
         }
 
         public func int getB() {
             print(s);
-            print(OtherClass());
+            print(OtherClass(100));
             return(i);
         }
 };

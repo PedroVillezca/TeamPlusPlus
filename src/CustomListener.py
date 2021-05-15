@@ -23,7 +23,8 @@ class CustomListener(TeamPlusPlusListener):
     recurrent_vars = Stack()
 
     return_state = 0
-    called_function_name = ""
+    called_function = ""
+    called_function_addr = None
     p_funcalls = Stack()
 
 
@@ -41,13 +42,12 @@ class CustomListener(TeamPlusPlusListener):
                 # Address is not being used as a recurrent variable, recycle
                 self.dir_gen.return_temp_address(address)
 
-
     def push_quadruple(self, operator, left_operand, right_operand, result):
         self.quadruple_list.push_quadruple(operator, left_operand, right_operand, result)
         
-        if left_operand is not None:
+        if isinstance(left_operand, int):
             self.recycle_temp_address(left_operand)
-        if right_operand is not None:
+        if isinstance(right_operand, int):
             self.recycle_temp_address(right_operand)
 
     def generate_quadruple(self, top_operator):
@@ -94,9 +94,14 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         self.quadruple_list.pop_jump()
 
-    # Point 1
+    # Point 1, Point 75
     def enterProgram(self, ctx):
+        # Point 1
         self.dir_gen.enterProgram(ctx)
+
+        # Point 75
+        self.push_quadruple(Operator.GOTO, None, None, None)
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
 
     # Point 2
     def enterTpp_class(self, ctx):
@@ -130,9 +135,14 @@ class CustomListener(TeamPlusPlusListener):
     def enterClasses(self, ctx):
         self.dir_gen.enterClasses(ctx)
     
-    # Point 10
+    # Point 10, Point 74
     def enterMain(self, ctx):
+        # Point 10
         self.dir_gen.enterMain(ctx)
+
+        # Point 74
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         
     # Point 11
     def exitClasses(self, ctx):
@@ -206,11 +216,11 @@ class CustomListener(TeamPlusPlusListener):
     # Point 17
     def exitVal_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.INT, int(ctx.CTE_INT().getText())), Type.INT)
         elif ctx.CTE_FLOAT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.FLOAT), Type.FLOAT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.FLOAT, float(ctx.CTE_FLOAT().getText())), Type.FLOAT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
         
     # Point 18
     def enterFunc_name(self, ctx):
@@ -235,10 +245,12 @@ class CustomListener(TeamPlusPlusListener):
     # Point 19
     def exitVal_funcall(self, ctx):
         temp_address = self.get_temp(self.current_type)
+        
         if temp_address is None:
             print("[Error] Functions must return primitive types when used in expressions.")
             sys.exit()
         
+        self.push_quadruple(Operator.ASSIGN, self.called_function_addr, None, temp_address)
         self.quadruple_list.push_operand(temp_address, self.current_type)
         
     # Point 21
@@ -371,7 +383,10 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 37
     def enterInit_assign(self, ctx):
-        self.caller_name = ctx.parentCtx.ID().getText()
+        var_name = ctx.parentCtx.ID().getText()
+        var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
+        self.caller_name = var_name
+        self.caller_address = var_obj.address
         self.current_type = self.dir_gen.current_type
         
     # Point 38
@@ -434,9 +449,9 @@ class CustomListener(TeamPlusPlusListener):
     # Point 17
     def exitSwitch_cte(self, ctx):
         if ctx.CTE_INT() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.INT), Type.INT)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.INT, int(ctx.CTE_INT().getText())), Type.INT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.get_temp(Type.CHAR), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
 
     # Point 46
     def enterIfelse(self, ctx):
@@ -558,7 +573,7 @@ class CustomListener(TeamPlusPlusListener):
         if self.return_state == 0: # Return statement in void function, raises error
             print("[Error] Invalid return statement in void function")
             sys.exit()
-        elif self.quadruple_list.top_jump() is None: # Return statement in base of function declaration
+        elif self.quadruple_list.p_jumps.size() == 1: # Return statement in base of function declaration
             self.return_state = 2
         
         # Point 39
@@ -592,9 +607,8 @@ class CustomListener(TeamPlusPlusListener):
             func_obj = self.dir_gen.method_search(self.called_function, self.current_type_id)
         else:
             func_obj = self.dir_gen.function_search(self.called_function, self.dir_gen.current_class)
-        
-        size = func_obj.get_total_size()
-        self.push_quadruple(Operator.ERA, None, None, size)
+
+        self.push_quadruple(Operator.ERA, func_obj.original_class, None, func_obj.name)
 
         # Pushing tuple of Function object and its parameter count to funcalls stack
         self.p_funcalls.push([func_obj, 0])
@@ -627,6 +641,8 @@ class CustomListener(TeamPlusPlusListener):
     # Point 20, Point 71, Point 72
     def exitFuncall(self, ctx):
         func_tuple = self.p_funcalls.pop()
+        self.current_type = func_tuple[0].return_type
+        self.called_function_addr = func_tuple[0].return_addr
         # Point 71
         if func_tuple[1] < len(func_tuple[0].params):
             print(f"[Error] Not enough arguments given for function \'{func_tuple[0].name}\'. Expected {len(func_tuple[0].params)} arguments but received {func_tuple[1]}.")
@@ -637,3 +653,14 @@ class CustomListener(TeamPlusPlusListener):
 
         # Point 20
         self.is_attribute = False
+
+    # Point 73
+    def exitGlobal_vars(self, ctx):
+        self.push_quadruple(Operator.GOMAIN, None, None, None)
+        self.quadruple_list.push_jump(self.quadruple_list.quadruple_count - 1)
+
+    # Point 76
+    def enterGlobal_vars(self, ctx):
+        index = self.quadruple_list.pop_jump()
+        self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
+

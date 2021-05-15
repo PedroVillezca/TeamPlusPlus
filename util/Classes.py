@@ -23,10 +23,11 @@ class UserClass:
         self.set_data_from_parent(parent)
 
 class Function:
-    def __init__(self, name, return_type = Type.VOID, level = None, original_class = None):
+    def __init__(self, name, return_type = Type.VOID, return_addr = None, level = None, original_class = None):
         self.name = name
         self.level = level
         self.return_type = return_type
+        self.return_addr = return_addr
         self.original_class = original_class
         self.variables = dict()
         self.params = []
@@ -34,7 +35,7 @@ class Function:
         self.address_manager = FunctionAddressManager()
 
     def __repr__(self):
-        return f'\n\tFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n \tParams: {self.params}\n \tFirst Quad: {self.first_quad}\n \t{self.address_manager}'
+        return f'\n\tFunction\n \tName: {self.name}\n \tLevel: {self.level}\n \tReturn Type: {Type(self.return_type).name}\n \tReturn Address: {self.return_addr}\n \tOriginal Class: {self.original_class}\n \tVariables{self.variables}\n \tParams: {self.params}\n \tFirst Quad: {self.first_quad}\n \t{self.address_manager}'
     
     def set_level(self, level):
         self.level = level

@@ -1,4 +1,6 @@
-from src.VirtualMemory import GlobalAddressManager
+import sys
+
+from src.VirtualMemory import GlobalAddressManager, ConstAddressManager
 from util.Classes import UserClass, Function, Variable, Parameter
 from util.Enums import Type, Level
 
@@ -15,6 +17,7 @@ class DirGen:
         self.in_function = 0
         
         self.global_address_manager = GlobalAddressManager()
+        self.const_address_manager = ConstAddressManager()
 
     def __repr__(self):
         return f"{self.dir_func} \n {self.dir_class}"
@@ -205,7 +208,19 @@ class DirGen:
         
     # Point 8
     def exitDeclare_func(self, ctx):
-        new_function = Function(ctx.ID().getText(), self.current_type)
+        func_name = ctx.ID().getText()
+
+        address = None
+        if self.current_type != Type.VOID:
+            if self.in_class:
+                var_name = self.current_class + '_' + func_name
+            else:
+                var_name = "global_" + func_name
+            
+            address = self.global_address_manager.get_address(self.current_type)
+            self.dir_func["global"].variables[var_name] = Variable(var_name, self.current_type, self.current_type_id, address)
+            
+        new_function = Function(func_name, self.current_type, address)
         self.add_function(new_function, self.current_class, self.current_level)
     
     # Point 9 

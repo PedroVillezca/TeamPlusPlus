@@ -3,8 +3,9 @@ program input_five;
 vars
     int a, b, c, d;
     float e, f, g, h;
+    char globchar;
 
-func int diff(int r, int t) {
+func int diff(int r, int t, char cr) {
     return(r - t);
 }
 
@@ -19,7 +20,13 @@ func int uno(float r, float s, int q) {
     return(a);
 }
 
+func void dos() {
+    print(1 + 2, 3.0, 4, 5.123, 'c', 1, 2.0, 3.0, 'c', 5.123);
+}
+
 main() {
-    uno(e, e, diff(2, uno(2.2, 2.2, 2)) + 4);
+    globchar = 'a';
+    uno(e, e, diff(2, uno(2.2, 2.2, 2), globchar) + 4);
     print("HELLO");
+    dos();
 }

@@ -17,6 +17,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#global_vars.
+    def enterGlobal_vars(self, ctx:TeamPlusPlusParser.Global_varsContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#global_vars.
+    def exitGlobal_vars(self, ctx:TeamPlusPlusParser.Global_varsContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#imports.
     def enterImports(self, ctx:TeamPlusPlusParser.ImportsContext):
         pass
