@@ -45,9 +45,9 @@ class CustomListener(TeamPlusPlusListener):
     def push_quadruple(self, operator, left_operand, right_operand, result):
         self.quadruple_list.push_quadruple(operator, left_operand, right_operand, result)
         
-        if left_operand is not None:
+        if isinstance(left_operand, int):
             self.recycle_temp_address(left_operand)
-        if right_operand is not None:
+        if isinstance(right_operand, int):
             self.recycle_temp_address(right_operand)
 
     def generate_quadruple(self, top_operator):
@@ -607,9 +607,8 @@ class CustomListener(TeamPlusPlusListener):
             func_obj = self.dir_gen.method_search(self.called_function, self.current_type_id)
         else:
             func_obj = self.dir_gen.function_search(self.called_function, self.dir_gen.current_class)
-        
-        size = func_obj.get_total_size()
-        self.push_quadruple(Operator.ERA, None, None, size)
+
+        self.push_quadruple(Operator.ERA, func_obj.original_class, None, func_obj.name)
 
         # Pushing tuple of Function object and its parameter count to funcalls stack
         self.p_funcalls.push([func_obj, 0])

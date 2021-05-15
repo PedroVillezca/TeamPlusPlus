@@ -1,16 +1,27 @@
 program input_six;
 
 vars
-    int b, c = 2 + -2, e, bool;
+    int b, c = 2, e, bool;
     float f, g = 3.14;
+
+func int add(int w, int y) {
+    print("INSIDE ADD");
+    return(w + y);
+}
 
 main() {
     vars
-        int a;
+        int a, x;
+
     read(a);
-    b = 3 * a;
-    e = 2 + 3 * 5 / c - +1; # 7
-    bool = 4 == 4 and not (1 > 0);
-    print(4 == 4, not (1 > 0), bool);
-    print("Hello World!", b, e, b * e, c);
+    read(b);
+
+    x = add(a, b);
+    print("X: ", x);
+    print("I HAVE FUCCIN RETURNED BABYY");
+
+    # e = 2 + 3 * 5 / c - +1; # 7
+    # bool = 4 == 4 and not (1 > 0);
+    # print(4 == 4, not (1 > 0), bool);
+    # print("Hello World!", b, e, b * e, c);
 }

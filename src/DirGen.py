@@ -1,3 +1,5 @@
+import sys
+
 from src.VirtualMemory import GlobalAddressManager, ConstAddressManager
 from util.Classes import UserClass, Function, Variable, Parameter
 from util.Enums import Type, Level
