@@ -31,16 +31,20 @@ class VirtualMachine:
         reduced_address = address % 1000
         if context == 3:
             # Constant
-            return self.const_table[address]
+            value = self.const_table[address]
         elif context == 2:
             # Temp
-            return self.exec_stack.top().temp_memory.read_address(reduced_address)
+            value = self.exec_stack.top().temp_memory.read_address(reduced_address)
         elif context == 1:
             # Local
-            return self.exec_stack.top().local_memory.read_address(reduced_address)
+            value = self.exec_stack.top().local_memory.read_address(reduced_address)
         else:
             # Global
-            return self.global_memory.read_address(reduced_address)
+            value = self.global_memory.read_address(reduced_address)
+        
+        if value is None:
+            print("[Error] Variable not initialized.")
+            sys.exit()
 
     def write_address(self, address, value):
         context = address // 1000
