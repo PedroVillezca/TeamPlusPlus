@@ -11,12 +11,16 @@ class AddressManager:
             Type.CHAR: 0
         }
     
-    def get_address(self, type):
+    def get_address(self, type, d1 = None, d2 = None):
+        d1 = 0 if d1 is None else d1
+        d2 = 1 if d2 is None else d2
+
+        amount = (1 if d1*d2 == 0 else d1*d2)
         if type == Type.ID or type == Type.VOID:
             print(f"[Error] Cannot get address for variable of type \'{Type(type).name}\'.")
             sys.exit()
         
-        if self.addresses[type] > 99:
+        if self.addresses[type] + amount > 100:
             print(f"[Error] Address limit for variables of type \'{Type(type).name}\' exceeded in current context.")
             sys.exit()
 
@@ -30,7 +34,7 @@ class AddressManager:
             type_val = 200
         
         address_val = self.addresses[type]
-        self.addresses[type] += 1
+        self.addresses[type] += amount
 
         return context_val + type_val + address_val
 
@@ -102,8 +106,8 @@ class FunctionAddressManager():
         self.local = LocalAddressManager()
         self.temp = TempAddressManager()
     
-    def get_local_address(self, type):
-        return self.local.get_address(type)
+    def get_local_address(self, type, d1, d2):
+        return self.local.get_address(type, d1, d2)
     
     def get_temp_address(self, type):
         return self.temp.get_address(type)

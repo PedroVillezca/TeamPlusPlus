@@ -664,3 +664,13 @@ class CustomListener(TeamPlusPlusListener):
         index = self.quadruple_list.pop_jump()
         self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
 
+    # Point 77
+    def exitFirst_dim(self, ctx):
+        self.dir_gen.exitFirst_dim(ctx)
+
+    # Point 78
+    def exitSecond_dim(self, ctx):
+        self.dir_gen.exitSecond_dim(ctx)
+
+
+

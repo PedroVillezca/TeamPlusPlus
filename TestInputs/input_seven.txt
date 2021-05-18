@@ -1,0 +1,10 @@
+program input_seven;
+
+main() {
+    vars
+        int a[5];
+        float b[3,2];
+        char c[10,10];
+        
+        print("HI");
+}

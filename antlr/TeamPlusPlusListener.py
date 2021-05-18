@@ -134,6 +134,24 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#first_dim.
+    def enterFirst_dim(self, ctx:TeamPlusPlusParser.First_dimContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#first_dim.
+    def exitFirst_dim(self, ctx:TeamPlusPlusParser.First_dimContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#second_dim.
+    def enterSecond_dim(self, ctx:TeamPlusPlusParser.Second_dimContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#second_dim.
+    def exitSecond_dim(self, ctx:TeamPlusPlusParser.Second_dimContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init_assign.
     def enterInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
         pass

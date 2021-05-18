@@ -27,7 +27,11 @@ attr        : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
 
 init        : ID init_arr init_assign;
 
-init_arr    : (LEFT_BRACKET CTE_INT (COMMA CTE_INT)? RIGHT_BRACKET)?;
+init_arr    : (LEFT_BRACKET first_dim (COMMA second_dim)? RIGHT_BRACKET)?;
+
+first_dim   : CTE_INT;
+
+second_dim  : CTE_INT;
 
 init_assign : (assign_exp)?;
 
