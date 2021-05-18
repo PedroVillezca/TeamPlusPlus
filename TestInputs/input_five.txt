@@ -1,21 +1,18 @@
 program input_five;
 
 vars
-    int a, b, c, d;
-    float e, f, g, h;
-    char globchar;
+    int a = 0, b = 1, c = 2, d = 3;
+    float e = 4.4, f = 5.5, g = 6.6, h = 7.7;
+    char globchar = 'z';
 
-func int diff(int r, int t, char cr) {
-    return(r - t);
+func float diff(int r, int t, char cr) {
+    return(r - t + 1.0);
 }
 
-func int uno(float r, float s, int q) {
+func int uno(float r, float s, float q) {
     vars
         char y = 'a', o, u;
 
-    if (a * b + c + d < r - s and b * h == e / f) {
-        a = b / d;
-    }
     print("VOID");
     return(a);
 }
@@ -26,7 +23,7 @@ func void dos() {
 
 main() {
     globchar = 'a';
-    uno(e, e, diff(2, uno(2.2, 2.2, 2), globchar) + 4);
-    print("HELLO");
+    d = uno(e, e, diff(2, uno(2.2, 2.2, 2.2), globchar) + 4.0);
+    print("D:", d);
     dos();
 }
