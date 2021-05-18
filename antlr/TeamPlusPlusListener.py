@@ -98,6 +98,33 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#indexing.
+    def enterIndexing(self, ctx:TeamPlusPlusParser.IndexingContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#indexing.
+    def exitIndexing(self, ctx:TeamPlusPlusParser.IndexingContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#first_index.
+    def enterFirst_index(self, ctx:TeamPlusPlusParser.First_indexContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#first_index.
+    def exitFirst_index(self, ctx:TeamPlusPlusParser.First_indexContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#second_index.
+    def enterSecond_index(self, ctx:TeamPlusPlusParser.Second_indexContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#second_index.
+    def exitSecond_index(self, ctx:TeamPlusPlusParser.Second_indexContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#attr_call.
     def enterAttr_call(self, ctx:TeamPlusPlusParser.Attr_callContext):
         pass

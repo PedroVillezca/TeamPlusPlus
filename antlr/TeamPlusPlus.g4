@@ -19,11 +19,17 @@ id_type     : ID;
 
 c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
-var         : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
+var         : ID indexing? (attr_call)?;
+
+indexing    : LEFT_BRACKET first_index (COMMA second_index)? RIGHT_BRACKET;
+
+first_index : exp;
+
+second_index: exp;
 
 attr_call   : DOT attr;
 
-attr        : ID (LEFT_BRACKET exp (COMMA exp)? RIGHT_BRACKET)? (attr_call)?;
+attr        : ID indexing? (attr_call)?;
 
 init        : ID init_arr init_assign;
 

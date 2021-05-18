@@ -121,3 +121,10 @@ class FunctionAddressManager():
     def __repr__(self):
         return f"Local: \n\t{self.local} \n \tTemp: \n\t{self.temp}"
 
+class PointerManager():
+    def __init__(self):
+        self.addresses = 6000
+    
+    def get_pointer(self):
+        self.addresses += 1
+        return self.addresses - 1

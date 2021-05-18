@@ -27,3 +27,15 @@ class MachineMemory:
         type = address // 100
         index = address % 100
         self.memory[type][index] = value
+
+class PointerMemory:
+    def __init__(self, pointer_manager):
+        self.memory = [None for i in range(pointer_manager.addresses - 6000)]
+
+    def read_pointer(self, address):
+        return self.memory[address]
+
+    def write_pointer(self, address, value):
+        self.memory[address] = value
+
+        

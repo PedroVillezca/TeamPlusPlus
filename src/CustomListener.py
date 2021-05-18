@@ -6,6 +6,7 @@ from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
 from src.DirGen import DirGen
 from src.QuadrupleList import QuadrupleList
+from src.VirtualMemory import PointerManager
 from util.Classes import Operand
 from util.DataStructures import Stack
 from util.Enums import Operator, Type, Level
@@ -27,6 +28,8 @@ class CustomListener(TeamPlusPlusListener):
     called_function_addr = None
     p_funcalls = Stack()
 
+    caller_dims = Stack()
+    pointer_manager = PointerManager()
 
     def __repr__(self):
         return f'\nDir Gen: \n {self.dir_gen} \n\n Quadruple List: \n {self.quadruple_list}'
@@ -175,6 +178,7 @@ class CustomListener(TeamPlusPlusListener):
             self.current_type_id = var_obj.type_id
         self.caller_name = var_name
         self.caller_address = var_obj.address
+        self.caller_dims.push([var_obj.d1, var_obj.d2, var_obj.dim_count])
 
     # Point 20
     def exitVar(self, ctx):
@@ -672,5 +676,46 @@ class CustomListener(TeamPlusPlusListener):
     def exitSecond_dim(self, ctx):
         self.dir_gen.exitSecond_dim(ctx)
 
+    # Point 79
+    def exitFirst_index(self, ctx):
+        d1 = self.caller_dims.top()[0]
+        result = self.quadruple_list.top_operand()
 
+        if result.variable_type != Type.INT:
+            print(f"[Error] Cannot index array with value of type \'{Type(result.variable_type).name}\'")
+            sys.exit()
 
+        self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d1, None)
+
+    # Point 80
+    def exitSecond_index(self, ctx):
+        d2 = self.caller_dims.top()[1]
+        result = self.quadruple_list.top_operand()
+
+        if result.variable_type != Type.INT:
+            print(f"[Error] Cannot index array with value of type \'{Type(result.variable_type).name}\'")
+            sys.exit()
+
+        self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d2, None)
+
+    # Point 81
+    def exitIndexing(self, ctx):
+        d1, d2, dim_count = self.caller_dims.top()
+        result_address = self.pointer_manager.get_pointer()
+        base_address = self.caller_address
+        
+        if dim_count == 1:
+            s = self.quadruple_list.pop_operand().address
+            
+            self.quadruple_list.push_quadruple(Operator.POINT, base_address, s, result_address)
+            self.quadruple_list.push_operand(result_address, self.current_type)
+
+        else:
+            s2 = self.quadruple_list.pop_operand().address
+            s1 = self.quadruple_list.pop_operand().address
+
+            temp_addresses = [self.get_temp(Type.INT), self.get_temp(Type.INT)]
+            self.quadruple_list.push_quadruple(Operator.MULT, s1, d2, temp_addresses[0])
+            self.quadruple_list.push_quadruple(Operator.SUM, temp_addresses[0], s2, temp_addresses[1])
+            self.quadruple_list.push_quadruple(Operator.POINT, base_address, temp_addresses[1], result_address)
+            self.quadruple_list.push_operand(result_address, self.current_type)

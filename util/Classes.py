@@ -83,9 +83,9 @@ class Variable:
         self.d2 = d2
         self.dim_count = 0
         if d2 is not None:
-            dim_count = 2
+            self.dim_count = 2
         elif d1 is not None:
-            dim_count = 1
+            self.dim_count = 1
         
         
     def __repr__(self):

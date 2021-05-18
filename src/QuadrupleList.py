@@ -46,6 +46,11 @@ class QuadrupleList:
         if self.p_operators.empty():
             return None
         return self.p_operators.top()
+
+    def top_operand(self):
+        if self.p_operands.empty():
+            return None
+        return self.p_operands.top()
     
     def top_jump(self):
         if self.p_jumps.empty():
