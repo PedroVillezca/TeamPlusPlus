@@ -16,19 +16,19 @@ class CustomListener(TeamPlusPlusListener):
     dir_gen = DirGen()
     quadruple_list = QuadrupleList()
 
-    current_type = None
-    current_type_id = None
-    is_attribute = False
-    caller_name = ""
-    caller_address = None
+    is_method = False
+
+    caller_vars = Stack()
+    pointer_stack = Stack()
+
     recurrent_vars = Stack()
 
     return_state = 0
+    current_func_type = None
     called_function = ""
     called_function_addr = None
     p_funcalls = Stack()
-
-    caller_dims = Stack()
+    
     pointer_manager = PointerManager()
 
     def __repr__(self):
@@ -173,21 +173,13 @@ class CustomListener(TeamPlusPlusListener):
             print(f"[Error] Attribute \'{var_name}\' is private to class {var_obj.original_class}.")
             sys.exit()
 
-        self.current_type = var_obj.type
-        if var_obj.type == Type.ID:
-            self.current_type_id = var_obj.type_id
-        self.caller_name = var_name
-        self.caller_address = var_obj.address
-        self.caller_dims.push([var_obj.d1, var_obj.d2, var_obj.dim_count])
-
-    # Point 20
-    def exitVar(self, ctx):
-        self.is_attribute = False
+        self.caller_vars.push(var_obj)
 
     # Point 60
     def enterAttr(self, ctx):
+        previous_var = self.caller_vars.pop()
         var_name = ctx.ID().getText()
-        var_obj = self.dir_gen.attribute_search(var_name, self.current_type_id)
+        var_obj = self.dir_gen.attribute_search(var_name, previous_var.type_id)
 
         if var_obj is None:
             print(f"[Error] Variable \'{var_name}\' does not exist.")
@@ -196,26 +188,25 @@ class CustomListener(TeamPlusPlusListener):
         if var_obj.level == Level.PRIVATE and var_obj.original_class != self.dir_gen.current_class:
             print(f"[Error] Attribute \'{var_name}\' is private to class {var_obj.original_class}.")
             sys.exit()
-
-        self.current_type = var_obj.type
-        if var_obj.type == Type.ID:
-            self.current_type_id = var_obj.type_id
-        self.caller_name += var_name
-        self.caller_address = var_obj.address
         
-    # Point 15
-    def enterAttr_call(self, ctx):
-        self.is_attribute = True
-        self.caller_name += '.'
+        self.caller_vars.push(var_obj)
 
     # Point 15
     def exitMethod_call(self, ctx):
-        self.is_attribute = True
-        self.caller_name += '.'
+        self.is_method = True
     
     # Point 16
     def exitVal_var(self, ctx):
-        self.quadruple_list.push_operand(self.caller_address, self.current_type, self.current_type_id)
+        var = self.caller_vars.pop()
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.pop()
+        else:
+            address = var.address
+
+        self.quadruple_list.push_operand(address, var.type, var.type_id)
 
     # Point 17
     def exitVal_cte(self, ctx):
@@ -230,8 +221,8 @@ class CustomListener(TeamPlusPlusListener):
     def enterFunc_name(self, ctx):
         func_name = ctx.ID().getText()
 
-        if self.is_attribute:
-            func_obj = self.dir_gen.method_search(func_name, self.current_type_id)
+        if self.is_method:
+            func_obj = self.dir_gen.method_search(func_name, self.caller_vars.top().type_id) # CHANGE
         else:
             func_obj = self.dir_gen.function_search(func_name, self.dir_gen.current_class)
 
@@ -243,19 +234,20 @@ class CustomListener(TeamPlusPlusListener):
             print(f"[Error] Function \'{func_name}\' is private to class {func_obj.original_class}.")
             sys.exit()
         
-        self.current_type = func_obj.return_type
+        self.current_func_type = func_obj.return_type
         self.called_function = func_name
         
     # Point 19
     def exitVal_funcall(self, ctx):
-        temp_address = self.get_temp(self.current_type)
+        temp_type = self.current_func_type
+        temp_address = self.get_temp(temp_type)
         
         if temp_address is None:
             print("[Error] Functions must return primitive types when used in expressions.")
             sys.exit()
         
         self.push_quadruple(Operator.ASSIGN, self.called_function_addr, None, temp_address)
-        self.quadruple_list.push_operand(temp_address, self.current_type)
+        self.quadruple_list.push_operand(temp_address, temp_type)
         
     # Point 21
     def exitUnop(self, ctx):
@@ -363,7 +355,16 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 16
     def enterAssign_exp(self, ctx):
-        self.quadruple_list.push_operand(self.caller_address, self.current_type)
+        var = self.caller_vars.top()
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.top()
+        else:
+            address = var.address
+
+        self.quadruple_list.push_operand(address, var.type)
         
     # Point 35
     def exitAssign_op(self, ctx):
@@ -389,13 +390,17 @@ class CustomListener(TeamPlusPlusListener):
     def enterInit_assign(self, ctx):
         var_name = ctx.parentCtx.ID().getText()
         var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
-        self.caller_name = var_name
-        self.caller_address = var_obj.address
-        self.current_type = self.dir_gen.current_type
+        self.caller_vars.push(var_obj)
         
     # Point 38
     def exitInit_assign(self, ctx):
-       self.caller_name = ""
+       var = self.caller_vars.pop()
+
+    # Point 82
+    def exitAssignment(self, ctx):
+       var = self.caller_vars.pop()
+       if var.dim_count > 0:
+           self.pointer_stack.pop()
         
     # Point 40
     def exitTpp_return(self, ctx):
@@ -418,7 +423,17 @@ class CustomListener(TeamPlusPlusListener):
     def exitRead_var(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.READ:
-            result = Operand(self.caller_address, self.current_type)
+            var = self.caller_vars.pop()
+            
+            if var.dim_count > 0:
+                if self.pointer_stack.empty():
+                    print("[Error] Cannot use array without indexing.")
+                    sys.exit()
+                address = self.pointer_stack.pop()
+            else:
+                address = var.address
+
+            result = Operand(address, var.type)
 
             if result.variable_type == Type.ID:
                 print("[Error] Cannot read data for structured types.")
@@ -540,9 +555,9 @@ class CustomListener(TeamPlusPlusListener):
     # Point 56
     def exitFloop(self, ctx):
         for_var = self.recurrent_vars.pop()
-        const_temp_address = self.get_temp(Type.INT)
+        const_address = self.dir_gen.const_address_manager.get_address(Type.INT, 1)
         res_temp_address = self.get_temp(for_var.variable_type)
-        self.push_quadruple(Operator.SUM, for_var.address, const_temp_address, res_temp_address)
+        self.push_quadruple(Operator.SUM, for_var.address, const_address, res_temp_address)
         self.push_quadruple(Operator.ASSIGN, res_temp_address, None, for_var.address)
         self.create_loop_goto()
     
@@ -561,7 +576,17 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 59
     def exitFor_var(self, ctx):
-        self.recurrent_vars.push(Operand(self.caller_address, self.current_type))
+        var = self.caller_vars.pop()
+
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.pop()
+        else:
+            address = var.address
+        self.recurrent_vars.push(Operand(address, var.type))
+        
         self.quadruple_list.push_operand(self.recurrent_vars.top().address, self.recurrent_vars.top().variable_type)
 
     # Point 65
@@ -605,10 +630,11 @@ class CustomListener(TeamPlusPlusListener):
     def exitInit_arr(self, ctx):
         self.dir_gen.exitInit_arr(ctx)
         
-    # Point 68
+    # Point 20, Point 68
     def exitFunc_name(self, ctx):
-        if self.is_attribute:
-            func_obj = self.dir_gen.method_search(self.called_function, self.current_type_id)
+        # Point 68
+        if self.is_method:
+            func_obj = self.dir_gen.method_search(self.called_function, self.caller_vars.top().type_id) # CHANGE
         else:
             func_obj = self.dir_gen.function_search(self.called_function, self.dir_gen.current_class)
 
@@ -616,6 +642,9 @@ class CustomListener(TeamPlusPlusListener):
 
         # Pushing tuple of Function object and its parameter count to funcalls stack
         self.p_funcalls.push([func_obj, 0])
+
+        # Point 20
+        self.is_method = False
         
     # Point 69
     def exitArgument(self, ctx):
@@ -642,10 +671,10 @@ class CustomListener(TeamPlusPlusListener):
         # Increment parameter count for latest funcall
         self.p_funcalls.elements[-1][1] += 1
         
-    # Point 20, Point 71, Point 72
+    # Point 71, Point 72
     def exitFuncall(self, ctx):
         func_tuple = self.p_funcalls.pop()
-        self.current_type = func_tuple[0].return_type
+        self.current_func_type = func_tuple[0].return_type
         self.called_function_addr = func_tuple[0].return_addr
         # Point 71
         if func_tuple[1] < len(func_tuple[0].params):
@@ -654,9 +683,6 @@ class CustomListener(TeamPlusPlusListener):
 
         # Point 72
         self.quadruple_list.push_quadruple(Operator.GOSUB, func_tuple[0].name, None, func_tuple[0].first_quad)
-
-        # Point 20
-        self.is_attribute = False
 
     # Point 73
     def exitGlobal_vars(self, ctx):
@@ -678,7 +704,7 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 79
     def exitFirst_index(self, ctx):
-        d1 = self.caller_dims.top()[0]
+        d1 = self.caller_vars.top().d1
         result = self.quadruple_list.top_operand()
 
         if result.variable_type != Type.INT:
@@ -689,7 +715,7 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 80
     def exitSecond_index(self, ctx):
-        d2 = self.caller_dims.top()[1]
+        d2 = self.caller_vars.top().d2
         result = self.quadruple_list.top_operand()
 
         if result.variable_type != Type.INT:
@@ -698,17 +724,26 @@ class CustomListener(TeamPlusPlusListener):
 
         self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d2, None)
 
-    # Point 81
+    # Point 23
+    def enterIndexing(self, ctx):
+        self.quadruple_list.push_operator(Operator.FF)        
+
+    # Point 24, Point 81
     def exitIndexing(self, ctx):
-        d1, d2, dim_count = self.caller_dims.top()
+        # Point 81
+        var = self.caller_vars.top()
+        d2 = self.dir_gen.const_address_manager.get_address(Type.INT, var.d2)
+        dim_count = var.dim_count
         result_address = self.pointer_manager.get_pointer()
-        base_address = self.caller_address
+        base_address = var.address
         
-        if dim_count == 1:
+        if dim_count == 0:
+            print("[Error] Cannot index a variable with no dimensions.")
+            sys.exit()
+        elif dim_count == 1:
             s = self.quadruple_list.pop_operand().address
             
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, s, result_address)
-            self.quadruple_list.push_operand(result_address, self.current_type)
 
         else:
             s2 = self.quadruple_list.pop_operand().address
@@ -718,4 +753,8 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_quadruple(Operator.MULT, s1, d2, temp_addresses[0])
             self.quadruple_list.push_quadruple(Operator.SUM, temp_addresses[0], s2, temp_addresses[1])
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, temp_addresses[1], result_address)
-            self.quadruple_list.push_operand(result_address, self.current_type)
+        
+        self.pointer_stack.push(result_address)
+
+        # Point 24
+        self.quadruple_list.pop_operator()
