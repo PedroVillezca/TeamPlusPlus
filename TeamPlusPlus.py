@@ -25,7 +25,6 @@ def main(argv):
     if parser.getNumberOfSyntaxErrors() == 0:
         print("Successful Compilation!")
         print(custom_listener.quadruple_list)
-        # print(custom_listener.quadruple_list.p_operands)
         print(custom_listener)
         virtual_machine = VirtualMachine(custom_listener.dir_gen, custom_listener.quadruple_list.quadruple_list, custom_listener.pointer_manager)
         virtual_machine.run()

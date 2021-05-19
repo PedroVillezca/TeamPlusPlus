@@ -197,9 +197,16 @@ class CustomListener(TeamPlusPlusListener):
     
     # Point 16
     def exitVal_var(self, ctx):
-        var = self.caller_vars.pop() # POINTERS
+        var = self.caller_vars.pop()
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.pop()
+        else:
+            address = var.address
 
-        self.quadruple_list.push_operand(var.address, var.type, var.type_id)
+        self.quadruple_list.push_operand(address, var.type, var.type_id)
 
     # Point 17
     def exitVal_cte(self, ctx):
@@ -347,9 +354,17 @@ class CustomListener(TeamPlusPlusListener):
             self.generate_quadruple(top_operator)
 
     # Point 16
-    def enterAssign_exp(self, ctx): # POINTERS
+    def enterAssign_exp(self, ctx):
         var = self.caller_vars.top()
-        self.quadruple_list.push_operand(var.address, var.type)
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.top()
+        else:
+            address = var.address
+
+        self.quadruple_list.push_operand(address, var.type)
         
     # Point 35
     def exitAssign_op(self, ctx):
@@ -379,7 +394,13 @@ class CustomListener(TeamPlusPlusListener):
         
     # Point 38
     def exitInit_assign(self, ctx):
-       self.caller_vars.pop()
+       var = self.caller_vars.pop()
+
+    # Point 82
+    def exitAssignment(self, ctx):
+       var = self.caller_vars.pop()
+       if var.dim_count > 0:
+           self.pointer_stack.pop()
         
     # Point 40
     def exitTpp_return(self, ctx):
@@ -402,8 +423,17 @@ class CustomListener(TeamPlusPlusListener):
     def exitRead_var(self, ctx):
         top_operator = self.quadruple_list.top_operator()
         if top_operator == Operator.READ:
-            var = self.caller_vars.pop() # POINTERS
-            result = Operand(var.address, var.type)
+            var = self.caller_vars.pop()
+            
+            if var.dim_count > 0:
+                if self.pointer_stack.empty():
+                    print("[Error] Cannot use array without indexing.")
+                    sys.exit()
+                address = self.pointer_stack.pop()
+            else:
+                address = var.address
+
+            result = Operand(address, var.type)
 
             if result.variable_type == Type.ID:
                 print("[Error] Cannot read data for structured types.")
@@ -525,9 +555,9 @@ class CustomListener(TeamPlusPlusListener):
     # Point 56
     def exitFloop(self, ctx):
         for_var = self.recurrent_vars.pop()
-        const_temp_address = self.get_temp(Type.INT)
+        const_address = self.dir_gen.const_address_manager.get_address(Type.INT, 1)
         res_temp_address = self.get_temp(for_var.variable_type)
-        self.push_quadruple(Operator.SUM, for_var.address, const_temp_address, res_temp_address)
+        self.push_quadruple(Operator.SUM, for_var.address, const_address, res_temp_address)
         self.push_quadruple(Operator.ASSIGN, res_temp_address, None, for_var.address)
         self.create_loop_goto()
     
@@ -545,9 +575,18 @@ class CustomListener(TeamPlusPlusListener):
         self.quadruple_list.push_operand(self.recurrent_vars.top().address, self.recurrent_vars.top().variable_type)
     
     # Point 59
-    def exitFor_var(self, ctx): # POINTERS
+    def exitFor_var(self, ctx):
         var = self.caller_vars.pop()
-        self.recurrent_vars.push(Operand(var.address, var.type))
+
+        if var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.pop()
+        else:
+            address = var.address
+        self.recurrent_vars.push(Operand(address, var.type))
+        
         self.quadruple_list.push_operand(self.recurrent_vars.top().address, self.recurrent_vars.top().variable_type)
 
     # Point 65
@@ -685,20 +724,26 @@ class CustomListener(TeamPlusPlusListener):
 
         self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d2, None)
 
-    # Point 81
+    # Point 23
+    def enterIndexing(self, ctx):
+        self.quadruple_list.push_operator(Operator.FF)        
+
+    # Point 24, Point 81
     def exitIndexing(self, ctx):
+        # Point 81
         var = self.caller_vars.top()
-        d1 = var.d1
-        d2 = var.d2
+        d2 = self.dir_gen.const_address_manager.get_address(Type.INT, var.d2)
         dim_count = var.dim_count
         result_address = self.pointer_manager.get_pointer()
         base_address = var.address
         
-        if dim_count == 1:
+        if dim_count == 0:
+            print("[Error] Cannot index a variable with no dimensions.")
+            sys.exit()
+        elif dim_count == 1:
             s = self.quadruple_list.pop_operand().address
             
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, s, result_address)
-            # self.quadruple_list.push_operand(result_address, var.type)
 
         else:
             s2 = self.quadruple_list.pop_operand().address
@@ -708,6 +753,8 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_quadruple(Operator.MULT, s1, d2, temp_addresses[0])
             self.quadruple_list.push_quadruple(Operator.SUM, temp_addresses[0], s2, temp_addresses[1])
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, temp_addresses[1], result_address)
-            # self.quadruple_list.push_operand(result_address, var.type)
         
         self.pointer_stack.push(result_address)
+
+        # Point 24
+        self.quadruple_list.pop_operator()

@@ -33,7 +33,7 @@ class VirtualMachine:
         if context == 6:
             # Pointer to array cell
             pointed_address = self.pointer_memory.read_pointer(reduced_address)
-            value = read_address(pointed_address)
+            value = self.read_address(pointed_address)
         elif context == 3:
             # Constant
             value = self.const_table[address]
@@ -207,8 +207,7 @@ class VirtualMachine:
     
     def do_verify(self, quad):
         s = self.read_address(quad.left_operand)
-        d = quad.right_operand
-        print(f"s: {s}, d: {d}")
+        d = 0 if quad.right_operand == None else quad.right_operand
 
         if s < 0 or s >= d:
             print("[Error] Index out of bounds.")
