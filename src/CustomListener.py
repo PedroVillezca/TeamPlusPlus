@@ -391,6 +391,14 @@ class CustomListener(TeamPlusPlusListener):
         var_name = ctx.parentCtx.ID().getText()
         var_obj = self.dir_gen.variable_search(var_name, self.dir_gen.current_class)
         self.caller_vars.push(var_obj)
+    
+    # Point 83
+    def enterInit_verify(self, ctx):
+        var_dims = self.caller_vars.top().dim_count
+        if var_dims != 0:
+            print("[Error] Array initialization is not allowed.")
+            sys.exit()
+
         
     # Point 38
     def exitInit_assign(self, ctx):
@@ -670,8 +678,12 @@ class CustomListener(TeamPlusPlusListener):
     def enterArgument(self, ctx):
         # Increment parameter count for latest funcall
         self.p_funcalls.elements[-1][1] += 1
+
+    # Point 23
+    def enterFuncall(self, ctx):
+        self.quadruple_list.push_operator(Operator.FF)        
         
-    # Point 71, Point 72
+    # Point 24, Point 71, Point 72
     def exitFuncall(self, ctx):
         func_tuple = self.p_funcalls.pop()
         self.current_func_type = func_tuple[0].return_type
@@ -683,6 +695,10 @@ class CustomListener(TeamPlusPlusListener):
 
         # Point 72
         self.quadruple_list.push_quadruple(Operator.GOSUB, func_tuple[0].name, None, func_tuple[0].first_quad)
+        
+        # Point 24
+        self.quadruple_list.pop_operator()
+        
 
     # Point 73
     def exitGlobal_vars(self, ctx):

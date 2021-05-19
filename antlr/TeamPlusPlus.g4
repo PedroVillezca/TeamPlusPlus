@@ -39,7 +39,9 @@ first_dim   : CTE_INT;
 
 second_dim  : CTE_INT;
 
-init_assign : (assign_exp)?;
+init_assign : (init_verify)?;
+
+init_verify : assign_exp;
 
 functions   : (tpp_function)+;
 

@@ -188,6 +188,15 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#init_verify.
+    def enterInit_verify(self, ctx:TeamPlusPlusParser.Init_verifyContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#init_verify.
+    def exitInit_verify(self, ctx:TeamPlusPlusParser.Init_verifyContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#functions.
     def enterFunctions(self, ctx:TeamPlusPlusParser.FunctionsContext):
         pass
