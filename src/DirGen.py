@@ -138,6 +138,14 @@ class DirGen:
             # Temp variable belongs to a method of a class
             return self.dir_class[self.current_class].methods[self.current_scope].return_temp_address(address)
 
+    def get_pointer(self):
+        if self.in_class == 0:
+            # Pointer belongs to a global function
+            return self.dir_func[self.current_scope].get_pointer()
+        else:
+            # Pointer belongs to a method of a class
+            return self.dir_class[self.current_class].methods[self.current_scope].get_pointer()
+
     # Point 1
     def enterProgram(self, ctx):
         new_function = Function('global')

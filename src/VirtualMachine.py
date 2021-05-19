@@ -6,7 +6,7 @@ from util.Enums import Operator, Type
 from util.DataStructures import Stack
 
 class VirtualMachine:
-    def __init__(self, dir_gen, quad_list, pointer_manager):
+    def __init__(self, dir_gen, quad_list):
         self.dir_gen = dir_gen
         self.quad_list = quad_list
 
@@ -19,20 +19,19 @@ class VirtualMachine:
         
         self.global_memory = MachineMemory(dir_gen.global_address_manager)
 
-        self.pointer_memory = PointerMemory(pointer_manager)
-
         self.exec_stack = Stack()
         self.exec_temp = Stack()
         global_local = self.dir_gen.dir_func["global"].address_manager.local
         global_temp = self.dir_gen.dir_func["global"].address_manager.temp
-        self.exec_stack.push(FunctionMemory(global_local, global_temp, None, 0))
+        global_pointer = self.dir_gen.dir_func["global"].address_manager.pointer
+        self.exec_stack.push(FunctionMemory(global_local, global_temp, global_pointer, None, 0))
         
     def read_address(self, address):
         context = address // 1000
         reduced_address = address % 1000
         if context == 6:
             # Pointer to array cell
-            pointed_address = self.pointer_memory.read_pointer(reduced_address)
+            pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_address)
             value = self.read_address(pointed_address)
         elif context == 3:
             # Constant
@@ -57,7 +56,7 @@ class VirtualMachine:
         context = address // 1000
         reduced_address = address % 1000
         if context == 6:
-            self.write_address(self.pointer_memory.read_pointer(reduced_address), value)
+            self.write_address(self.exec_stack.top().pointer_memory.read_pointer(reduced_address), value)
         elif context == 2:
             # Temp
             self.exec_stack.top().temp_memory.write_address(reduced_address, value)
@@ -179,8 +178,9 @@ class VirtualMachine:
 
         func_local = func_obj.address_manager.local
         func_temp = func_obj.address_manager.temp
+        func_pointer = func_obj.address_manager.pointer
 
-        new_context = FunctionMemory(func_local, func_temp, func_obj.return_addr, func_obj.first_quad - 1)
+        new_context = FunctionMemory(func_local, func_temp, func_pointer, func_obj.return_addr, func_obj.first_quad - 1)
         self.exec_temp.push(new_context)
 
     def do_parameter(self, quad):
@@ -203,7 +203,8 @@ class VirtualMachine:
         self.exec_stack.pop()
         main_local = self.dir_gen.dir_func["main"].address_manager.local
         main_temp = self.dir_gen.dir_func["main"].address_manager.temp
-        self.exec_stack.push(FunctionMemory(main_local, main_temp, None, quad.result - 1))
+        main_pointer = self.dir_gen.dir_func["main"].address_manager.pointer
+        self.exec_stack.push(FunctionMemory(main_local, main_temp, main_pointer, None, quad.result - 1))
     
     def do_verify(self, quad):
         s = self.read_address(quad.left_operand)
@@ -218,7 +219,7 @@ class VirtualMachine:
         offset = self.read_address(quad.right_operand)
         address = quad.result % 1000
         
-        self.pointer_memory.write_pointer(address, base + offset)
+        self.exec_stack.top().pointer_memory.write_pointer(address, base + offset)
 
     def run(self):
         while self.exec_stack.top().next_quad < self.quad_list.size():

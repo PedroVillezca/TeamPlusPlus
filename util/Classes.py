@@ -52,6 +52,9 @@ class Function:
     def return_temp_address(self, address):
         self.address_manager.return_temp_address(address)
 
+    def get_pointer(self):
+        return self.address_manager.get_pointer()
+
     def add_param(self, variable_address, variable_type, variable_type_id):
         self.params.append(Parameter(variable_address, variable_type, variable_type_id))
         

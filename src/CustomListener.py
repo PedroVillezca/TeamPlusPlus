@@ -28,8 +28,6 @@ class CustomListener(TeamPlusPlusListener):
     called_function = ""
     called_function_addr = None
     p_funcalls = Stack()
-    
-    pointer_manager = PointerManager()
 
     def __repr__(self):
         return f'\nDir Gen: \n {self.dir_gen} \n\n Quadruple List: \n {self.quadruple_list}'
@@ -215,7 +213,7 @@ class CustomListener(TeamPlusPlusListener):
         elif ctx.CTE_FLOAT() is not None:
             self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.FLOAT, float(ctx.CTE_FLOAT().getText())), Type.FLOAT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()[1:-1]), Type.CHAR)
         
     # Point 18
     def enterFunc_name(self, ctx):
@@ -478,7 +476,7 @@ class CustomListener(TeamPlusPlusListener):
         if ctx.CTE_INT() is not None:
             self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.INT, int(ctx.CTE_INT().getText())), Type.INT)
         elif ctx.CTE_CHAR() is not None:
-            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()), Type.CHAR)
+            self.quadruple_list.push_operand(self.dir_gen.const_address_manager.get_address(Type.CHAR, ctx.CTE_CHAR().getText()[1:-1]), Type.CHAR)
 
     # Point 46
     def enterIfelse(self, ctx):
@@ -750,7 +748,7 @@ class CustomListener(TeamPlusPlusListener):
         var = self.caller_vars.top()
         d2 = self.dir_gen.const_address_manager.get_address(Type.INT, var.d2)
         dim_count = var.dim_count
-        result_address = self.pointer_manager.get_pointer()
+        result_address = self.dir_gen.get_pointer()
         base_address = var.address
         
         if dim_count == 0:

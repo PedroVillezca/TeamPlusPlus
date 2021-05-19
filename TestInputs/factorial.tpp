@@ -30,19 +30,10 @@ main() {
         arr[i] = -1;
     }
 
-    from i=0 to 9 {
-        print(arr[i]);
-    }
-
     while(continue) {
         print("Number:");
         read(num);
         result = factorial(num);
-        print("VERIFY");
-        from i=0 to 9 {
-            print(arr[i]);
-        }
-        print("VERIFY");
         print("Result:", result);
         print("Continue? 0 or 1.");
         read(continue);

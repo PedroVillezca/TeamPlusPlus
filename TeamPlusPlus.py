@@ -26,7 +26,7 @@ def main(argv):
         print("Successful Compilation!")
         print(custom_listener.quadruple_list)
         print(custom_listener)
-        virtual_machine = VirtualMachine(custom_listener.dir_gen, custom_listener.quadruple_list.quadruple_list, custom_listener.pointer_manager)
+        virtual_machine = VirtualMachine(custom_listener.dir_gen, custom_listener.quadruple_list.quadruple_list)
         virtual_machine.run()
         sys.exit()
  

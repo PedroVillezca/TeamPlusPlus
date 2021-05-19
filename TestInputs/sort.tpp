@@ -54,12 +54,25 @@ func void quickSort(int low, int high) {
 main() {
     vars
         int i;
+        char c;
     from i = 0 to 9 {
         read(arr[i]);
     }
 
-    # bubbleSort(10);
-    quickSort(0, 9);
+    print("Bubble or quick? (b or q)");
+    read(c);
+
+    switch(c) {
+        case 'b' {
+            bubbleSort(10);
+        }
+        case 'q' {
+            quickSort(0, 9);           
+        }
+        default {
+            print("What?");
+        }
+    }
 
     print("Result:");
     from i = 0 to 9 {
