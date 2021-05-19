@@ -9,19 +9,19 @@ func int add(int w, int y) {
     return(w + y);
 }
 
-main() {
+main() {    
     vars
         int a, x;
 
     read(a);
     read(b);
 
-    x = add(a, b);
+    x = add(add(a, a), b);
     print("X: ", x);
-    print("I HAVE FUCCIN RETURNED BABYY");
+    print("I HAVE RETURNED");
 
-    # e = 2 + 3 * 5 / c - +1; # 7
-    # bool = 4 == 4 and not (1 > 0);
-    # print(4 == 4, not (1 > 0), bool);
-    # print("Hello World!", b, e, b * e, c);
+    e = 2 + 3 * 5 / c - +1; # 8
+    bool = 4 == 4 and not (1 > 0);
+    print(4 == 4, not (1 > 0), bool);
+    print("Hello World!", b, e, b * e, c);
 }

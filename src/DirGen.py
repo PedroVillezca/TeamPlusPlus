@@ -15,6 +15,9 @@ class DirGen:
         self.current_level = ""
         self.in_class = 0
         self.in_function = 0
+
+        self.d1 = None
+        self.d2 = None
         
         self.global_address_manager = GlobalAddressManager()
         self.const_address_manager = ConstAddressManager()
@@ -86,20 +89,20 @@ class DirGen:
 
         if (self.current_scope == "global"):
             # Variable is global
-            address = self.global_address_manager.get_address(self.current_type)
-            self.dir_func["global"].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+            address = self.global_address_manager.get_address(self.current_type, self.d1, self.d2)
+            self.dir_func["global"].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         elif self.in_class == 0:
             # Variable is local to a function
-            address = self.dir_func[self.current_scope].get_local_address(self.current_type)
-            self.dir_func[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+            address = self.dir_func[self.current_scope].get_local_address(self.current_type, self.d1, self.d2)
+            self.dir_func[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         elif self.in_function == 0:
             # Variable is an attribute
             address = 9999
-            self.dir_class[class_name].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, variable_level, class_name)
+            self.dir_class[class_name].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, variable_level, class_name, d1=self.d1, d2=self.d2)
         else:
             # Variable is local to a method
-            address = self.dir_class[class_name].methods[self.current_scope].get_local_address(self.current_type)
-            self.dir_class[class_name].methods[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address)
+            address = self.dir_class[class_name].methods[self.current_scope].get_local_address(self.current_type, self.d1, self.d2)
+            self.dir_class[class_name].methods[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         
         return address
 
@@ -134,6 +137,14 @@ class DirGen:
         else:
             # Temp variable belongs to a method of a class
             return self.dir_class[self.current_class].methods[self.current_scope].return_temp_address(address)
+
+    def get_pointer(self):
+        if self.in_class == 0:
+            # Pointer belongs to a global function
+            return self.dir_func[self.current_scope].get_pointer()
+        else:
+            # Pointer belongs to a method of a class
+            return self.dir_class[self.current_class].methods[self.current_scope].get_pointer()
 
     # Point 1
     def enterProgram(self, ctx):
@@ -196,6 +207,8 @@ class DirGen:
     def exitInit_arr(self, ctx):
         variable_name = ctx.parentCtx.ID().getText()
         self.add_variable(variable_name, self.current_class, self.current_level)
+        self.d1 = None
+        self.d2 = None
     
     # Point 7, Point 61, Point 62
     def exitParam(self, ctx):
@@ -246,3 +259,17 @@ class DirGen:
     # Point 13
     def exitFunblock(self, ctx):
         self.in_function = 0
+
+    # Point 77
+    def exitFirst_dim(self, ctx):
+        self.d1 = int(ctx.CTE_INT().getText())
+        if self.d1 <= 0:
+            print("[Error] Dimensions must be greater than zero.")
+            sys.exit()
+
+    # Point 78
+    def exitSecond_dim(self, ctx):
+        self.d2 = int(ctx.CTE_INT().getText())
+        if self.d2 <= 0:
+            print("[Error] Dimensions must be greater than zero.")
+            sys.exit()

@@ -1,9 +1,10 @@
 from util.Enums import Type
 
 class FunctionMemory:
-    def __init__(self, local_dir, temp_dir, return_addr, next_quad):
+    def __init__(self, local_dir, temp_dir, pointer_dir, return_addr, next_quad):
         self.local_memory = MachineMemory(local_dir)
         self.temp_memory = MachineMemory(temp_dir)
+        self.pointer_memory = PointerMemory(pointer_dir)
         self.return_addr = return_addr
         self.next_quad = next_quad
     
@@ -27,3 +28,15 @@ class MachineMemory:
         type = address // 100
         index = address % 100
         self.memory[type][index] = value
+
+class PointerMemory:
+    def __init__(self, pointer_manager):
+        self.memory = [None for i in range(pointer_manager.addresses - 6000)]
+
+    def read_pointer(self, address):
+        return self.memory[address]
+
+    def write_pointer(self, address, value):
+        self.memory[address] = value
+
+        

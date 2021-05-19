@@ -98,6 +98,33 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#indexing.
+    def enterIndexing(self, ctx:TeamPlusPlusParser.IndexingContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#indexing.
+    def exitIndexing(self, ctx:TeamPlusPlusParser.IndexingContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#first_index.
+    def enterFirst_index(self, ctx:TeamPlusPlusParser.First_indexContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#first_index.
+    def exitFirst_index(self, ctx:TeamPlusPlusParser.First_indexContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#second_index.
+    def enterSecond_index(self, ctx:TeamPlusPlusParser.Second_indexContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#second_index.
+    def exitSecond_index(self, ctx:TeamPlusPlusParser.Second_indexContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#attr_call.
     def enterAttr_call(self, ctx:TeamPlusPlusParser.Attr_callContext):
         pass
@@ -134,12 +161,39 @@ class TeamPlusPlusListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TeamPlusPlusParser#first_dim.
+    def enterFirst_dim(self, ctx:TeamPlusPlusParser.First_dimContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#first_dim.
+    def exitFirst_dim(self, ctx:TeamPlusPlusParser.First_dimContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#second_dim.
+    def enterSecond_dim(self, ctx:TeamPlusPlusParser.Second_dimContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#second_dim.
+    def exitSecond_dim(self, ctx:TeamPlusPlusParser.Second_dimContext):
+        pass
+
+
     # Enter a parse tree produced by TeamPlusPlusParser#init_assign.
     def enterInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
         pass
 
     # Exit a parse tree produced by TeamPlusPlusParser#init_assign.
     def exitInit_assign(self, ctx:TeamPlusPlusParser.Init_assignContext):
+        pass
+
+
+    # Enter a parse tree produced by TeamPlusPlusParser#init_verify.
+    def enterInit_verify(self, ctx:TeamPlusPlusParser.Init_verifyContext):
+        pass
+
+    # Exit a parse tree produced by TeamPlusPlusParser#init_verify.
+    def exitInit_verify(self, ctx:TeamPlusPlusParser.Init_verifyContext):
         pass
 
 

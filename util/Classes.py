@@ -43,14 +43,17 @@ class Function:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-    def get_local_address(self, type):
-        return self.address_manager.get_local_address(type)
+    def get_local_address(self, type, d1 = None, d2 = None):
+        return self.address_manager.get_local_address(type, d1, d2)
     
     def get_temp_address(self, type):
         return self.address_manager.get_temp_address(type)
 
     def return_temp_address(self, address):
         self.address_manager.return_temp_address(address)
+
+    def get_pointer(self):
+        return self.address_manager.get_pointer()
 
     def add_param(self, variable_address, variable_type, variable_type_id):
         self.params.append(Parameter(variable_address, variable_type, variable_type_id))
@@ -67,20 +70,29 @@ class Function:
         return self.params[k]
 
 class Variable:
-    def __init__(self, name, type, type_id = None, address = None, level = None, original_class = None):
+    def __init__(self, name, type, type_id = None, address = None, level = None, original_class = None, d1=None, d2=None):
         self.name = name
         self.type = type
         if self.type == Type.ID:
             self.type_id = type_id
         else:
             self.type_id = None
+
         self.address = address
         self.level = level
         self.original_class = original_class
         
+        self.d1 = d1
+        self.d2 = d2
+        self.dim_count = 0
+        if d2 is not None:
+            self.dim_count = 2
+        elif d1 is not None:
+            self.dim_count = 1
+        
         
     def __repr__(self):
-        return f'\n\t\tAddress: {self.address} Variable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class}'
+        return f'\n\t\tAddress: {self.address} Variable Name: {self.name} Level: {self.level} Type: {Type(self.type).name} Type ID: {self.type_id} Original Class: {self.original_class} D1: {self.d1} D2: {self.d2}'
 
     def set_level(self, level):
         self.level = level

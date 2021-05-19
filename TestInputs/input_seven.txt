@@ -1,0 +1,14 @@
+program input_seven;
+
+func int timesTwo(int n) {
+    return(n*2);
+}
+
+main() {
+    vars
+        int a, b, result;
+    read(a);
+    read(b);
+    result = a + timesTwo(b);
+    print(result);
+}

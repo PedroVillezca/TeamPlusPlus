@@ -1,8 +1,7 @@
 import sys
 import operator
 
-from src.MachineMemory import MachineMemory, FunctionMemory
-# from src.DirGen import DirGen
+from src.MachineMemory import MachineMemory, FunctionMemory, PointerMemory
 from util.Enums import Operator, Type
 from util.DataStructures import Stack
 
@@ -24,32 +23,48 @@ class VirtualMachine:
         self.exec_temp = Stack()
         global_local = self.dir_gen.dir_func["global"].address_manager.local
         global_temp = self.dir_gen.dir_func["global"].address_manager.temp
-        self.exec_stack.push(FunctionMemory(global_local, global_temp, None, 0))
+        global_pointer = self.dir_gen.dir_func["global"].address_manager.pointer
+        self.exec_stack.push(FunctionMemory(global_local, global_temp, global_pointer, None, 0))
         
     def read_address(self, address):
         context = address // 1000
         reduced_address = address % 1000
-        if context == 3:
+        if context == 6:
+            # Pointer to array cell
+            pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_address)
+            value = self.read_address(pointed_address)
+        elif context == 3:
             # Constant
-            return self.const_table[address]
+            value = self.const_table[address]
         elif context == 2:
             # Temp
-            return self.exec_stack.top().temp_memory.read_address(reduced_address)
+            value = self.exec_stack.top().temp_memory.read_address(reduced_address)
         elif context == 1:
             # Local
-            return self.exec_stack.top().local_memory.read_address(reduced_address)
+            value = self.exec_stack.top().local_memory.read_address(reduced_address)
         else:
             # Global
-            return self.global_memory.read_address(reduced_address)
+            value = self.global_memory.read_address(reduced_address)
+        
+        if value is None:
+            print("[Error] Variable not initialized.")
+            sys.exit()
+
+        return value
 
     def write_address(self, address, value):
         context = address // 1000
         reduced_address = address % 1000
-        if context == 2: # Temp
+        if context == 6:
+            self.write_address(self.exec_stack.top().pointer_memory.read_pointer(reduced_address), value)
+        elif context == 2:
+            # Temp
             self.exec_stack.top().temp_memory.write_address(reduced_address, value)
-        elif context == 1: # Local
+        elif context == 1:
+            # Local
             self.exec_stack.top().local_memory.write_address(reduced_address, value)
-        else: # Global
+        else:
+            # Global
             self.global_memory.write_address(reduced_address, value)
         
     def write_address_temp(self, address, value):
@@ -163,8 +178,9 @@ class VirtualMachine:
 
         func_local = func_obj.address_manager.local
         func_temp = func_obj.address_manager.temp
+        func_pointer = func_obj.address_manager.pointer
 
-        new_context = FunctionMemory(func_local, func_temp, func_obj.return_addr, func_obj.first_quad - 1)
+        new_context = FunctionMemory(func_local, func_temp, func_pointer, func_obj.return_addr, func_obj.first_quad - 1)
         self.exec_temp.push(new_context)
 
     def do_parameter(self, quad):
@@ -187,7 +203,23 @@ class VirtualMachine:
         self.exec_stack.pop()
         main_local = self.dir_gen.dir_func["main"].address_manager.local
         main_temp = self.dir_gen.dir_func["main"].address_manager.temp
-        self.exec_stack.push(FunctionMemory(main_local, main_temp, None, quad.result - 1))
+        main_pointer = self.dir_gen.dir_func["main"].address_manager.pointer
+        self.exec_stack.push(FunctionMemory(main_local, main_temp, main_pointer, None, quad.result - 1))
+    
+    def do_verify(self, quad):
+        s = self.read_address(quad.left_operand)
+        d = 0 if quad.right_operand == None else quad.right_operand
+
+        if s < 0 or s >= d:
+            print("[Error] Index out of bounds.")
+            sys.exit()
+    
+    def do_point(self, quad):
+        base = quad.left_operand
+        offset = self.read_address(quad.right_operand)
+        address = quad.result % 1000
+        
+        self.exec_stack.top().pointer_memory.write_pointer(address, base + offset)
 
     def run(self):
         while self.exec_stack.top().next_quad < self.quad_list.size():
@@ -245,6 +277,10 @@ class VirtualMachine:
                 self.do_endfunc()
             elif quad.operator == Operator.GOMAIN:
                 self.do_gomain(quad)
+            elif quad.operator == Operator.VERIFY:
+                self.do_verify(quad)
+            elif quad.operator == Operator.POINT:
+                self.do_point(quad)
             else:
                 print(f"Unexpected operator {Operator(quad.operator)}.")
                 sys.exit()

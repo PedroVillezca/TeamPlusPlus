@@ -39,4 +39,6 @@ class Operator(IntEnum):
     ERA = 24
     ENDFUNC = 25
     GOMAIN = 26
+    VERIFY = 27
+    POINT = 28
     

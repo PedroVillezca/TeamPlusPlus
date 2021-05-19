@@ -11,12 +11,16 @@ class AddressManager:
             Type.CHAR: 0
         }
     
-    def get_address(self, type):
+    def get_address(self, type, d1 = None, d2 = None):
+        d1 = 0 if d1 is None else d1
+        d2 = 1 if d2 is None else d2
+
+        amount = (1 if d1*d2 == 0 else d1*d2)
         if type == Type.ID or type == Type.VOID:
             print(f"[Error] Cannot get address for variable of type \'{Type(type).name}\'.")
             sys.exit()
         
-        if self.addresses[type] > 99:
+        if self.addresses[type] + amount > 100:
             print(f"[Error] Address limit for variables of type \'{Type(type).name}\' exceeded in current context.")
             sys.exit()
 
@@ -30,7 +34,7 @@ class AddressManager:
             type_val = 200
         
         address_val = self.addresses[type]
-        self.addresses[type] += 1
+        self.addresses[type] += amount
 
         return context_val + type_val + address_val
 
@@ -77,6 +81,38 @@ class TempAddressManager(AddressManager):
             # Address is a CHAR
             self.free_addresses[Type.CHAR].append(address)
 
+class PointerManager():
+    def __init__(self):
+        self.addresses = 6000
+    
+    def get_pointer(self):
+        self.addresses += 1
+        return self.addresses - 1
+            
+class FunctionAddressManager():
+    def __init__(self):
+        self.local = LocalAddressManager()
+        self.temp = TempAddressManager()
+        self.pointer = PointerManager()
+    
+    def get_local_address(self, type, d1, d2):
+        return self.local.get_address(type, d1, d2)
+    
+    def get_temp_address(self, type):
+        return self.temp.get_address(type)
+    
+    def return_temp_address(self, address):
+        return self.temp.return_address(address)
+
+    def get_pointer(self):
+        return self.pointer.get_pointer()
+
+    def get_size(self):
+        return self.local.get_size() + self.temp.get_size()
+
+    def __repr__(self):
+        return f"Local: \n\t{self.local} \n \tTemp: \n\t{self.temp}"
+
 class ConstAddressManager(AddressManager):
     def __init__(self):
         super().__init__(3)
@@ -96,24 +132,3 @@ class ConstAddressManager(AddressManager):
         address = super().get_address(type)
         self.const_table[type][value] = address
         return address
-            
-class FunctionAddressManager():
-    def __init__(self):
-        self.local = LocalAddressManager()
-        self.temp = TempAddressManager()
-    
-    def get_local_address(self, type):
-        return self.local.get_address(type)
-    
-    def get_temp_address(self, type):
-        return self.temp.get_address(type)
-    
-    def return_temp_address(self, address):
-        return self.temp.return_address(address)
-
-    def get_size(self):
-        return self.local.get_size() + self.temp.get_size()
-
-    def __repr__(self):
-        return f"Local: \n\t{self.local} \n \tTemp: \n\t{self.temp}"
-
