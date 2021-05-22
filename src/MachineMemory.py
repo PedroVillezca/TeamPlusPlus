@@ -7,6 +7,7 @@ class FunctionMemory:
         self.pointer_memory = PointerMemory(pointer_dir)
         self.return_addr = return_addr
         self.next_quad = next_quad
+        self.instance_list = []
     
     def advance(self):
         self.next_quad += 1
@@ -38,5 +39,10 @@ class PointerMemory:
 
     def write_pointer(self, address, value):
         self.memory[address] = value
+
+class InstanceMemory(MachineMemory):
+    def __init__(self, address_dir):
+        super().__init__(address_dir)
+
 
         

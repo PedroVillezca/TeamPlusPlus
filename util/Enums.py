@@ -41,4 +41,5 @@ class Operator(IntEnum):
     GOMAIN = 26
     VERIFY = 27
     POINT = 28
+    INST = 29
     

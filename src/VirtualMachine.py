@@ -1,7 +1,7 @@
 import sys
 import operator
 
-from src.MachineMemory import MachineMemory, FunctionMemory, PointerMemory
+from src.MachineMemory import MachineMemory, FunctionMemory, PointerMemory, InstanceMemory
 from util.Enums import Operator, Type
 from util.DataStructures import Stack
 
@@ -18,6 +18,7 @@ class VirtualMachine:
         }
         
         self.global_memory = MachineMemory(dir_gen.global_address_manager)
+        self.global_instance_memory = []
 
         self.exec_stack = Stack()
         self.exec_temp = Stack()
@@ -220,6 +221,16 @@ class VirtualMachine:
         address = quad.result % 1000
         
         self.exec_stack.top().pointer_memory.write_pointer(address, base + offset)
+    
+    def do_inst(self, quad):
+        attr_dir = self.dir_gen.dir_class[quad.result].address_manager
+        for _ in range(quad.left_operand):
+            if quad.right_operand:
+                # Global instance
+                self.global_instance_memory.append(InstanceMemory(attr_dir))
+            else:
+                # Local instance
+                self.exec_stack.elements[-1].instance_list.append(InstanceMemory(attr_dir))
 
     def run(self):
         while self.exec_stack.top().next_quad < self.quad_list.size():
@@ -281,6 +292,8 @@ class VirtualMachine:
                 self.do_verify(quad)
             elif quad.operator == Operator.POINT:
                 self.do_point(quad)
+            elif quad.operator == Operator.INST:
+                self.do_inst(quad)
             else:
                 print(f"Unexpected operator {Operator(quad.operator)}.")
                 sys.exit()

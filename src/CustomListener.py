@@ -632,9 +632,14 @@ class CustomListener(TeamPlusPlusListener):
         # Point 64
         self.push_quadruple(Operator.ENDFUNC, None, None, None)
 
-    # Point 7, Point 61
+    # Point 7, Point 61, Point 84
     def exitInit_arr(self, ctx):
-        self.dir_gen.exitInit_arr(ctx)
+        type, type_id, size, scope = self.dir_gen.exitInit_arr(ctx)
+
+        # Point 84
+        if type == Type.ID:
+            self.quadruple_list.push_quadruple(Operator.INST, size, scope, type_id)
+        
         
     # Point 20, Point 68
     def exitFunc_name(self, ctx):
