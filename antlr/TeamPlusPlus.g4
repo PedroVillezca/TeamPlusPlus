@@ -55,7 +55,7 @@ void_type   : VOID;
 
 params      : LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS;
 
-param       : (tpp_type | id_type) ID;
+param       : tpp_type ID;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
