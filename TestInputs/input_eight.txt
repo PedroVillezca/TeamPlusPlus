@@ -1,0 +1,49 @@
+program input_eight;
+
+class Persona {
+    attributes
+        public int edad[10];
+        
+    methods
+        public func void setEdad(int index, int value) {
+            edad[index] = value;
+        }
+
+        public func int getEdad(int index) {
+            return(edad[index]);
+        }
+};
+
+class Estudiante inherits Persona {
+    attributes
+        public float promedio;
+    
+    methods
+        public func void setPromedio(float value) {
+            promedio = value;
+        }
+
+        public func float getPromedio() {
+            return(promedio);
+        }
+};
+
+func void showStuff(Estudiante e, int index) {
+    print(e.getEdad(index));
+    print(e.getPromedio());
+}
+
+main() {
+    vars
+        Estudiante mrPresident[5];
+        int value, index;
+        float prom = 69.0;
+    
+    print("INDEX:");
+    read(index);
+    print("VALUE:");
+    read(value);
+    mrPresident[4].setEdad(index, value);
+    mrPresident[4].setPromedio(prom);
+    showStuff(mrPresident[4], index);
+}

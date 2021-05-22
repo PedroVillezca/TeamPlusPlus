@@ -1,13 +1,14 @@
 from util.Enums import Type
 
 class FunctionMemory:
-    def __init__(self, local_dir, temp_dir, pointer_dir, return_addr, next_quad):
+    def __init__(self, local_dir, temp_dir, pointer_dir, return_addr, next_quad, is_method = False):
         self.local_memory = MachineMemory(local_dir)
         self.temp_memory = MachineMemory(temp_dir)
         self.pointer_memory = PointerMemory(pointer_dir)
         self.return_addr = return_addr
         self.next_quad = next_quad
         self.instance_list = []
+        self.is_method = is_method
     
     def advance(self):
         self.next_quad += 1
@@ -43,6 +44,3 @@ class PointerMemory:
 class InstanceMemory(MachineMemory):
     def __init__(self, address_dir):
         super().__init__(address_dir)
-
-
-        

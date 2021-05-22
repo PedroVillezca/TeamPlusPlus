@@ -1,3 +1,4 @@
+from copy import deepcopy
 from src.VirtualMemory import FunctionAddressManager, AttributeAddressManager
 from util.Enums import Type, Level, Operator
 
@@ -18,6 +19,8 @@ class UserClass:
         
         for (method_name, method_obj) in parent.methods.items():
             self.methods[method_name] = method_obj
+        
+        self.address_manager = deepcopy(parent.address_manager)
 
     def set_parent(self, parent):
         self.parent = parent.name

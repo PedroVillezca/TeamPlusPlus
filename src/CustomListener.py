@@ -4,6 +4,8 @@ from antlr4 import *
 from antlr.TeamPlusPlusListener import TeamPlusPlusListener
 from antlr.TeamPlusPlusParser import TeamPlusPlusParser
 
+from copy import deepcopy
+
 from src.DirGen import DirGen
 from src.QuadrupleList import QuadrupleList
 from src.VirtualMemory import PointerManager
@@ -176,8 +178,19 @@ class CustomListener(TeamPlusPlusListener):
     # Point 60
     def enterAttr(self, ctx):
         previous_var = self.caller_vars.pop()
+
+        if previous_var.dim_count > 0:
+            if self.pointer_stack.empty():
+                print("[Error] Cannot use array without indexing.")
+                sys.exit()
+            address = self.pointer_stack.pop()
+        else:
+            address = previous_var.address
+
         var_name = ctx.ID().getText()
-        var_obj = self.dir_gen.attribute_search(var_name, previous_var.type_id)
+
+        # Create a deep copy to leave original object unmodified
+        var_obj = deepcopy(self.dir_gen.attribute_search(var_name, previous_var.type_id))
 
         if var_obj is None:
             print(f"[Error] Variable \'{var_name}\' does not exist.")
@@ -187,6 +200,8 @@ class CustomListener(TeamPlusPlusListener):
             print(f"[Error] Attribute \'{var_name}\' is private to class {var_obj.original_class}.")
             sys.exit()
         
+        var_obj.address = address * 10000 + var_obj.address
+
         self.caller_vars.push(var_obj)
 
     # Point 15
@@ -220,8 +235,25 @@ class CustomListener(TeamPlusPlusListener):
         func_name = ctx.ID().getText()
 
         if self.is_method:
-            func_obj = self.dir_gen.method_search(func_name, self.caller_vars.top().type_id) # CHANGE
+            var = self.caller_vars.top()
+            
+            if var.type_id is None:
+                print(f"[Error] Primitive types do not have methods.")
+                sys.exit()
+            
+            if var.dim_count > 0:
+                if self.pointer_stack.empty():
+                    print("[Error] Cannot use array without indexing.")
+                    sys.exit()
+                address = self.pointer_stack.top()
+            else:
+                address = var.address
+
+            self.quadruple_list.push_quadruple(Operator.METHOD, None, None, address)
+            func_obj = self.dir_gen.method_search(func_name, self.caller_vars.top().type_id)
         else:
+            if self.dir_gen.in_class:
+                self.quadruple_list.push_quadruple(Operator.METHOD, None, None, -1)
             func_obj = self.dir_gen.function_search(func_name, self.dir_gen.current_class)
 
         if func_obj is None:

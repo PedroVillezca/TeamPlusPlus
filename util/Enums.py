@@ -42,4 +42,5 @@ class Operator(IntEnum):
     VERIFY = 27
     POINT = 28
     INST = 29
+    METHOD = 30
     
