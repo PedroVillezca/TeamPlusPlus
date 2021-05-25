@@ -24,8 +24,18 @@ def main(argv):
 
     if parser.getNumberOfSyntaxErrors() == 0:
         print("Successful Compilation!")
-        print(custom_listener.quadruple_list)
-        print(custom_listener)
+        if '-d' in argv:
+            print(custom_listener)
+        if '-c' in argv:
+            print(custom_listener.quadruple_list)
+        if '-f' in argv:
+            print(custom_listener.dir_gen)
+        if '-o' in argv:
+            print(custom_listener.quadruple_list.p_operators)
+        if '-v' in argv:
+            print(custom_listener.quadruple_list.p_operands)
+
+        
         virtual_machine = VirtualMachine(custom_listener.dir_gen, custom_listener.quadruple_list.quadruple_list)
         virtual_machine.run()
         sys.exit()

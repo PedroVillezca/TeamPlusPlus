@@ -6,7 +6,6 @@ class Persona {
         
     methods
         public func void setEdad(int index, int value) {
-            print(edad);
             edad[index] = value;
         }
 
@@ -58,7 +57,7 @@ main() {
     mrPresident[4].setEdad(index, value);
     mrPresident[4].setPromedio(prom);
     showStuff(index);
-    
+
     olimar.setEdad(index, 69);
     print(olimar.edad[index]);
 }

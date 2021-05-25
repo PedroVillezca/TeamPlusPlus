@@ -63,6 +63,9 @@ class TempAddressManager(AddressManager):
         }
 
     def get_address(self, type):
+        if type == Type.VOID:
+            return None
+            
         if not self.free_addresses[type]:
             # Return newly generated address
             return super().get_address(type)
