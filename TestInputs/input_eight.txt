@@ -6,6 +6,7 @@ class Persona {
         
     methods
         public func void setEdad(int index, int value) {
+            print(edad);
             edad[index] = value;
         }
 
@@ -31,16 +32,24 @@ class Estudiante inherits Persona {
 vars
     Estudiante mrPresident[5];
     Estudiante olimar;
+    int diff = 9;
+
+func int diff() {
+    print("DIFF");
+    return(0);
+}
 
 func void showStuff(int index) {
     print(mrPresident[4].getEdad(index));
     print(mrPresident[4].getPromedio());
+    print(diff);
 }
 
 main() {
     vars
         int value, index;
         float prom = 69.0;
+        int diff = 10;
     
     print("INDEX:");
     read(index);

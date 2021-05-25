@@ -82,9 +82,27 @@ class DirGen:
                 if variable_name in self.dir_class[class_name].methods[self.current_scope].variables.keys():
                     return self.dir_class[class_name].methods[self.current_scope].variables[variable_name]
                 return self.attribute_search(variable_name, class_name)
+
+    def variable_check(self, variable_name, class_name):
+        # Search outside of classes
+        if self.in_class == 0:
+            if variable_name in self.dir_func[self.current_scope].variables.keys():
+                return self.dir_func[self.current_scope].variables[variable_name]
+            return None
+        
+        # Search inside classes
+        if self.in_class == 1:
+            if self.in_function == 0:
+                # Variable is an attribute
+                return self.attribute_search(variable_name, class_name)
+            else:
+                # Variable is local to a method
+                if variable_name in self.dir_class[class_name].methods[self.current_scope].variables.keys():
+                    return self.dir_class[class_name].methods[self.current_scope].variables[variable_name]
+                return self.attribute_search(variable_name, class_name)
     
     def add_variable(self, variable_name, class_name, variable_level = None):
-        if self.variable_search(variable_name, class_name) is not None:
+        if self.variable_check(variable_name, class_name) is not None:
             print(f'[Error] Variable \'{variable_name}\' already declared.')
             sys.exit()
 
@@ -242,6 +260,10 @@ class DirGen:
             else:
                 var_name = "global_" + func_name
             
+            if var_name in self.dir_func["global"].variables.keys():
+                print(f'[Error] Variable \'{var_name}\' already declared.')
+                sys.exit()
+
             address = self.global_address_manager.get_address(self.current_type)
             self.dir_func["global"].variables[var_name] = Variable(var_name, self.current_type, self.current_type_id, address)
             
