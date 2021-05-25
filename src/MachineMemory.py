@@ -33,7 +33,7 @@ class MachineMemory:
 
 class PointerMemory:
     def __init__(self, pointer_manager):
-        self.memory = [None for i in range(pointer_manager.addresses - 6000)]
+        self.memory = [None for i in range(pointer_manager.addresses - 4000)]
 
     def read_pointer(self, address):
         return self.memory[address]

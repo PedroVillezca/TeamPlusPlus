@@ -30,6 +30,7 @@ class Estudiante inherits Persona {
 
 vars
     Estudiante mrPresident[5];
+    Estudiante olimar;
 
 func void showStuff(int index) {
     print(mrPresident[4].getEdad(index));
@@ -48,4 +49,7 @@ main() {
     mrPresident[4].setEdad(index, value);
     mrPresident[4].setPromedio(prom);
     showStuff(index);
+    
+    olimar.setEdad(index, 69);
+    print(olimar.edad[index]);
 }

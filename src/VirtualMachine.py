@@ -39,13 +39,13 @@ class VirtualMachine:
             reduced_index = inst % 1000
             reduced_address = attr % 1000
             
-            if context == 8:
+            if context == 6:
                 # Global instance
                 value = self.global_instance_memory[reduced_index].read_address(reduced_address)
             elif context == 5:
                 # Local instance
                 value = self.exec_stack.top().instance_list[reduced_index].read_address(reduced_address)
-            elif context == 6:
+            elif context == 4:
                 # Pointer to instance
                 pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_index)
                 pointed_address = pointed_address * 10000 + attr
@@ -58,7 +58,7 @@ class VirtualMachine:
             if context == 7:
                 # Attribute local to a method
                 value = self.active_instances.top().read_address(reduced_address)
-            elif context == 6:
+            elif context == 4:
                 # Pointer to array cell
                 pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_address)
                 value = self.read_address(pointed_address)
@@ -91,13 +91,13 @@ class VirtualMachine:
             reduced_index = inst % 1000
             reduced_address = attr % 1000
             
-            if context == 8:
+            if context == 6:
                 # Global instance
                 self.global_instance_memory[reduced_index].write_address(reduced_address, value)
             elif context == 5:
                 # Local instance
                 self.exec_stack.top().instance_list[reduced_index].write_address(reduced_address, value)
-            elif context == 6:
+            elif context == 4:
                 # Pointer to instance
                 pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_index)
                 pointed_address = pointed_address * 10000 + attr
@@ -109,7 +109,7 @@ class VirtualMachine:
             if context == 7:
                 # Attribute local to a method
                 self.active_instances.top().write_address(reduced_address, value)
-            elif context == 6:
+            elif context == 4:
                 self.write_address(self.exec_stack.top().pointer_memory.read_pointer(reduced_address), value)
             elif context == 2:
                 # Temp
@@ -296,13 +296,13 @@ class VirtualMachine:
             context = address // 1000
             reduced_address = address % 1000
             
-            if context == 8:
+            if context == 6:
                 # Method of a global instance
                 self.active_instances.push(self.global_instance_memory[reduced_address])
             elif context == 5:
                 # Method of a local instance
                 self.active_instances.push(self.exec_stack.top().instance_list[reduced_address])
-            elif context == 6:
+            elif context == 4:
                 # Method of a pointer
                 pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_address)
                 self.do_method(pointed_address)

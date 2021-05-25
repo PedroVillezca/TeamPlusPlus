@@ -43,4 +43,3 @@ class Operator(IntEnum):
     POINT = 28
     INST = 29
     METHOD = 30
-    

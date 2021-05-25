@@ -83,10 +83,10 @@ class TempAddressManager(AddressManager):
 
 class PointerManager():
     def __init__(self):
-        self.addresses = 6000
+        self.addresses = 4000
     
     def get_pointer(self):
-        if self.addresses + 1 > 7000:
+        if self.addresses + 1 > 5000:
             print("[Error] Address limit for instances exceeded in current context.")
             sys.exit()
 
@@ -163,14 +163,14 @@ class LocalInstanceManager():
 
 class GlobalInstanceManager():
     def __init__(self):
-        self.addresses = 8000
+        self.addresses = 6000
     
     def get_address(self, d1, d2):
         d1 = 0 if d1 is None else d1
         d2 = 1 if d2 is None else d2
         amount = (1 if d1*d2 == 0 else d1*d2)
 
-        if self.addresses + amount > 9000:
+        if self.addresses + amount > 7000:
             print("[Error] Address limit for instances exceeded in current context.")
             sys.exit()
         
