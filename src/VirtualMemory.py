@@ -86,6 +86,10 @@ class PointerManager():
         self.addresses = 6000
     
     def get_pointer(self):
+        if self.addresses + 1 > 7000:
+            print("[Error] Address limit for instances exceeded in current context.")
+            sys.exit()
+
         self.addresses += 1
         return self.addresses - 1
             
@@ -94,9 +98,12 @@ class FunctionAddressManager():
         self.local = LocalAddressManager()
         self.temp = TempAddressManager()
         self.pointer = PointerManager()
-    
-    def get_local_address(self, type, d1, d2):
-        return self.local.get_address(type, d1, d2)
+        self.instance = LocalInstanceManager()
+
+    def get_address(self, type, d1, d2):
+        if type != Type.ID:
+            return self.local.get_address(type, d1, d2)
+        return self.instance.get_address(d1, d2)
     
     def get_temp_address(self, type):
         return self.temp.get_address(type)
@@ -131,4 +138,42 @@ class ConstAddressManager(AddressManager):
         # Assign new address to unseen constant
         address = super().get_address(type)
         self.const_table[type][value] = address
+        return address
+
+class AttributeAddressManager(AddressManager):
+    def __init__(self):
+        super().__init__(7)
+
+class LocalInstanceManager():
+    def __init__(self):
+        self.addresses = 5000
+    
+    def get_address(self, d1, d2):
+        d1 = 0 if d1 is None else d1
+        d2 = 1 if d2 is None else d2
+        amount = (1 if d1*d2 == 0 else d1*d2)
+
+        if self.addresses + amount > 6000:
+            print("[Error] Address limit for instances exceeded in current context.")
+            sys.exit()
+        
+        address = self.addresses
+        self.addresses += amount
+        return address
+
+class GlobalInstanceManager():
+    def __init__(self):
+        self.addresses = 8000
+    
+    def get_address(self, d1, d2):
+        d1 = 0 if d1 is None else d1
+        d2 = 1 if d2 is None else d2
+        amount = (1 if d1*d2 == 0 else d1*d2)
+
+        if self.addresses + amount > 9000:
+            print("[Error] Address limit for instances exceeded in current context.")
+            sys.exit()
+        
+        address = self.addresses
+        self.addresses += amount
         return address

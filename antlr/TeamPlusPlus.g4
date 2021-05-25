@@ -1,11 +1,9 @@
 grammar TeamPlusPlus;
 
 // Parser Rules
-program     : PROGRAM ID SEMICOLON imports? classes? global_vars functions? main EOF;
+program     : PROGRAM ID SEMICOLON classes? global_vars functions? main EOF;
 
 global_vars : tpp_vars?;
-
-imports     : (IMPORT ID SEMICOLON)+;
 
 classes     : (tpp_class)+;
 
@@ -17,21 +15,21 @@ tpp_vars    : VARS ((id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
 
 id_type     : ID;
 
-c_vars      : ATTRIBUTES (level (id_type | tpp_type) init (COMMA init)* SEMICOLON)+;
+c_vars      : ATTRIBUTES (level tpp_type c_init (COMMA c_init)* SEMICOLON)+;
 
-var         : ID indexing? (attr_call)?;
+var         : ID indexing? (DOT attr)?;
 
 indexing    : LEFT_BRACKET first_index (COMMA second_index)? RIGHT_BRACKET;
 
-first_index : exp;
+first_index : expression;
 
-second_index: exp;
+second_index: expression;
 
-attr_call   : DOT attr;
-
-attr        : ID indexing? (attr_call)?;
+attr        : ID indexing?;
 
 init        : ID init_arr init_assign;
+
+c_init      : ID init_arr;
 
 init_arr    : (LEFT_BRACKET first_dim (COMMA second_dim)? RIGHT_BRACKET)?;
 
@@ -57,7 +55,7 @@ void_type   : VOID;
 
 params      : LEFT_PARENTHESIS (param (COMMA param)*)? RIGHT_PARENTHESIS;
 
-param       : (tpp_type | id_type) ID;
+param       : tpp_type ID;
 
 main        : MAIN LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock;
 
@@ -201,8 +199,6 @@ FROM        : 'from';
 TO          : 'to';
 ATTRIBUTES  : 'attributes';
 METHODS     : 'methods';
-IMPORT      : 'import';
-AS          : 'as';
 PUBLIC      : 'public';
 PRIVATE     : 'private';
 AND         : 'and';

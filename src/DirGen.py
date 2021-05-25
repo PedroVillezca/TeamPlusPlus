@@ -1,6 +1,6 @@
 import sys
 
-from src.VirtualMemory import GlobalAddressManager, ConstAddressManager
+from src.VirtualMemory import GlobalAddressManager, ConstAddressManager, GlobalInstanceManager
 from util.Classes import UserClass, Function, Variable, Parameter
 from util.Enums import Type, Level
 
@@ -20,6 +20,7 @@ class DirGen:
         self.d2 = None
         
         self.global_address_manager = GlobalAddressManager()
+        self.global_instance_manager = GlobalInstanceManager()
         self.const_address_manager = ConstAddressManager()
 
     def __repr__(self):
@@ -89,19 +90,24 @@ class DirGen:
 
         if (self.current_scope == "global"):
             # Variable is global
-            address = self.global_address_manager.get_address(self.current_type, self.d1, self.d2)
+            if self.current_type != Type.ID:
+                # Get address for a primitve global variable
+                address = self.global_address_manager.get_address(self.current_type, self.d1, self.d2)
+            else:
+                # Get address for a global instance
+                address = self.global_instance_manager.get_address(self.d1, self.d2)
             self.dir_func["global"].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         elif self.in_class == 0:
             # Variable is local to a function
-            address = self.dir_func[self.current_scope].get_local_address(self.current_type, self.d1, self.d2)
+            address = self.dir_func[self.current_scope].get_address(self.current_type, self.d1, self.d2)
             self.dir_func[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         elif self.in_function == 0:
             # Variable is an attribute
-            address = 9999
+            address = self.dir_class[class_name].get_address(self.current_type, self.d1, self.d2)
             self.dir_class[class_name].attributes[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, variable_level, class_name, d1=self.d1, d2=self.d2)
         else:
             # Variable is local to a method
-            address = self.dir_class[class_name].methods[self.current_scope].get_local_address(self.current_type, self.d1, self.d2)
+            address = self.dir_class[class_name].methods[self.current_scope].get_address(self.current_type, self.d1, self.d2)
             self.dir_class[class_name].methods[self.current_scope].variables[variable_name] = Variable(variable_name, self.current_type, self.current_type_id, address, d1=self.d1, d2=self.d2)
         
         return address
@@ -207,8 +213,14 @@ class DirGen:
     def exitInit_arr(self, ctx):
         variable_name = ctx.parentCtx.ID().getText()
         self.add_variable(variable_name, self.current_class, self.current_level)
+
+        d1 = 0 if self.d1 is None else self.d1
+        d2 = 1 if self.d2 is None else self.d2
+        size = (1 if d1*d2 == 0 else d1*d2)
         self.d1 = None
         self.d2 = None
+
+        return self.current_type, self.current_type_id, size, self.current_scope == "global"
     
     # Point 7, Point 61, Point 62
     def exitParam(self, ctx):

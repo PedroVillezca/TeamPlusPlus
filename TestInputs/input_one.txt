@@ -11,11 +11,13 @@ class OtherClass {
             return(10);
         }
 
-        public func int getB() {
+        public func int getB(int er, int fi, int fo, int fr) {
+            print("HERE");
             print(s);
+            print(fo);
             print(OtherClass(69));
             return(i);
-        }
+        }  
 };
 
 class myClass inherits OtherClass {
@@ -27,7 +29,7 @@ class myClass inherits OtherClass {
         private func int getA() {
             vars
                 float a2;
-                # OtherClass oth;
+                OtherClass oth;
             
             return(a);
         }
@@ -40,6 +42,7 @@ class myClass inherits OtherClass {
 
 vars
     float z;
+    OtherClass globobj, globarr[4,5], globobj2;
 
 func void diff(float x, float y) {
     z = y - x;
@@ -49,10 +52,13 @@ func void diff(float x, float y) {
 main() {
     vars
         char e[2];
-        myClass obj;
+        myClass obj[3,4];
+        OtherClass obj2;
 
-    print(obj.getB());
+    e[0] = '1';
+
+    # print(obj.getB());
     diff(2.2, 2.2);
-    print(e);
+    print(e[0]);
     print("Hello World! \n How is everyone");
 }

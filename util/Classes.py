@@ -1,4 +1,5 @@
-from src.VirtualMemory import FunctionAddressManager
+from copy import deepcopy
+from src.VirtualMemory import FunctionAddressManager, AttributeAddressManager
 from util.Enums import Type, Level, Operator
 
 class UserClass:
@@ -7,6 +8,7 @@ class UserClass:
         self.methods = dict()
         self.attributes = dict()
         self.parent = parent
+        self.address_manager = AttributeAddressManager()
 
     def __repr__(self):
         return f'\nClass\n \tName: {self.name}\n \tParent: {self.parent}\n \tAttributes: {self.attributes}\n \tMethods{self.methods}'
@@ -17,10 +19,15 @@ class UserClass:
         
         for (method_name, method_obj) in parent.methods.items():
             self.methods[method_name] = method_obj
+        
+        self.address_manager = deepcopy(parent.address_manager)
 
     def set_parent(self, parent):
         self.parent = parent.name
         self.set_data_from_parent(parent)
+
+    def get_address(self, type, d1 = None, d2 = None):
+        return self.address_manager.get_address(type, d1, d2)
 
 class Function:
     def __init__(self, name, return_type = Type.VOID, return_addr = None, level = None, original_class = None):
@@ -43,8 +50,8 @@ class Function:
     def set_original_class(self, original_class):
         self.original_class = original_class
 
-    def get_local_address(self, type, d1 = None, d2 = None):
-        return self.address_manager.get_local_address(type, d1, d2)
+    def get_address(self, type, d1 = None, d2 = None):
+        return self.address_manager.get_address(type, d1, d2)
     
     def get_temp_address(self, type):
         return self.address_manager.get_temp_address(type)
