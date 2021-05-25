@@ -50,9 +50,9 @@ main() {
         float prom = 69.0;
         int diff = 10;
     
-    print("INDEX:");
+    print("INDEX: ");
     read(index);
-    print("VALUE:");
+    print("VALUE: ");
     read(value);
     mrPresident[4].setEdad(index, value);
     mrPresident[4].setPromedio(prom);
@@ -60,4 +60,7 @@ main() {
 
     olimar.setEdad(index, 69);
     print(olimar.edad[index]);
+
+    print("Hello\t");
+    print("World");
 }
