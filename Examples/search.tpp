@@ -1,4 +1,4 @@
-program binarySearch;
+program search;
 
 vars
     int arr[10], mid;
@@ -39,15 +39,44 @@ func int recursiveSearch(int value, int start, int end) {
     return(-1);
 }
 
+func int linearSearch(int value) {
+    vars
+        int i;
+    
+    from i=0 to 9 {
+        if (arr[i] == value) {
+            return(i);
+        }
+    }
+
+    return (-1);
+}
+
 main() {
     vars
         int i, value, result;
-    print("VALUE:");
-    read(value);
+        char option;
+        
     from i=0 to 9 {
-        arr[i] = i*5;
+        read(arr[i]);
     }
-    result = recursiveSearch(value, 0, 9);
-    print("RESULT:");
-    print(result);
+    print("Iterative Binary Search, Recursive Binary Search or Linear Search? ('i', 'r', or 'l'): ");
+    read(option);
+    print("Value to search: ");
+    read(value);
+    
+    switch(option) {
+        case 'i' {
+            print(binarySearch(value));
+        }
+        case 'r' {
+            print(recursiveSearch(value, 0, 9));
+        }
+        case 'l' {
+            print(linearSearch(value));
+        }
+        default {
+            print("What? \n");
+        }
+    }
 }

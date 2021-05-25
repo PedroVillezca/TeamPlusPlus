@@ -92,7 +92,7 @@ class CustomListener(TeamPlusPlusListener):
         
     
     def empty_jumps(self):
-        while self.quadruple_list.top_jump() != Operator.FF:
+        while not isinstance(self.quadruple_list.top_jump(), str):
             index = self.quadruple_list.pop_jump()
             self.quadruple_list.update_quadruple(index, self.quadruple_list.quadruple_count)
         self.quadruple_list.pop_jump()
@@ -512,11 +512,11 @@ class CustomListener(TeamPlusPlusListener):
 
     # Point 46
     def enterIfelse(self, ctx):
-        self.quadruple_list.push_jump(Operator.FF)
+        self.quadruple_list.push_jump("(")
 
     # Point 46
     def enterSwitch_stmt(self, ctx):
-        self.quadruple_list.push_jump(Operator.FF)
+        self.quadruple_list.push_jump("(")
 
     # Point 47
     def exitIf_expr(self, ctx):

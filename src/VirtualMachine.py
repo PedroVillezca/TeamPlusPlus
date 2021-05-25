@@ -186,7 +186,7 @@ class VirtualMachine:
             #print(fr"{quad.result[1:-1]}")
             print(quad.result[1:-1].replace('\\n','\n').replace('\\t', '\t'), end="")
         else:
-            print(self.read_address(quad.result))
+            print(self.read_address(quad.result), end="")
     
     def do_read(self, quad):
         value = input()
