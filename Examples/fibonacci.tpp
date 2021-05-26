@@ -1,4 +1,4 @@
-program fibo;
+program fibonacci;
 
 vars
     int arr[50];
