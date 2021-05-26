@@ -187,15 +187,15 @@ class VirtualMachine:
             print(quad.result[1:-1].replace('\\n','\n').replace('\\t', '\t'), end="")
         else:
             print(self.read_address(quad.result), end="")
-    
-    def do_read(self, quad):
+
+    def read_helper(self, address):
         value = input()
-        reduced_address = quad.result % 1000
+        reduced_address = address % 1000
         if reduced_address // 100 == 0:
             # INT expected
             try:
                 value = int(value)
-                self.write_address(quad.result, value)
+                self.write_address(address, value)
             except ValueError:
                 print("[Error] Wrong input type. Expected input of type \'INT\'.")
                 sys.exit()
@@ -203,17 +203,27 @@ class VirtualMachine:
             # FLOAT expected
             try:
                 value = float(value)
-                self.write_address(quad.result, value)
+                self.write_address(address, value)
             except ValueError:
                 print("[Error] Wrong input type. Expected input of type \'FLOAT\'")
                 sys.exit()
         else: 
             # CHAR expected
             if len(value) == 1:
-                self.write_address(quad.result, value)
+                self.write_address(address, value)
             else:
                 print("[Error] Wrong input type. Expected input of type \'CHAR\'.")
                 sys.exit()
+    
+    def do_read(self, quad):
+        context = quad.result // 1000
+        reduced_address = quad.result % 1000
+        if context == 4:
+            # Pointer
+            pointed_address = self.exec_stack.top().pointer_memory.read_pointer(reduced_address)
+            self.read_helper(pointed_address)
+        else:
+            self.read_helper(quad.result)
 
     def do_goto(self, quad):
         self.exec_stack.elements[-1].next_quad = quad.result - 1

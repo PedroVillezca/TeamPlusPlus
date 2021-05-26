@@ -46,7 +46,7 @@ vars
 
 func void diff(float x, float y) {
     z = y - x;
-    print(z);
+    print(z, "\n");
 }
 
 main() {
@@ -56,9 +56,10 @@ main() {
         OtherClass obj2;
 
     e[0] = '1';
+    read(e[0]);
 
     # print(obj.getB());
     diff(2.2, 2.2);
-    print(e[0]);
+    print(e[0], "\n");
     print("Hello World! \n How is everyone");
 }
