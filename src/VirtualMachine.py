@@ -150,7 +150,7 @@ class VirtualMachine:
             else:
                 result = left_op // right_op
         except ZeroDivisionError:
-            print("[Error] Can't perform division by zero.")
+            print("[Error] Cannot perform division by zero.")
             sys.exit()
 
         self.write_address(quad.result, result)
@@ -183,7 +183,6 @@ class VirtualMachine:
 
     def do_print(self, quad):
         if isinstance(quad.result, str):
-            #print(fr"{quad.result[1:-1]}")
             print(quad.result[1:-1].replace('\\n','\n').replace('\\t', '\t'), end="")
         else:
             print(self.read_address(quad.result), end="")
