@@ -6,9 +6,12 @@ func int timesTwo(int n) {
 
 main() {
     vars
-        int a, b, result;
+        int a, b, result, arr[5], mat[3,3];
+    arr[1] = 24;
+    mat[2,0] = 88;
     read(a);
     read(b);
     result = a + timesTwo(b);
-    print(result);
+    print(arr[1]);
+    print(mat[2, 0]);
 }

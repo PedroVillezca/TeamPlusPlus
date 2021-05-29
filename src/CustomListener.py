@@ -22,6 +22,7 @@ class CustomListener(TeamPlusPlusListener):
 
     caller_vars = Stack()
     pointer_stack = Stack()
+    global_dims = 0
 
     recurrent_vars = Stack()
 
@@ -295,7 +296,7 @@ class CustomListener(TeamPlusPlusListener):
             left_operand = self.quadruple_list.pop_operand()
         
             if left_operand.variable_type != Type.INT and left_operand.variable_type != Type.FLOAT:
-                print(f"Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
+                print(f"[Error] Invalid operand type \'{Type(left_operand.variable_type).name}\' for operator {Operator(self.quadruple_list.top_operator()).name}.")
                 sys.exit()
             
             if left_operand.variable_type == Type.INT or top_operator == Operator.NOT:
@@ -429,7 +430,6 @@ class CustomListener(TeamPlusPlusListener):
             print("[Error] Array initialization is not allowed.")
             sys.exit()
 
-        
     # Point 38
     def exitInit_assign(self, ctx):
        var = self.caller_vars.pop()
@@ -762,6 +762,7 @@ class CustomListener(TeamPlusPlusListener):
             print(f"[Error] Cannot index array with value of type \'{Type(result.variable_type).name}\'")
             sys.exit()
 
+        self.global_dims += 1
         self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d1, None)
 
     # Point 80
@@ -773,6 +774,7 @@ class CustomListener(TeamPlusPlusListener):
             print(f"[Error] Cannot index array with value of type \'{Type(result.variable_type).name}\'")
             sys.exit()
 
+        self.global_dims += 1
         self.quadruple_list.push_quadruple(Operator.VERIFY, result.address, d2, None)
 
     # Point 23
@@ -787,16 +789,26 @@ class CustomListener(TeamPlusPlusListener):
         dim_count = var.dim_count
         result_address = self.dir_gen.get_pointer()
         base_address = var.address
+
         
         if dim_count == 0:
             print("[Error] Cannot index a variable with no dimensions.")
             sys.exit()
+
         elif dim_count == 1:
+            if dim_count != self.global_dims:
+                print(f"[Error] Mismatched dimensions for variable {var.name}.")
+                sys.exit()
+
             s = self.quadruple_list.pop_operand().address
             
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, s, result_address)
 
         else:
+            if dim_count != self.global_dims:
+                print(f"[Error] Mismatched dimensions for variable {var.name}.")
+                sys.exit()
+            
             s2 = self.quadruple_list.pop_operand().address
             s1 = self.quadruple_list.pop_operand().address
 
@@ -806,6 +818,9 @@ class CustomListener(TeamPlusPlusListener):
             self.quadruple_list.push_quadruple(Operator.POINT, base_address, temp_addresses[1], result_address)
         
         self.pointer_stack.push(result_address)
+        self.global_dims = 0
 
         # Point 24
         self.quadruple_list.pop_operator()
+
+        

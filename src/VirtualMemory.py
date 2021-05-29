@@ -90,7 +90,7 @@ class PointerManager():
     
     def get_pointer(self):
         if self.addresses + 1 > 5000:
-            print("[Error] Address limit for instances exceeded in current context.")
+            print("[Error] Address limit for pointers exceeded in current context.")
             sys.exit()
 
         self.addresses += 1
