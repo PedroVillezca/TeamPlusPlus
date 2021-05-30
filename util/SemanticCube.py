@@ -1,5 +1,9 @@
 from util.Enums import Type, Operator
 
+"""
+Defines the structure for the semantic cube
+"""
+
 type_count = len(Type)
 operator_count = len(Operator)
 semantic_cube = [[[None for k in range(operator_count)] for j in range(type_count)] for i in range(type_count)]

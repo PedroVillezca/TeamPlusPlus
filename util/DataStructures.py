@@ -1,4 +1,9 @@
 class Stack:
+    """
+    Standard definition of a Stack class. Defined because Python doesn't support
+    this structure natively. 
+    """
+
     def __init__(self):
         self.elements = []
     
@@ -22,6 +27,11 @@ class Stack:
 
 
 class Queue:
+    """
+    Standard definition of a Queue class. Defined because Python doesn't support
+    this structure natively. 
+    """
+
     def __init__(self):
         self.elements = []
     

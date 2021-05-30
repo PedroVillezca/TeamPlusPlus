@@ -3,6 +3,11 @@ from src.VirtualMemory import FunctionAddressManager, AttributeAddressManager
 from util.Enums import Type, Level, Operator
 
 class UserClass:
+    """
+    Defines all the necessary information to be stored about a class. Includes a Variable Table
+    for the attributes as well as a Function Directory to store methods.
+    """
+
     def __init__(self, name, parent = None):
         self.name = name
         self.methods = dict()
@@ -30,6 +35,10 @@ class UserClass:
         return self.address_manager.get_address(type, d1, d2)
 
 class Function:
+    """
+    Defines all the necessary information to be stored about a Function, either global or method.
+    """
+
     def __init__(self, name, return_type = Type.VOID, return_addr = None, level = None, original_class = None):
         self.name = name
         self.level = level
@@ -77,9 +86,15 @@ class Function:
         return self.params[k]
 
 class Variable:
+    """
+    Defines all the necessary information to be stored about a variable.
+    """
+
     def __init__(self, name, type, type_id = None, address = None, level = None, original_class = None, d1=None, d2=None):
         self.name = name
         self.type = type
+
+        # Assign type id to object's class if variable is an instance
         if self.type == Type.ID:
             self.type_id = type_id
         else:
@@ -92,6 +107,8 @@ class Variable:
         self.d1 = d1
         self.d2 = d2
         self.dim_count = 0
+
+        # Set dimension count based on the number of dimensions guven
         if d2 is not None:
             self.dim_count = 2
         elif d1 is not None:
@@ -108,9 +125,14 @@ class Variable:
         self.original_class = original_class
 
 class Parameter:
+    """
+    Class used to store the necessary information for function parameters.
+    """
     def __init__(self, address, type, type_id = None):
         self.address = address
         self.type = type
+
+        # Assign type id to object's class if parameter is an instance
         if self.type == Type.ID:
             self.type_id = type_id
         else:
@@ -120,9 +142,15 @@ class Parameter:
         return f"Address: {self.address}, Type: {self.type}, Type ID: {self.type_id}"
 
 class Operand:
+    """
+    Class used to group information needed for operands (variable name, address, and type)
+    """
+
     def __init__(self, address, variable_type, variable_type_id = None):
         self.address = address
         self.variable_type = variable_type
+
+        # Assign type id to object's class if operand is an instance
         if self.variable_type == Type.ID:
             self.variable_type_id = variable_type_id
         else:
@@ -132,6 +160,10 @@ class Operand:
         return f'\nOperand \tAddress: {self.address} \tType: {Type(self.variable_type).name}\n'
 
 class Quadruple:
+    """
+    Class used to group information needed for quadruples (operator, left and right operands, result, and index)
+    """
+
     def __init__(self, operator, left_operand, right_operand, result, index):
         self.operator = operator
         self.left_operand = left_operand
@@ -140,4 +172,4 @@ class Quadruple:
         self.index = index
     
     def __repr__(self):
-        return f'\n {self.index} Operator: {Operator(self.operator).name}\t Left Operand: {self.left_operand}\t Right Operand: {self.right_operand}\t Result: {self.result}'
+        return f'\n {self.index}. {Operator(self.operator).name}, {self.left_operand}, {self.right_operand}, {self.result}'

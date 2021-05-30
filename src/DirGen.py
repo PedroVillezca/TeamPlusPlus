@@ -5,6 +5,11 @@ from util.Classes import UserClass, Function, Variable, Parameter
 from util.Enums import Type, Level
 
 class DirGen:
+    """
+    Implements the General Directory, which is divided in Function Directory and Class
+    Directory. Stores all information related to variable, function, and class definition.
+    """
+
     def __init__(self):
         self.dir_func = dict()
         self.dir_class = dict()
@@ -28,6 +33,8 @@ class DirGen:
 
     def method_search(self, function_name, class_name):
         class_obj = self.dir_class[class_name]
+
+        # Search in class's Function Directory
         if function_name in class_obj.methods.keys():
             return class_obj.methods[function_name]
         return None
@@ -50,15 +57,20 @@ class DirGen:
             print(f'[Error] Function \'{new_function.name}\' already declared.')
             sys.exit()
         
+
         if self.in_class == 0:
+            # New function is global
             self.dir_func[new_function.name] = new_function
         else:
+            # New function is a method
             new_function.set_level(function_level)
             new_function.set_original_class(class_name)
             self.dir_class[class_name].methods[new_function.name] = new_function
     
     def attribute_search(self, variable_name, class_name):
         class_obj = self.dir_class[class_name]
+
+        # Search in class's attribute table
         if variable_name in class_obj.attributes.keys():
             return class_obj.attributes[variable_name]
         return None
@@ -172,11 +184,13 @@ class DirGen:
 
     # Point 1
     def enterProgram(self, ctx):
+        # Add function of global context to Function Directory
         new_function = Function('global')
         self.add_function(new_function)
 
     # Point 2
     def enterTpp_class(self, ctx):
+        # Update current scope and class to the values just seen
         self.current_scope = ctx.ID().getText()
         self.current_class = self.current_scope
 
@@ -184,6 +198,7 @@ class DirGen:
             print(f'[Error] Class \'{self.current_scope}\' already declared.')
             sys.exit()
         
+        # Add new class to Class Directory
         new_class = UserClass(self.current_scope)
         self.dir_class[new_class.name] = new_class
         
@@ -194,6 +209,7 @@ class DirGen:
             print(f'[Error] Class \'{self.current_scope}\' inherits from undeclared class \'{parent_name}\'.')
             sys.exit()
         
+        # Adds attributes and methos from parent class to child class
         current_class = self.dir_class[self.current_scope]
         parent_obj = self.dir_class[parent_name]
         current_class.set_parent(parent_obj)
@@ -224,17 +240,23 @@ class DirGen:
            print(f'[Error] Class \'{ctx.ID().getText()}\' is undefined.')
            sys.exit()
         
+        # Sets current type to the object's class
         self.current_type = Type.ID
         self.current_type_id = ctx.ID().getText() 
     
     # Point 7, Point 61
     def exitInit_arr(self, ctx):
         variable_name = ctx.parentCtx.ID().getText()
+        
+        # Adds variable to Variable Table from current context
         self.add_variable(variable_name, self.current_class, self.current_level)
 
         d1 = 0 if self.d1 is None else self.d1
         d2 = 1 if self.d2 is None else self.d2
+
+        # Sets total size according to dimensions
         size = (1 if d1*d2 == 0 else d1*d2)
+
         self.d1 = None
         self.d2 = None
 
@@ -244,9 +266,12 @@ class DirGen:
     def exitParam(self, ctx):
         # Point 7, Point 61
         variable_name = ctx.ID().getText()
+
+        # Adds variable to function's Variable Table
         variable_address = self.add_variable(variable_name, self.current_class)
 
         # Point 62
+        # Adds variable to function's parameter list
         self.add_param(variable_address, self.current_class)
         
     # Point 8
@@ -256,17 +281,21 @@ class DirGen:
         address = None
         if self.current_type != Type.VOID:
             if self.in_class:
+                # Function is a method
                 var_name = self.current_class + '_' + func_name
             else:
+                # Function is global
                 var_name = "global_" + func_name
             
             if var_name in self.dir_func["global"].variables.keys():
                 print(f'[Error] Variable \'{var_name}\' already declared.')
                 sys.exit()
 
+            # Add global variable for function with return type different to void
             address = self.global_address_manager.get_address(self.current_type)
             self.dir_func["global"].variables[var_name] = Variable(var_name, self.current_type, self.current_type_id, address)
             
+        # Adds new function to the current Function Directory
         new_function = Function(func_name, self.current_type, address)
         self.add_function(new_function, self.current_class, self.current_level)
     
@@ -276,11 +305,13 @@ class DirGen:
     
     # Point 10
     def enterMain(self, ctx):
+        # Adds function 'main' to Function Directory
         new_function = Function('main')
         self.add_function(new_function)
         
     # Point 11
     def exitClasses(self, ctx):
+        # Reset values used to handle class declarations
         self.in_class = 0
         self.current_level = Level.PUBLIC
         self.current_scope = 'global'
