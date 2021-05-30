@@ -224,4 +224,4 @@ from variable = inicio to fin {
 ```
 ### Video Tutorial
 
-Coming soon to a theater near YOU.
+Haz click en este [link](https://drive.google.com/file/d/19CwQ4ZBbF5-Bko2ej5xArDqHK3XBOj5L/view?usp=sharing) para ver una pequeña demostración del lenguaje.
