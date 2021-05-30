@@ -3,6 +3,11 @@ from util.Classes import Quadruple, Operand
 from util.Enums import Type, Operator
 
 class QuadrupleList:
+    """
+    Defines the structure that will contain all of the intermediate code required
+    for program execution. Each element in the list is a Quadruple object. 
+    """
+
     quadruple_list = Queue()
     p_operators = Stack()
     p_operands = Stack()

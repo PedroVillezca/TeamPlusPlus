@@ -81,7 +81,7 @@ func_name   : ID;
 
 method_call : var DOT;
 
-tpp_return  : RETURN LEFT_PARENTHESIS exp RIGHT_PARENTHESIS SEMICOLON;
+tpp_return  : RETURN LEFT_PARENTHESIS expression RIGHT_PARENTHESIS SEMICOLON;
 
 read        : READ LEFT_PARENTHESIS read_var (COMMA read_var)* RIGHT_PARENTHESIS SEMICOLON;
 

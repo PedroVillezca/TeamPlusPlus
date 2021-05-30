@@ -59,7 +59,7 @@ main() {
         read(arr[i]);
     }
 
-    print("Bubble or quick? (b or q)");
+    print("Bubble or quick? (b or q): ");
     read(c);
 
     switch(c) {
@@ -74,8 +74,8 @@ main() {
         }
     }
 
-    print("Result:");
+    print("Result: ");
     from i = 0 to 9 {
-        print(arr[i]);
+        print(arr[i], " ");
     }
 }

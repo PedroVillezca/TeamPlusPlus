@@ -1,6 +1,10 @@
 from enum import IntEnum
 
 class Type(IntEnum):
+    """
+    Enum to encode data types
+    """
+
     INT = 0
     FLOAT = 1
     CHAR = 2
@@ -8,10 +12,18 @@ class Type(IntEnum):
     ID = 4
 
 class Level(IntEnum):
+    """
+    Enum to encode accesibility levels
+    """
+
     PUBLIC = 0
     PRIVATE = 1
 
 class Operator(IntEnum):
+    """
+    Enum to encode operators
+    """
+
     OR = 0
     AND = 1
     EQ = 2
@@ -43,4 +55,3 @@ class Operator(IntEnum):
     POINT = 28
     INST = 29
     METHOD = 30
-    
